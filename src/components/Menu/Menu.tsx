@@ -29,15 +29,15 @@ export default async function Menu({ className }: { className?: string }){
             </li>
             <li>
               <div className='inline-flex flex-row justify-end gap-8 w-full'>
-                <a href="#" className=' flex flex-col items-center hover:bg-gray-100'>
+                <a href="/conta" className=' flex flex-col items-center hover:bg-gray-100'>
                 <UserRound size={25}/>
                   <span className='text-sm '>perfil</span>
                 </a>
-                <a href="#" className=' flex flex-col items-center hover:bg-gray-100'>
+                <a href="/pedidos" className=' flex flex-col items-center hover:bg-gray-100'>
                 <Gift size={25} />
                   <span className='text-sm '>pedidos</span>
                 </a>
-                <a href="#" className=' flex flex-col items-center hover:bg-gray-100'>
+                <a href="/sacola" className=' flex flex-col items-center hover:bg-gray-100'>
                 <ShoppingBag size={25}/>
                   <span className='text-sm '>sacola</span>
                 </a>

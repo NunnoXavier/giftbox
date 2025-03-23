@@ -1,7 +1,7 @@
 const Sacola = () => {
     return (
         <div>
-            carrinho
+            sacola
         </div>
     )
 }

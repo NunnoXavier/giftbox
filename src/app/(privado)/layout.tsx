@@ -3,9 +3,11 @@ import { ReactNode } from "react"
 
 const LayoutPrivado = ( { children }: { children: ReactNode } ) => {
     return (
-        <div>
+        <div className="p-2">
             <Menu />
-            {children}
+            <div className="max-w-96">
+                {children}
+            </div>
         </div>
     )
 }
