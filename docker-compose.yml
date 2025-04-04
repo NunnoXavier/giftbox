@@ -1,0 +1,37 @@
+
+
+services:
+  # Serviço do Node.js
+  giftbox:
+    build: .
+    container_name: container_giftbox
+    ports:
+      - "3000:3000"  # Mapeando a porta 3000 do container para a porta 3000 da máquina
+    networks:
+      - minha_rede
+    volumes:
+      - .:/giftbox  # Sincronizando o código entre o container e a máquina
+
+  db:
+    image: postgres:13  # Usando a imagem oficial do PostgreSQL
+    container_name: postgres_giftbox
+    environment:
+      DB_USER: nuno
+      DB_HOST: db
+      DB_DATABASE: giftbox
+      DB_PASSWORD: nunoenuna123
+      DB_PORT: 5432
+    ports:
+      - "5432:5432"  # Expondo a porta 5432 do PostgreSQL
+    networks:
+      - minha_rede      
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persistência de dados
+
+# Volume para persistir os dados do PostgreSQL
+volumes:
+  postgres_data:
+
+networks:
+  minha_rede:
+    driver: bridge

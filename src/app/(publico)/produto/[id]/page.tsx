@@ -1,10 +1,13 @@
-const Produto = async ({ params }:{ params: Promise<{ id:string }> }) => {
+import Produto from "@/components/Produto/Produto"
+
+const PageProduto = async ({ params }:{ params: Promise<{ id:string }> }) => {
     const { id } = await params
 
-    
-    return <>
-    <h1>ID produto: {id}</h1>
-    </>
+    return (
+        <div>
+            <Produto id={id}/>
+        </div>
+    )
 }
 
-export default Produto
+export default PageProduto

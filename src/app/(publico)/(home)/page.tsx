@@ -1,10 +1,9 @@
-import Secoes from "@/components/Secoes/Secoes";
+import Secoes from "@/components/Secoes/Secoes"
 
-
-export default function Home() {
+export default async function Home() {
   return (
     <div className="">
-      <h1>Home</h1>
+      <Secoes />
     </div>
   );
 }
