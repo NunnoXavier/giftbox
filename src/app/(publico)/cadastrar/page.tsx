@@ -23,9 +23,11 @@ const Cadastrar = () => {
             setMensagem("")
 
             const res = await fetch(`http://localhost:3000/api/usuarios/verificar-email/${email}`)
-            const data:{emailExiste:boolean} = await res.json()
-            const verificado = !data.emailExiste
-            setVerificado(verificado)
+            const { data, error } = await res.json()
+            if(!data){
+                console.log(error)
+            }
+            setVerificado(!error)
             !verificado && setMensagem('email já está cadastrado')            
         } catch (error:any) {
             setMensagem(error.message)

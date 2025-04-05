@@ -10,7 +10,12 @@ type Credentials = { email:string, password:string }
 export const POST = async (request:NextRequest) => {    
     const { email, password }:Credentials = await request.json()
 
-    const users = await getUsuarios({campo:'email', valor: email })
+    const {data:users, error} = await getUsuarios({campo:'email', valor: email })
+    if(!users){
+        return NextResponse.json({ data: null, error: "email não encontrado" },{status: 401})
+
+    }
+
     const user:User = users[0]
     console.log(user)
     

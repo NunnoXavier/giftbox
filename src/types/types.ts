@@ -92,12 +92,18 @@ export interface TagDTO extends Tag {
 }
 
 export interface Image {
-    id: number,
-    url: string
+    id: number;
+    url: string;
 }
 
 export interface ImageDTO extends Image {
-    idproduct: number,
+    idproduct: number;
+}
+
+export interface ProductCart {
+    idUser: number;
+    idProduct: number;
+    qtde: number;
 }
 
 export class Convert {
