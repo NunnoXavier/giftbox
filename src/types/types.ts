@@ -1,3 +1,11 @@
+import { JwtPayload } from 'jwt-decode'
+
+export interface AuthTokenPayload extends JwtPayload {
+    id: number,
+    email: string,
+    role: |'client'|'admin',
+}
+
 export interface User {
     id?:         number;
     firstName?:  string;
@@ -101,6 +109,7 @@ export interface ImageDTO extends Image {
 }
 
 export interface ProductCart {
+    id: number;
     idUser: number;
     idProduct: number;
     qtde: number;

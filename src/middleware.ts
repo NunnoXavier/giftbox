@@ -1,12 +1,7 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server"
-import { jwtDecode, JwtPayload } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
+import { AuthTokenPayload } from './types/types'
 
-
-interface AuthTokenPayload extends JwtPayload {
-    id: number,
-    email: string,
-    role: |'client'|'admin',
-}
 
 const getIds = ():string[] => {
     const numbers = Array.from({ length: 999 }, (_, i) => i +1)

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { jwtDecode, JwtPayload } from 'jwt-decode'
 import { getUsuarios } from "@/db/usuarios"
-import { deleteSacola, getSacola, putSacola } from "@/db/sacola"
+import { deleteSacola, getSacola, putSacola, updateSacola } from "@/db/sacola"
 import { ProductCart } from "@/types/types"
 import { cookies } from "next/headers"
 
@@ -78,6 +78,35 @@ export const PUT = async(request:NextRequest) => {
     }
 
     return NextResponse.json({ data: produtoSacola, error: null})
+}
+
+export const POST = async(request:NextRequest) => {
+    try {
+        const { data:usuario, error } = await pegarUsuarioDaRequest(request)
+    
+        if(!usuario){
+            return NextResponse.json({ data: null, error: error})
+        }
+        
+        const produtoSacola:ProductCart = await request.json()
+            
+        if(!produtoSacola){
+            return NextResponse.json({ data: null, error: 'nenhum item enviado no corpo da requisição' })        
+        }
+    
+        produtoSacola.idUser = usuario.id || 0
+    
+        const { data:result, error: errorSacola } = await updateSacola(produtoSacola as ProductCart)    
+    
+        if(!result){
+            return NextResponse.json({ data: null, error: errorSacola})
+        }
+    
+        return NextResponse.json({ data: result, error: null})
+        
+    } catch (error:any) {
+        return NextResponse.json({ data: null, error: error.message})        
+    }
 }
 
 export const DELETE = async(request:NextRequest) => {

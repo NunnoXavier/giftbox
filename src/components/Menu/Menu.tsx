@@ -4,6 +4,7 @@ import Link from 'next/link'
 import BuscarProduto from '../BuscarProduto/BuscarProduto'
 import MenuItem from './MenuItem'
 import Hamburger from './Hamburger'
+import MenuSacola from './MenuSacola'
 
 export default async function Menu({ className }: { className?: string }){
   const headerList = await headers()
@@ -55,9 +56,7 @@ export default async function Menu({ className }: { className?: string }){
               <MenuItem href="/pedidos" label='pedidos'>
                 <Gift size={25} />
               </MenuItem>
-              <MenuItem href="/sacola" label='sacola'>
-                <ShoppingBag size={25}/>
-              </MenuItem>
+              <MenuSacola />
               <MenuItem href="/login" label='Login'>
                 <LogIn size={25}/>
               </MenuItem>
