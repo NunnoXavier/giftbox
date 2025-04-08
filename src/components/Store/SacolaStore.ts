@@ -4,19 +4,10 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query"
 
 export const createQuerySacola = () => {
     const fetchSacola = async():Promise<ProductCart[]> => {
-        const res = await fetch('http://localhost:3000/api/usuarios/sacola', {
-            credentials: "include"
-        })
-        if(res.status !== 200){ 
-            throw new Error('erro ao efetuar fetch dos dados da sacola')
-        }
-        
-        const { data, error }:{ data:ProductCart[], error: string } = await res.json()
-        if(!data){
-            throw new Error(error)            
-        }
-        
-        return data
+        const storage = localStorage.getItem('sacola')
+
+        const itensSacola:ProductCart[] = storage? JSON.parse(storage) : []
+        return itensSacola
     }
     
     return  useQuery<ProductCart[]>({
@@ -28,83 +19,39 @@ export const createQuerySacola = () => {
 
 export const fetchAddQtdeItem = async(item:ProductCart):Promise<ProductCart> => {
     item.qtde += 1
-    const res = await fetch('http://localhost:3000/api/usuarios/sacola', {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify(item)
+     
+    const storage = localStorage.getItem('sacola')
+    const itensSacola:ProductCart[] = storage? JSON.parse(storage) : []
+    const novoItensSacola = itensSacola.map((i) => i.id === item.id? item: i)
+    localStorage.setItem('sacola', JSON.stringify(novoItensSacola))
+    return item
+}
 
-    })
 
-    if(res.status !== 200){ 
-        throw new Error('erro ao efetuar fetch dos dados da sacola')
-    }
+export const fetchSubQtdeItem = async(item:ProductCart):Promise<ProductCart> => {
+    item.qtde -= 1
     
-    const { data, error }:{ data:ProductCart[], error: string } = await res.json()
-    if(!data){
-        throw new Error(error)            
-    }
-
+    const storage = localStorage.getItem('sacola')
+    const itensSacola:ProductCart[] = storage? JSON.parse(storage) : []
+    const novoItensSacola = itensSacola.map((i) => i.id === item.id? item: i)
+    localStorage.setItem('sacola', JSON.stringify(novoItensSacola))
     return item
 }
 
 export const fetchAddItem = async(item:ProductCart):Promise<ProductCart> => {
-    const res = await fetch('http://localhost:3000/api/usuarios/sacola', {
-        method: "PUT",
-        credentials: "include",
-        body: JSON.stringify(item)
-
-    })
-
-    if(res.status !== 200){ 
-        throw new Error('erro ao efetuar fetch dos dados da sacola')
-    }
-    
-    const { data, error }:{ data:ProductCart[], error: string } = await res.json()
-    if(!data){
-        throw new Error(error)            
-    }
-
-    return item
-}
-
-export const fetchSubQtdeItem = async(item:ProductCart):Promise<ProductCart> => {
-    item.qtde -= 1
-    const res = await fetch('http://localhost:3000/api/usuarios/sacola', {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify(item)
-
-    })
-
-    if(res.status !== 200){ 
-        throw new Error('erro ao efetuar fetch dos dados da sacola')
-    }
-    
-    const { data, error }:{ data:ProductCart[], error: string } = await res.json()
-    if(!data){
-        throw new Error(error)            
-    }
-
+    const storage = localStorage.getItem('sacola')
+    const itensSacola:ProductCart[] = storage? JSON.parse(storage) : []
+    const novoId = itensSacola.length +1
+    const novoItensSacola = [ ...itensSacola, { ...item, id: novoId } ]    
+    localStorage.setItem('sacola', JSON.stringify(novoItensSacola))
     return item
 }
 
 export const fetchRemoveItem = async(item:ProductCart):Promise<ProductCart> => {
-    const res = await fetch('http://localhost:3000/api/usuarios/sacola', {
-        method: "DELETE",
-        credentials: "include",
-        body: JSON.stringify(item)
-
-    })
-
-    if(res.status !== 200){ 
-        throw new Error('erro ao efetuar fetch dos dados da sacola')
-    }
-    
-    const { data, error }:{ data:ProductCart[], error: string } = await res.json()
-    if(!data){
-        throw new Error(error)            
-    }
-
+    const storage = localStorage.getItem('sacola')
+    const itensSacola:ProductCart[] = storage? JSON.parse(storage) : []
+    const novoItensSacola = itensSacola.filter((i) => i.id !== item.id)
+    localStorage.setItem('sacola', JSON.stringify(novoItensSacola))
     return item
 }
 

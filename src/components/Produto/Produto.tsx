@@ -1,4 +1,4 @@
-import { Product } from "@/types/types"
+import { Product, ProductCart } from "@/types/types"
 import { Truck } from 'lucide-react'
 import ImagemProduto from "./ImagemProduto"
 import AvaliarProduto from "./AvaliarProduto" 
@@ -20,6 +20,12 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
     }
     const imagens = produto.images
 
+    const itemSacola:ProductCart = {
+        id: 0,
+        idProduct: produto?.id || 0,
+        qtde: 1,
+    }
+
     return (
         <div className={`${className} `}>            
             <div className="grid grid-cols-1 md:grid-cols-12">
@@ -39,7 +45,7 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                     <div className="text-center">
                         <h1 className="text-3xl text-rose-500">R${produto.price?.toFixed(2)}</h1>
                     </div>
-                    <AdicionarSacola/>
+                    <AdicionarSacola itemSacola={ itemSacola } />
                     <div className="flex flex-col gap-2 place-items-center">
                         <span className="flex gap-2"> <Truck /> Calcular Frete e prazo</span>  
                         <div className="flex bg-gray-100 pl-2 text-center focus:border focus:border-violet-400 rounded-xl">

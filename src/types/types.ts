@@ -54,26 +54,42 @@ export interface Product {
     thumbnail?:            string;
 }
 
-export interface ProductDTO extends Product{
+export interface ProductDTO{
     idcategory: number;
     width?:  number;
     height?: number;
     depth?:  number;
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdat?: Date;
+    updatedat?: Date;
     barcode?:   string;
-    qrCode?:    string;
+    qrcode?:    string;
+    id?:        number;
+    title?:                string;
+    description?:          string;
+    price?:                number;
+    discountpercentage?:   number;
+    rating?:               number;
+    stock?:                number;
+    brand?:                string;
+    sku?:                  string;
+    weight?:               number;
+    warrantyinformation?:  string;
+    shippinginformation?:  string;
+    availabilitystatus?:   string;
+    returnpolicy?:         string;
+    minimumorderquantity?: number;
+    thumbnail?:            string;    
 }
 
 export interface Dimensions {
-    width:  number;
-    height: number;
-    depth:  number;
+    width?:  number;
+    height?: number;
+    depth?:  number;
 }
 
 export interface Meta {
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
     barcode?:   string;
     qrCode?:    string;
 }
@@ -81,13 +97,18 @@ export interface Meta {
 export interface Review {
     rating:        number;
     comment:       string;
-    date:          Date;
+    date?:          Date;
     reviewerName?:  string;
     reviewerEmail?: string;
 }
 
-export interface ReviewDTO extends Review {
+export interface ReviewDTO{
     idproduct: number;
+    rating:        number;
+    comment:       string;
+    date?:          Date;
+    reviewername?:  string;
+    revieweremail?: string;    
 }
 
 export interface Tag {
@@ -95,8 +116,10 @@ export interface Tag {
     description: string;
 }
 
-export interface TagDTO extends Tag {
+export interface TagDTO {
     idproduct: number;
+    id:          number;
+    description: string;    
 }
 
 export interface Image {
@@ -104,13 +127,14 @@ export interface Image {
     url: string;
 }
 
-export interface ImageDTO extends Image {
+export interface ImageDTO{
     idproduct: number;
+    id: number;
+    url: string;
 }
 
 export interface ProductCart {
     id: number;
-    idUser: number;
     idProduct: number;
     qtde: number;
 }

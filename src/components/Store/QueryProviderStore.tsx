@@ -11,14 +11,7 @@ const QueryProviderStore = ({children}:{children: ReactNode}) => {
             refetchOnWindowFocus: false, // Opcional: desativa refetch no focus
           }
         }
-    }))
-
-    useEffect(() => {
-    console.log('QueryClient montado', queryClient)
-    return () => {
-        console.log('QueryClient desmontado')
-    }
-    }, [queryClient])          
+    }))         
 
     return (
         <QueryClientProvider client={queryClient}>

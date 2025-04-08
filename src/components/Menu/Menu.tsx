@@ -1,10 +1,11 @@
-import { UserRound, ShoppingBag, Gift, LogIn, UserRoundPlus, LogOut } from 'lucide-react'
+
+import { UserRound, Gift, LogIn, UserRoundPlus, LogOut, ShoppingBag } from 'lucide-react'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import BuscarProduto from '../BuscarProduto/BuscarProduto'
 import MenuItem from './MenuItem'
 import Hamburger from './Hamburger'
-import MenuSacola from './MenuSacola'
+import AlertaSacola from './AlertaSacola'
 
 export default async function Menu({ className }: { className?: string }){
   const headerList = await headers()
@@ -56,7 +57,10 @@ export default async function Menu({ className }: { className?: string }){
               <MenuItem href="/pedidos" label='pedidos'>
                 <Gift size={25} />
               </MenuItem>
-              <MenuSacola />
+              <MenuItem className="relative" href="/sacola" label='sacola'>
+                <AlertaSacola className="-top-1 translate-x-2"/>
+                <ShoppingBag className="z-1" size={25} />
+              </MenuItem>        
               <MenuItem href="/login" label='Login'>
                 <LogIn size={25}/>
               </MenuItem>

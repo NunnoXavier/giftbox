@@ -97,18 +97,6 @@ const criarTabelas = async () => {
         `)
 
         await query(`
-            CREATE TABLE if not EXISTS carts(
-                id BIGSERIAL,
-                iduser BIGINT default 0,
-                idproduct INT default 0,
-                qtde INT default 0,
-                PRIMARY KEY (id),
-                FOREIGN KEY(idproduct) REFERENCES products(id) ON DELETE CASCADE,
-                FOREIGN KEY(iduser) REFERENCES users(id) ON DELETE CASCADE
-            )
-        `)
-        
-        await query(`
             CREATE TABLE if not EXISTS orders(
                 id BIGSERIAL,
                 iduser BIGINT default 0,

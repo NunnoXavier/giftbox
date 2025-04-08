@@ -5,14 +5,14 @@ export const GET = async (request: NextRequest, { params }: {params: Promise<{ e
     const { email } = await params
     const { data:usuarios, error } = await getUsuarios({campo:"email", valor:email})
     
-    if(!usuarios){
+    if(error){
         return NextResponse.json({data: null, error: error })
     }
-    const usuario = usuarios.find((u) => u.email === email)
-    if(!usuario){
-        return NextResponse.json({data: null, error: 'usuário não encontrado' })
+    
+    if(!usuarios){
+        return NextResponse.json({data: null, error: 'cadastro de usuairios nao encontrado' })
     }
     
 
-    return NextResponse.json({ data: usuario, error: null })
+    return NextResponse.json({ data: usuarios.length === 0, error: null })
 }

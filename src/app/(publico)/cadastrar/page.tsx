@@ -3,7 +3,7 @@
 import { User } from '@/types/types'
 import { LoaderCircle, SeparatorVerticalIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
 const Cadastrar = () => {
@@ -16,19 +16,35 @@ const Cadastrar = () => {
     const [sobrenome, setSobrenome] = useState("")
     const router = useRouter()
 
-
     const verificarEmail = async () => {
+        function validarEmail(email:string) {
+            const padraoEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+            return padraoEmail.test(email)
+        }        
+
         try {
             setLoading(true)
             setMensagem("")
+            if(!validarEmail(email)){
+                throw new Error('Email inválido')
+            }
+
+            if(senha.length < 6){
+                throw new Error('A senha deve conter ao menos 6 caracteres, entre letras, números e símbolos!')
+            }
 
             const res = await fetch(`http://localhost:3000/api/usuarios/verificar-email/${email}`)
-            const { data, error } = await res.json()
-            if(!data){
-                console.log(error)
+            const { data, error }:{ data:boolean, error:string } = await res.json()
+            if(error){
+                throw new Error(error)
             }
-            setVerificado(!error)
-            !verificado && setMensagem('email já está cadastrado')            
+
+            if(data){
+                setVerificado(true)
+            }else{
+                setVerificado(false)
+                setMensagem('Email já cadastrado!')
+            }
         } catch (error:any) {
             setMensagem(error.message)
             setVerificado(false)
@@ -74,11 +90,11 @@ const Cadastrar = () => {
             <h1 className="text-xl text-gray-700 m-2 font-bold">CADASTRO</h1>
 
             <div>
-                <div className={`${verificado? 'sr-only': ''} grid grid-cols-12 gap-4 m-2 p-2 max-w-96 mx-auto`}>
+                <div className={`${verificado? 'hidden': ''} grid grid-cols-12 gap-4 m-2 p-2 max-w-96 mx-auto`}>
                     <div className="col-span-12">
                         <input
                             placeholder="email. ex: joaodasilva@giftbox.com" 
-                            type="email" id="email" 
+                            type="email" id="email"
                             className="w-full bg-gray-100 focus:border border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
                             value={email}
                             onChange={(e) => setEmail(e.currentTarget.value)}
@@ -104,7 +120,7 @@ const Cadastrar = () => {
                     </div>
                 </div>
 
-                <div className={`${!verificado? 'sr-only': ''} grid grid-cols-12 gap-4 m-2 p-2 max-w-96 mx-auto`}>
+                <div className={`${!verificado? 'hidden': ''} grid grid-cols-12 gap-4 m-2 p-2 max-w-96 mx-auto`}>
                     <div className="col-span-12">                    
                         <input
                             placeholder="nome. ex: João"  

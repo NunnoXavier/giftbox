@@ -1,5 +1,6 @@
 import CadastrarImagens from "@/components/admin/CadastrarImagens/CadastrarImagens"
 import CadastrarProduto from "@/components/admin/CadastrarProduto/CadastrarProduto"
+import GridProdutos from "@/components/admin/GridProdutos/GridProdutos"
 import { Category, Product } from "@/types/types"
 
 const Admin = async () => {
@@ -23,6 +24,7 @@ const Admin = async () => {
         <div className="place-items-center">
             <h1 className="text-xl font-semibold m-4">Si Giftbox - Admin</h1>
             <div className="flex flex-col md:flex-row gap-4">
+                <GridProdutos produtos={produtos}/>
                 <CadastrarProduto produtos={produtos} categorias={categorias}/>
                 <CadastrarImagens produtos={produtos}/>
             </div>

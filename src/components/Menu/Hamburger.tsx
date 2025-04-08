@@ -2,6 +2,7 @@
 
 import { Menu, ChevronDown, ChevronUp, UserRoundPlus, ChevronLeft, LogIn } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import AlertaSacola from './AlertaSacola'
 
 const Hamburger = ({className}:{className?:string}) => {
     const [open, setOpen] = useState(false)
@@ -33,9 +34,12 @@ const Hamburger = ({className}:{className?:string}) => {
               
 
     return(
-        <div className={`${className} `}>
-            <Menu onClick={() => setOpen(!open) }/>
-            <aside ref={menuRef} className={`${open? 'w-96' : 'w-0'} fixed left-0 top-0 h-[100vh] bg-white transition-all duration-300 overflow-hidden`}>
+        <div className={`${className}`}>
+            <div className="relative" onClick={() => setOpen(!open) }>            
+                <AlertaSacola className="left-2.5 -top-1.5"/>
+                <Menu className="z-1"/>
+            </div>
+            <aside ref={menuRef} className={`${open? 'w-96' : 'w-0'} fixed left-0 top-0 h-[100vh] bg-white transition-all duration-300 overflow-hidden z-10`}>
                 <ChevronLeft 
                     className='absolute right-0 top-1 text-gray-500'
                     onClick={()=> setOpen(false)}
@@ -68,9 +72,10 @@ const Hamburger = ({className}:{className?:string}) => {
                         <h1 className='text-xl text-gray-800'>Pedidos</h1>
                     </a>
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 pl-4'>
-                    <a href="/sacola" className='flex align-bottom justify-between'>
-                        <h1 className='text-xl text-gray-800'>Sacola</h1>
+                <div className='border-b border-gray-300 my-4 pb-3 pl-4'>                    
+                    <a href="/sacola" className='flex align-bottom justify-between relative'>                        
+                        <AlertaSacola className="translate-x-12"/>
+                        <h1 className='text-xl text-gray-800 relative'>Sacola</h1>
                     </a>
                 </div>
                 <div className='border-b border-gray-300 my-4 pb-3 px-4 overflow-hidden'>

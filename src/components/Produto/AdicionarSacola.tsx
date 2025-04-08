@@ -1,10 +1,40 @@
 'use client'
 
+import { ProductCart } from "@/types/types"
 import { ShoppingBag } from "lucide-react"
 import { useState } from "react"
+import { fetchAddItem } from "../Store/SacolaStore"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-const AdicionarSacola = () => {
-const [qtde, setQtde] = useState("1")
+const AdicionarSacola = ({itemSacola}:{itemSacola:ProductCart}) => {
+    const [qtde, setQtde] = useState("1")
+    const queryClient = useQueryClient()
+
+    const { mutateAsync:additem } = useMutation({
+        mutationFn: fetchAddItem,
+        mutationKey: ['sacola'],
+        onSuccess: (_, variables) => {
+            queryClient.setQueryData<ProductCart[]>(['sacola'], (data) => {       
+                return data? [
+                    ...data,
+                    { ...variables }
+                ]: []
+            })
+        }
+    })
+
+    const adicionarSacola = async () => {
+        const novoItem:ProductCart = {
+            id: itemSacola.id,
+            idProduct: itemSacola.idProduct,
+            qtde: Number(qtde)
+        }
+        
+        const result = await additem(novoItem)
+        if(!result){
+            throw new Error('erro ao adicionar produto na sacola')
+        }        
+    }
 
     return (
         <div className="flex gap-2">
@@ -16,6 +46,7 @@ const [qtde, setQtde] = useState("1")
             />
             <button  
                 className="flex-1 flex gap-2 justify-center place-items-center bg-violet-400 text-white px-5 rounded-xl"
+                onClick={adicionarSacola}
                 
             >
                 <ShoppingBag /> Adicionar à Sacola

@@ -4,6 +4,8 @@ import { LoaderCircle } from 'lucide-react'
 import { Category, Product } from "@/types/types"
 import useCadastrarProduto from "./useCadastrarProduto"
 import Campo from './Campo'
+import { useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 
 
@@ -13,8 +15,17 @@ const CadastrarProduto = ({produtos,categorias}:{produtos:Product[],categorias:C
         changeHeight,changeId,changeMinimumOrderQuantity,changePrice,changeQrCode,
         changeReturnPolicy,changeShippingInformation,changeSku,changeStock,changeThumbnail,
         changeTitle,changeWarrantyInformation,changeWeight,changeWidth,idCategoria,loading,
-        mensagem,produto,salvar,setIdCategoria,idProduto, modo } = useCadastrarProduto({produtos,categorias})
+        mensagem,produto,salvar,setIdCategoria,idProduto,setIdProduto, modo } = useCadastrarProduto({produtos,categorias})
 
+    const searchParams = useSearchParams()
+    const filtroIdProduto = searchParams.get('id')
+    
+    useEffect(() => {
+        if(filtroIdProduto){
+            setIdProduto(filtroIdProduto)
+        }
+    },[filtroIdProduto])
+    
     if(!produto){
         return <></>
     }
@@ -53,7 +64,7 @@ const CadastrarProduto = ({produtos,categorias}:{produtos:Product[],categorias:C
                     label='Seção:'
                     inputType='input'
                     type="number" 
-                    value={idCategoria}
+                    value={idCategoria.toString()}
                     changeFunction={setIdCategoria}
                     classWidth='w-10'
                 >
@@ -142,14 +153,14 @@ const CadastrarProduto = ({produtos,categorias}:{produtos:Product[],categorias:C
                     label='Cod. de Barras:'
                     type="text" 
                     inputType='input'
-                    value={produto.barcode}
+                    value={produto.meta?.barcode}
                     changeFunction={changeBarcode}
                 />
                 <Campo
                     classWidth='flex-1'
                     label='QrCode:'
                     inputType='textarea'
-                    value={produto.qrCode}
+                    value={produto.meta?.qrCode}
                     changeFunction={changeQrCode}
                 />
                 <Campo
@@ -165,7 +176,7 @@ const CadastrarProduto = ({produtos,categorias}:{produtos:Product[],categorias:C
                     label='Altura:' 
                     type="number"
                     inputType='input' 
-                    value={produto.height?.toString()}
+                    value={produto.dimensions?.height?.toString()}
                     changeFunction={changeHeight}
                 />
                 <Campo
@@ -173,7 +184,7 @@ const CadastrarProduto = ({produtos,categorias}:{produtos:Product[],categorias:C
                     label='Largura:' 
                     type="number" 
                     inputType='input'
-                    value={produto.width?.toString()}
+                    value={produto.dimensions?.width?.toString()}
                     changeFunction={changeWidth}
                 />
                 <Campo 
@@ -181,7 +192,7 @@ const CadastrarProduto = ({produtos,categorias}:{produtos:Product[],categorias:C
                     label='Profundidade:'
                     type="number" 
                     inputType='input'
-                    value={produto.depth?.toString()}
+                    value={produto.dimensions?.depth?.toString()}
                     changeFunction={changeDepth}
                 />
                 <div className="flex justify-center">

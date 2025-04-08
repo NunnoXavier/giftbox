@@ -36,8 +36,17 @@ const ProdutoSecao = ({ className, produto }: ProdutoSecaoProps) => {
         return <Placeholder />
     }
     
+    const preco = produto.price? produto.price : 0
+    const perc = produto.discountPercentage? produto.discountPercentage : 0
+    const desc = (preco * (perc / 100))
+    const promo = preco - desc 
+
+
     return (
-        <div className={`${className} flex flex-col items-center w-48  md:w-96 shrink-0 snap-start justify-between pb-4 text-center break-words border border-gray-200 rounded-md`}>
+        <div className={`${className} flex flex-col relative items-center w-48  md:w-96 shrink-0 snap-start justify-between pb-4 text-center break-words border border-gray-200 rounded-md`}>
+            <div className={`${promo < preco? 'block': 'hidden'} absolute text-xs font-bold text-white bg-red-400 px-2 rounded-lg -rotate-24 -left-4 z-10`}>
+                {perc.toFixed(2)}% OFF
+            </div>    
             <a href={`/produto/${produto.id}`}>
                 <div className="min-h-48 md:min-h-92">                   
                     {
@@ -56,7 +65,8 @@ const ProdutoSecao = ({ className, produto }: ProdutoSecaoProps) => {
                 </div>
                 
                 <p className="text-sm md:text-lg text-gray-800">{produto?.title}</p>
-                <p className="text-lg text-red-500" >R$ {produto?.price}</p>
+                <p className={`${promo < preco? 'text-gray-500': 'text-transparent'} text-sm `} ><s>R$ {preco.toFixed(2)}</s></p>
+                <p className={`${promo < preco? 'text-red-500': 'text-gray-800'} text-lg`} >R$ {promo.toFixed(2)}</p>
             </a>
             <BtnAddSacola produto={produto} />
         </div>

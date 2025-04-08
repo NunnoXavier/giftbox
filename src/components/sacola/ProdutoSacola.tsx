@@ -39,7 +39,6 @@ const ProdutoSacola = ({ className }:QtdSacolaProps) => {
         const produto = pro.find((p) => p.id === i.idProduct)
         return {
             id: i.id,
-            idUser: i.idUser,
             idProduct: i.idProduct,
             qtde: i.qtde,
             title: produto?.title || "PRODUTO NÃO ENCONTRADO",
@@ -108,7 +107,6 @@ const P = ({ produto }:{ produto: ProdutoSacola }) => {
 
     const itmSacola:ProductCart = {
         id: produto.id,
-        idUser: produto.idUser,
         idProduct: produto.idProduct,
         qtde: produto.qtde
     }
@@ -138,7 +136,7 @@ const P = ({ produto }:{ produto: ProdutoSacola }) => {
                         size={15} 
                         onClick={() => addQtde(itmSacola)} />
                     <Trash 
-                        className={`${ produto.qtde === 0? 'block':'hidden' } text-red-500`} 
+                        className={`${ produto.qtde === 0? 'block':'hidden' } text-red-500 hover:opacity-90 cursor-pointer`} 
                         size={15} fill='#fb2c36' 
                         onClick={() => removeItem(itmSacola)}
                     />
