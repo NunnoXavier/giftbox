@@ -27,7 +27,7 @@ const ImagemProduto = ({ className, imagens }:ImagemProdutoProps) => {
         
     return (
         <div className={`${className}`}>
-            <div className="h-96 md:h-[620px] overflow-hidden border border-gray-200 rounded-lg relative">
+            <div className=" bg-white h-96 md:h-[620px] overflow-hidden border border-gray-200 rounded-lg relative">
                 <img 
                     className="max-h-[420px] md:max-h-[640px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2" 
                     src={imagemSelecionada} alt={'imagem'} 
@@ -40,7 +40,7 @@ const ImagemProduto = ({ className, imagens }:ImagemProdutoProps) => {
                         return(
                             <button 
                                 key={index} 
-                                className="hover:bg-gray-200 cursor-pointer"
+                                className="bg-white hover:bg-gray-200 cursor-pointer"
                                 onClick={() => setImagemSelecionada(imagem) }
                             >
                                 <img 

@@ -1,214 +1,105 @@
-'use client'
+import { Category, Dimensions, Meta, Product } from '@/types/types'
+import { revalidateTag } from 'next/cache'
+import CamposProduto from './CamposProduto'
+import { fetchProdutos } from '@/cachedFetchs/fetchsProdutos'
+import { fetchSecoes } from '@/cachedFetchs/fetchsSecoes'
+import { Description } from '@mui/icons-material'
 
-import { LoaderCircle } from 'lucide-react'
-import { Category, Product } from "@/types/types"
-import useCadastrarProduto from "./useCadastrarProduto"
-import Campo from './Campo'
-import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+const CadastrarProduto = async () => {
 
-
-
-const CadastrarProduto = ({produtos,categorias}:{produtos:Product[],categorias:Category[]}) => {
-
-    const { changeBarcode,changeBrand,changeDepth,changeDescription,changeDiscountPercentage,
-        changeHeight,changeId,changeMinimumOrderQuantity,changePrice,changeQrCode,
-        changeReturnPolicy,changeShippingInformation,changeSku,changeStock,changeThumbnail,
-        changeTitle,changeWarrantyInformation,changeWeight,changeWidth,idCategoria,loading,
-        mensagem,produto,salvar,setIdCategoria,idProduto,setIdProduto, modo } = useCadastrarProduto({produtos,categorias})
-
-    const searchParams = useSearchParams()
-    const filtroIdProduto = searchParams.get('id')
+    const res = await fetchProdutos()
+    const { data:produtos, error } = await res.json()
+    if(error){
+        console.log(error)
+        return 
+    }
     
-    useEffect(() => {
-        if(filtroIdProduto){
-            setIdProduto(filtroIdProduto)
+    const res2 = await fetchSecoes()
+    const { data:categorias, errorCategorias } = await res2.json()
+    if(errorCategorias){
+        console.log(errorCategorias)
+        return 
+    }
+
+    const salvar = async (data: FormData) =>{
+        'use server'
+
+        const objeto: { [key: string]: FormDataEntryValue } = {};
+        data.forEach((value, key) => {
+            objeto[key] = value
+        })
+        
+        const categoria:Category = { id: Number(objeto.idcategory), description: "" }
+        const meta:Meta = {         
+            barcode: String(objeto.barcode),
+            qrCode: String(objeto.qrcode),
+            createdAt: new Date(),
+            updatedAt: new Date(),
         }
-    },[filtroIdProduto])
-    
-    if(!produto){
-        return <></>
+        const dimensions:Dimensions = {
+            depth: Number(objeto.depth),
+            height: Number(objeto.height),
+            width: Number(objeto.width),            
+        }
+
+        const produto:Product = {
+            id: Number(objeto.id),
+            title: String(objeto.title),
+            description: String(objeto.description),
+            category: categoria,
+            price: Number(objeto.price),
+            discountPercentage: Number(objeto.discountpercentage),
+            stock: Number(objeto.stock),
+            thumbnail: String(objeto.thumbnail),
+            sku: String(objeto.sku),
+            brand: String(objeto.brand),
+            meta: meta,
+            availabilityStatus: String(objeto.availabilitystatus),
+            dimensions: dimensions,
+            weight: Number(objeto.weight),
+            minimumOrderQuantity: Number(objeto.minimumorderquantity),
+            rating: Number(objeto.rating),
+            returnPolicy: String(objeto.returnpolicy),
+            shippingInformation: String(objeto.shippinginformation),
+            warrantyInformation: String(objeto.warrantyinformation),
+        }
+
+      
+        const res = await fetch('http://localhost:3000/api/protegido/produtos/cadastrar',{
+            method: produto.id === 0? "PUT": "POST",
+            body: JSON.stringify(produto)
+        })
+        
+        const { data:result, error } = await res.json()
+
+        if(!result){
+            console.log(error)
+        }
+
+        revalidateTag('produtos')
+    }
+
+    if(!produtos){
+        return
     }
 
     return(
-        <div className="w-96 border border-gray-200 rounded-lg p-4">
-            <h1 className="text-center font-bold text-lg text-gray-500">{modo} Produto</h1>
-            <div className="flex flex-col gap-y-2">
-                <Campo 
-                    classWidth='flex-1 bg-gray-100 text-blue-400'
-                    label='ID:'
-                    inputType='input'
-                    type='number'
-                    value={idProduto}
-                    changeFunction={changeId}
-                    readOnly={true}
-                />
+        <form 
+        className="bg-white w-96 border border-gray-200 rounded-lg p-4"
+        action={salvar}
+        >
+            <h1 className="text-center font-bold text-lg text-gray-500">Cadastrar Produto</h1>
+            <CamposProduto produtos={ produtos } categorias={ categorias }/>
 
-                <Campo 
-                    classWidth='flex-1'
-                    label='Título'
-                    type="text" 
-                    inputType='input'
-                    value={produto.title}
-                    changeFunction={changeTitle}                    
-                />
-                <Campo 
-                    classWidth='flex-1'
-                    label='SKU:'
-                    inputType='input'
-                    type="text" 
-                    value={produto.sku}
-                    changeFunction={changeSku}                    
-                />
-                <Campo 
-                    label='Seção:'
-                    inputType='input'
-                    type="number" 
-                    value={idCategoria.toString()}
-                    changeFunction={setIdCategoria}
-                    classWidth='w-10'
-                >
-                    <div className="flex-1 border border-gray-200 bg-gray-100 text-violet-500 rounded px-2">
-                        {produto?.category?.description}
-                    </div>
-                </Campo>
-                <Campo
-                    inputType='textarea'
-                    classWidth='flex-1'
-                    label="Descrição:"
-                    value={produto.description}
-                    changeFunction={changeDescription}                    
-                />
-                <Campo                 
-                    classWidth='flex-1'
-                    label='Preço:'
-                    inputType='input'
-                    type="number" 
-                    value={produto.price?.toString()}
-                    changeFunction={changePrice}                    
-                />
-                <Campo 
-                    classWidth='flex-1'
-                    label='Desconto(%)'
-                    inputType='input'
-                    type="number" 
-                    value={produto.discountPercentage?.toString() || ""}
-                    changeFunction={changeDiscountPercentage}                    
-                />
-                <Campo 
-                    classWidth='flex-1'
-                    label='Img. Miniatura:'
-                    inputType='textarea'
-                    value={produto.thumbnail}
-                    changeFunction={changeThumbnail}                    
-                />
+            <div className='flex justify-center mt-4'>
+                <input 
+                    className="inline bg-violet-500 text-white w-30 px-2 rounded-xl relative"
+                    type="submit"
+                    value="salvar"
+                    />
 
-                <Campo
-                    classWidth='flex-1'
-                    label='Brand:' 
-                    type="text"
-                    inputType='input' 
-                    value={produto.brand}
-                    changeFunction={changeBrand}
-                />
-                <Campo 
-                    classWidth='flex-1'
-                    label='Qtd. Mínima:'
-                    type="number" 
-                    inputType='input'
-                    value={produto.minimumOrderQuantity?.toString() || ""}
-                    changeFunction={changeMinimumOrderQuantity}
-                />
-                <Campo
-                    classWidth='flex-1'
-                    label='Polít. de Devolução:'
-                    inputType='textarea'
-                    value={produto.returnPolicy}
-                    changeFunction={changeReturnPolicy}
-                />
-                <Campo
-                    classWidth='flex-1'
-                    label='Info. de Envio:'
-                    inputType='textarea'
-                    value={produto.shippingInformation}
-                    changeFunction={changeShippingInformation}
-                />
-                <Campo 
-                    classWidth='flex-1'
-                    label='Estoque:'
-                    type="number"
-                    inputType='input' 
-                    value={produto.stock?.toString()}
-                    changeFunction={changeStock}   
-                />
-                <Campo
-                    classWidth='flex-1'
-                    label='Info. de Garantia:'
-                    inputType='textarea'
-                    value={produto.warrantyInformation}
-                    changeFunction={changeWarrantyInformation}
-                />
-                <Campo 
-                    classWidth='flex-1'
-                    label='Cod. de Barras:'
-                    type="text" 
-                    inputType='input'
-                    value={produto.meta?.barcode}
-                    changeFunction={changeBarcode}
-                />
-                <Campo
-                    classWidth='flex-1'
-                    label='QrCode:'
-                    inputType='textarea'
-                    value={produto.meta?.qrCode}
-                    changeFunction={changeQrCode}
-                />
-                <Campo
-                    classWidth='flex-1'
-                    label='Peso:'                
-                    inputType='input'
-                    type="number" 
-                    value={produto.weight?.toString()}
-                    changeFunction={changeWeight}
-                />
-                <Campo
-                    classWidth='flex-1'
-                    label='Altura:' 
-                    type="number"
-                    inputType='input' 
-                    value={produto.dimensions?.height?.toString()}
-                    changeFunction={changeHeight}
-                />
-                <Campo
-                    classWidth='flex-1'
-                    label='Largura:' 
-                    type="number" 
-                    inputType='input'
-                    value={produto.dimensions?.width?.toString()}
-                    changeFunction={changeWidth}
-                />
-                <Campo 
-                    classWidth='flex-1'
-                    label='Profundidade:'
-                    type="number" 
-                    inputType='input'
-                    value={produto.dimensions?.depth?.toString()}
-                    changeFunction={changeDepth}
-                />
-                <div className="flex justify-center">
-                    <button 
-                        className="inline bg-violet-500 text-white w-30 px-2 rounded-xl relative"
-                        onClick={() => salvar()}
-                    >
-                        Salvar
-                        <LoaderCircle size={20} className={`${loading? 'block':'hidden'} animate-spin absolute top-0.5 right-1`}/>
-                    </button>
-                </div>
             </div>
-            <div>
-                {mensagem}
-            </div>
-        </div>        
+        </form>        
     )
 }
 

@@ -39,7 +39,7 @@ const Hamburger = ({className}:{className?:string}) => {
                 <AlertaSacola className="left-2.5 -top-1.5"/>
                 <Menu className="z-1"/>
             </div>
-            <aside ref={menuRef} className={`${open? 'w-96' : 'w-0'} fixed left-0 top-0 h-[100vh] bg-white transition-all duration-300 overflow-hidden z-10`}>
+            <aside ref={menuRef} className={`${open? 'w-96' : 'w-0'} fixed left-0 top-0 h-[100vh] bg-white transition-all duration-300 overflow-hidden z-20`}>
                 <ChevronLeft 
                     className='absolute right-0 top-1 text-gray-500'
                     onClick={()=> setOpen(false)}

@@ -1,4 +1,4 @@
-import { Category, Product, ProductDTO } from "@/types/types"
+import { Category, Product } from "@/types/types"
 import { useEffect, useState } from "react"
 
 const initProduct: Product = {
@@ -33,7 +33,7 @@ const initProduct: Product = {
     }
 }
 
-const useCadastrarProduto = ({produtos, categorias}:{produtos:Product[],categorias:Category[]}) => {
+const useCadastrarProduto = ({produtos, categorias, fetchSalvar}:{produtos:Product[],categorias:Category[],fetchSalvar:({produto}:{produto:Product})=>Promise<Response>}) => {
     const [ produto, setProduto ] = useState<Product>(initProduct)   
     const [ idCategoria, setIdCategoria ] = useState('0')
     const [ idProduto, setIdProduto ] = useState('0')
@@ -70,11 +70,7 @@ const useCadastrarProduto = ({produtos, categorias}:{produtos:Product[],categori
             setLoading(true)
             setMensagem("")
             
-            const res = await fetch('http://localhost:3000/api/protegido/produtos/cadastrar',{
-                method: produto.id === 0? 'PUT': 'POST',
-                headers:{ "Content-type":"Application-json" },
-                body: JSON.stringify(produto)                
-            })
+            const res = await fetchSalvar({produto:produto})
             
             const {data, error} = await res.json()
             
@@ -105,7 +101,7 @@ const useCadastrarProduto = ({produtos, categorias}:{produtos:Product[],categori
     
     const changeTitle = (value:string) => {
         try {
-            const payload = value
+            const payload = value.slice(0,49)
             setProduto({...produto, title: payload})
         } catch (error:any) {
             console.log(error.message)

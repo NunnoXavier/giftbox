@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { putProduto, updateProduto } from '@/db/produtos'
-import { ProductDTO } from '@/types/types'
+import { Product } from '@/types/types'
 
 export const PUT = async (request:NextRequest) => {    
     try {
         const body = await request.json()
-        const produto:ProductDTO = { ...body }
+        const produto:Product = { ...body }
     
         const { data, error } = await putProduto(produto)
 
@@ -21,7 +21,7 @@ export const PUT = async (request:NextRequest) => {
 export const POST = async (request:NextRequest) => {    
     try {
         const body = await request.json()
-        const produto:ProductDTO = { ...body }
+        const produto:Product = { ...body }
     
         const { data, error } = await updateProduto(produto)
 

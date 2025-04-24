@@ -26,8 +26,12 @@ const AdicionarSacola = ({itemSacola}:{itemSacola:ProductCart}) => {
     const adicionarSacola = async () => {
         const novoItem:ProductCart = {
             id: itemSacola.id,
+            title: itemSacola.title || "",
             idProduct: itemSacola.idProduct,
-            qtde: Number(qtde)
+            qtde: Number(qtde),
+            price: itemSacola.price,
+            discountPercentage: itemSacola.discountPercentage,
+            thumbnail: itemSacola.thumbnail
         }
         
         const result = await additem(novoItem)
@@ -37,7 +41,7 @@ const AdicionarSacola = ({itemSacola}:{itemSacola:ProductCart}) => {
     }
 
     return (
-        <div className="flex gap-2">
+        <div className="bg-white flex gap-2">
             <input 
                 className=" bg-gray-100 outline-0 px-2 text-center appearance-none caret-violet-400 text-violet-400 focus:border focus:border-violet-400 w-14 h-14 rounded-lg" 
                 type="number"

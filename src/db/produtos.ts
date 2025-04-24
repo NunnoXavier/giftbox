@@ -30,6 +30,25 @@ export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
     }
 }
 
+export const getCamposProdutos = async ( {campos}:{campos:string[]} ):Promise<Result> => {
+    try {
+        const sql = `select ${ campos.join(',') } from products`
+        
+        const res = await query(sql)
+        const rows = res.rows
+    
+        const products:ProductDTO[] = rows.map((row) => {
+            return {
+                ...row
+            }
+        })
+    
+        return { data: products, error: null }        
+    } catch (error:any) {
+        return {data: null, error: error.message}
+    }
+}
+
 type ResultId = {data:|number|null, error: |string|null}
 export const putProduto = async (novoProduto: Product):Promise<ResultId> => {
     try {
@@ -163,6 +182,16 @@ export const putImage = async (url:string, idProduct:number):Promise<ResultId> =
         `)
         
         const id = res.rows[0].id
+        return { data:id, error:null }
+    } catch (error:any) {
+        return { data:null, error:error.message }
+    }
+}
+
+export const removeImage = async ({id}:{id:number}):Promise<ResultId> => {
+    try {
+        const res = await query(`delete from images where id = ${id.toString()}`)
+        
         return { data:id, error:null }
     } catch (error:any) {
         return { data:null, error:error.message }

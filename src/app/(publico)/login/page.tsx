@@ -23,7 +23,7 @@ const Login = () => {
             })
 
             if(res.status === 200){ 
-                router.push("/")
+                router.push("/dashboard")                            
             }else{
                 const data = await res.json()
                 setMensagem(data.error)    
@@ -36,7 +36,7 @@ const Login = () => {
     }
 
     return (
-        <div className="place-center m-auto max-w-96 ">
+        <div className="bg-white border border-gray-200 rounded-lg p-2 place-center m-auto max-w-96 ">
             <h1 className="text-xl text-center font-bold text-gray-700 m-4">Login</h1>
 
             <div className={`grid grid-cols-12 gap-4 m-2 p-2 max-w-96 mx-auto`}>
@@ -44,7 +44,7 @@ const Login = () => {
                     <input
                         placeholder="email. ex: joaodasilva@giftbox.com" 
                         type="email" id="email" 
-                        className="w-full bg-gray-100 focus:border border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                        className="w-full border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
                         value={email}
                         onChange={(e) => setEmail(e.currentTarget.value)}
                     />
@@ -53,7 +53,7 @@ const Login = () => {
                     <input
                         placeholder="senha"  
                         type="password" id="senha" 
-                        className="w-full bg-gray-100 focus:border border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                        className="w-full border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
                         value={senha}
                         onChange={(e) => setSenha(e.currentTarget.value)}                            
                     />

@@ -12,18 +12,17 @@ export const POST = async (request:NextRequest) => {
 
     const {data:users, error} = await getUsuarios({campo:'email', valor: email })
     if(!users){
-        return NextResponse.json({ data: null, error: "email não encontrado" },{status: 401})
+        return NextResponse.json({ data: null, error: error },{status: 401})
 
     }
 
     const user:User = users[0]
-    console.log(user)
     
     if(!user){
         return NextResponse.json({error: "email não encontrado" },{status: 401})
     }
 
-    if(!bcrypt.compareSync(password, user.password)){
+    if(!bcrypt.compareSync(password, user.password || "")){
         return NextResponse.json({error: "senha incorreta" },{status: 401}) 
     }
     

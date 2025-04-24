@@ -1,6 +1,5 @@
 import { getImages, getProdutos, getReviews, getTags } from "@/db/produtos";
 import { getCategorias } from "@/db/secoes";
-import { Category, ImageDTO, Product, ProductDTO, Review, ReviewDTO, Tag, TagDTO, Image } from "@/types/types";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -51,10 +50,10 @@ export const GET = async (request: NextRequest,{ params }: {params: Promise<{ id
                     depth: p.depth  || 0
                 },
                 meta: {
-                    createdAt: p.createdAt  || new Date("1900-01-01"), 
-                    updatedAt: p.updatedAt  || new Date("1900-01-01"),
+                    createdAt: p.createdat  || new Date("1900-01-01"), 
+                    updatedAt: p.updatedat  || new Date("1900-01-01"),
                     barcode: p.barcode,
-                    qrCode: p.qrCode
+                    qrCode: p.qrcode
                 },                
                 images: images,
             } 

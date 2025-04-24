@@ -65,14 +65,16 @@ export function middleware(request: NextRequest){
     if(!rotaPublica && !authToken){
         const redirecionarUrl = request.nextUrl.clone()
         redirecionarUrl.pathname = REDIRECIONAR_QUANDO_NAO_AUTENTICADO
-
+        console.log('middleware: usuario nao autenticado tentando acessar rota privada')
+        
         return NextResponse.redirect(redirecionarUrl)
     }
     
     if(rotaPublica && authToken && rotaPublica.quandoAutenticado === 'redirecionar'){
+        console.log('middleware: usuario autenticado tentando acessar rota de autenticacao')
         const redirecionarUrl = request.nextUrl.clone()
         redirecionarUrl.pathname = '/'
-    
+        
         return NextResponse.redirect(redirecionarUrl)
         
     }
@@ -84,6 +86,7 @@ export function middleware(request: NextRequest){
         if( exp && exp > agora){
             return NextResponse.next()
         }else{
+            console.log('middleware: token vencido')
             const redirecionarUrl = request.nextUrl.clone()
             redirecionarUrl.pathname = REDIRECIONAR_QUANDO_NAO_AUTENTICADO        
             return NextResponse.redirect(redirecionarUrl)            

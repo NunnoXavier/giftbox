@@ -13,11 +13,15 @@ const criarTabelas = async () => {
                 username varchar(100),
                 password varchar(100),
                 address varchar(200),
+                obs     varchar(200),
                 city varchar(50),
                 state varchar(3),
                 postalCode varchar(9),
                 cardExpire varchar(5),
                 cardNumber varchar(20),
+                cardHolderName varchar(100),
+                cardHolderDoc varchar(20),
+                cardcvv numeric(3) default 0,
                 role varchar(20),
                 PRIMARY KEY (id)
             )
@@ -109,30 +113,56 @@ const criarTabelas = async () => {
         
         await query(`
             CREATE TABLE if not EXISTS order_products(
+                id BIGSERIAL,
                 idorder BIGINT default 0,
                 idproduct INT default 0,
-                qtd INT default 0,
+                qtde INT default 0,
                 title varchar(50),
+                thumbnail varchar(999), 
                 price NUMERIC(12,2) default 0,
                 discountPercentage NUMERIC(12,2) default 0,
-                FOREIGN KEY(idorder) REFERENCES orders(id) ON DELETE CASCADE,
-                FOREIGN KEY(idproduct) REFERENCES products(id) ON DELETE CASCADE
+                PRIMARY KEY (id),
+                FOREIGN KEY(idorder) REFERENCES orders(id) ON DELETE CASCADE
             )
         `)
         
         await query(`
             CREATE TABLE if not EXISTS order_payments(
+                id BIGSERIAL,
                 idorder BIGINT default 0,
                 date DATE,
-                duedate DATE,
+                parc INT default 0,
                 value NUMERIC(12,2) default 0,
                 discountPercentage NUMERIC(12,2) default 0,
                 paymentmethod varchar(50),
-                cardnumber varchar(20),                
+                cardExpire varchar(5),
+                cardNumber varchar(20),
+                cardHolderName varchar(100),
+                cardHolderDoc varchar(20),
+                cardcvv numeric(3) default 0,
+                PRIMARY KEY (id),
                 FOREIGN KEY(idorder) REFERENCES orders(id) ON DELETE CASCADE
             )
         `)
 
+        await query(`
+            CREATE TABLE if not EXISTS order_shipping(
+                id BIGSERIAL,
+                idorder BIGINT default 0,
+                date DATE,
+                daysprev INT,
+                value NUMERIC(12,2) default 0,
+                address varchar(200),
+                obs     varchar(200),
+                city varchar(50),
+                state varchar(3),
+                postalCode varchar(9),
+                receivedby varchar(50),
+                receivedAt DATE,
+                PRIMARY KEY (id),
+                FOREIGN KEY(idorder) REFERENCES orders(id) ON DELETE CASCADE
+            )
+        `)        
         
         //criando indices
         await query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_email ON users (email);`)

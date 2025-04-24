@@ -1,16 +1,30 @@
 
 import { UserRound, Gift, LogIn, UserRoundPlus, LogOut, ShoppingBag } from 'lucide-react'
-import { headers } from 'next/headers'
+import { headers, cookies } from 'next/headers'
 import Link from 'next/link'
 import BuscarProduto from '../BuscarProduto/BuscarProduto'
 import MenuItem from './MenuItem'
 import Hamburger from './Hamburger'
 import AlertaSacola from './AlertaSacola'
-
+import Submenu from './Submenu'
+import { User } from '@/types/types'
+import { token as verificarToken } from './autenticar'
+ 
 export default async function Menu({ className }: { className?: string }){
   const headerList = await headers()
   const host = headerList.get('x-forwarded-host')
   const proto = headerList.get('x-forwarded-proto')
+  const cookieStory = await cookies()
+  const token = cookieStory.get("SIGIFTBOX_AUTH_TOKEN")
+  
+  await verificarToken()
+  
+  const res = await fetch('http://localhost:3000/api/usuarios', {
+    method: 'GET',
+    headers: { Cookie: `SIGIFTBOX_AUTH_TOKEN=${token?.value}` },
+  })
+  const { data:usuario }:{ data:User } = await res.json()
+
 
   return (
     
@@ -33,11 +47,11 @@ export default async function Menu({ className }: { className?: string }){
 
       {/* menu tela grande */}
       <div className={`hidden md:block`}>
-        <ul className="w-full flex justify-evenly items-center">
+        <ul className="w-full flex justify-evenly items-end text-gray-700 relative pb-4">
           <li>
             <Link href={ proto+'://'+host }>
               <img 
-                className='w-36'
+                className='w-36 absolute -top-2'
                 src="/texto-sigiftbox.svg"
                 alt="Logo"
               />
@@ -48,74 +62,57 @@ export default async function Menu({ className }: { className?: string }){
           </li>
           <li>
             <div className='inline-flex flex-row justify-end w-full'>
-              <MenuItem href="/conta" label='perfil'>
-                <UserRound size={25}/>            
-              </MenuItem>
-              <MenuItem href="/cadastrar" label='Criar Conta'>
-                <UserRoundPlus size={25}/>
-              </MenuItem>
-              <MenuItem href="/pedidos" label='pedidos'>
-                <Gift size={25} />
-              </MenuItem>
-              <MenuItem className="relative" href="/sacola" label='sacola'>
-                <AlertaSacola className="-top-1 translate-x-2"/>
-                <ShoppingBag className="z-1" size={25} />
-              </MenuItem>        
-              <MenuItem href="/login" label='Login'>
-                <LogIn size={25}/>
-              </MenuItem>
-              <MenuItem href="/api/usuarios/logout" label='Sair'>
-                <LogOut size={25}/>
-              </MenuItem>
+              {
+                usuario? (
+                  <>
+                    <MenuItem href="/dashboard" className='flex w-max px-2 justify-end'>
+                      <h1 className='whitespace-nowrap text-xs'>{`Olá, ${usuario.firstName}`}</h1>
+                      <h1 className='whitespace-nowrap '>Sua Página</h1>
+                    </MenuItem>
+                    <div className='flex'>
+                      <MenuItem href="/conta" label='perfil'>
+                        <UserRound size={25}/>            
+                      </MenuItem>
+                      <MenuItem href="/pedidos" label='pedidos'>
+                        <Gift size={25} />
+                      </MenuItem>
+                      <MenuItem className="relative" href="/sacola" label='sacola'>
+                        <AlertaSacola className="-top-1 translate-x-2"/>
+                        <ShoppingBag className="z-1" size={25} />
+                      </MenuItem>
+                      <MenuItem  href="/api/usuarios/logout" label='Sair'>
+                        <LogOut size={25}/>
+                      </MenuItem>
+
+                    </div>
+                  </>
+                ):
+                (
+                  <>
+                    <MenuItem href="/cadastrar" label='Criar Conta'>
+                      <UserRoundPlus size={25}/>
+                    </MenuItem>
+                    <MenuItem className="relative" href="/sacola" label='sacola'>
+                      <AlertaSacola className="-top-1 translate-x-2"/>
+                      <ShoppingBag className="z-1" size={25} />
+                    </MenuItem>        
+                    <MenuItem href="/login" label='Login'>
+                      <LogIn size={25}/>
+                    </MenuItem>
+                  </>
+                )
+              }
             </div>
           </li>
         </ul>
 
-        <ul className='flex gap-24 justify-center items-center'>
-          <li className='group'>        
-            <a href="#" className=' hover:text-zinc-200'><strong>OCASIÕES</strong></a>
-            <ul className=' p-2 bg-neutral-100 bg-opacity-50 invisible absolute group-hover:visible hover:visible'>
-              <li>
-                <a href="#" className='  hover:text-zinc-200'><strong>ANIVERSÀRIO</strong></a>
-              </li>
-              <li>
-                <a href="#" className='  hover:text-zinc-200'><strong>MATERNIDADE</strong></a>
-              </li>
-              <li>
-                <a href="#" className='  hover:text-zinc-200'><strong>BOAS VINDAS</strong></a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href="#" className='  hover:text-zinc-200'><strong>GIFT BOX</strong></a>
-          </li>
-          <li className='group'>
-            <a href="#" className='  hover:text-zinc-200'><strong>DATAS COMEMORATIVAS</strong></a>
-            <ul className=' p-2 bg-neutral-100 bg-opacity-50 invisible absolute group-hover:visible hover:visible'>
-              <li>
-                <a href="#" className='  hover:text-zinc-200'><strong>DIA DAS MÃES</strong></a>
-              </li>
-              <li>
-                <a href="#" className='  hover:text-zinc-200'><strong>DIA DOS PAIS</strong></a>
-              </li>
-              <li>
-                <a href="#" className='  hover:text-zinc-200'><strong>DIA DOS NAMORADOS</strong></a>
-              </li>
-              <li>
-                <a href="#" className='  hover:text-zinc-200'><strong>NATAL</strong></a>
-              </li>
-            </ul>              
-          </li>
-          <li>
-            <a href="#" className='  hover:text-zinc-200'><strong>SOBRE</strong></a>
-          </li>
-          <li>
-            <a href="#" className='  hover:text-zinc-200'><strong>FALE CONOSCO</strong></a>
-          </li>
-        </ul>
+        <Submenu />
+
       </div>
       {/*  */}
     </div>
 
   )
 }
+
+

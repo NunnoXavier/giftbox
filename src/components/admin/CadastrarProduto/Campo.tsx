@@ -1,55 +1,58 @@
-'use client'
-
 import { ChangeEvent, ReactNode } from "react"
 
 type CampoProps = {
+    name: string,
     className?:string, 
-    value?:string, 
-    changeFunction?: (e:string) => void, 
     type?: |'number'|'text'|'date'|'fone'|'password'|'file'
     inputType: |'input'|'textarea', 
     label?:string,
     children?: ReactNode,
     classWidth?:string,
-    readOnly?: boolean
+    readOnly?: boolean,
+    value?: string,
+    step?: string
+    onChange?: (e:ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const Campo = ({
+    name,
     className, 
-    value, 
-    changeFunction, 
     inputType, 
     label, 
     type, 
-    children, 
     classWidth,
-    readOnly
+    readOnly,
+    value,
+    step,
+    onChange
 }:CampoProps) => {
  return (
-    <div className={`${className} flex gap-2`}>
+    <div className={`${className} bg-white flex gap-2`}>
         <label className="w-30 text-right text-gray-500">{label}</label>
         {
             inputType === "input"?
             (
                 <input 
-                    type={type} 
+                    name={name}
+                    type={type}
                     className={`${classWidth} border border-gray-200 rounded px-2`}
-                    value={value}
-                    onChange={(e) => changeFunction&& changeFunction(e.currentTarget.value)}
                     readOnly={readOnly}
-                />
-            ):
-            (
-                <textarea rows={4}
+                    step={step}
+                    value={value}
+                    onChange={onChange}
+                    />
+                ):
+                (
+                    <textarea rows={4}
+                    name={name}
                     className="flex-1 border border-gray-200 rounded px-2"
-                    value={value}
-                    onChange={(e) => changeFunction && changeFunction(e.currentTarget.value)}
                     readOnly={readOnly}
-                />                
+                    value={value}
+                    onChange={onChange}
+                    />                
             )
             
         }
-        {children}
     </div>    
  )    
 }

@@ -1,9 +1,9 @@
 'use client'
 
 import { User } from '@/types/types'
-import { LoaderCircle, SeparatorVerticalIcon } from 'lucide-react'
+import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 
 const Cadastrar = () => {
@@ -86,7 +86,7 @@ const Cadastrar = () => {
     }
 
     return (
-        <div className="text-center">
+        <div className="bg-white border border-gray-200 rounded-lg p-2 text-center place-center m-auto max-w-96">
             <h1 className="text-xl text-gray-700 m-2 font-bold">CADASTRO</h1>
 
             <div>
@@ -95,7 +95,7 @@ const Cadastrar = () => {
                         <input
                             placeholder="email. ex: joaodasilva@giftbox.com" 
                             type="email" id="email"
-                            className="w-full bg-gray-100 focus:border border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                            className="w-full  border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
                             value={email}
                             onChange={(e) => setEmail(e.currentTarget.value)}
                         />
@@ -104,7 +104,7 @@ const Cadastrar = () => {
                         <input
                             placeholder="senha. escolha uma senha com ao menos 6 digitos"  
                             type="password" id="senha" 
-                            className="w-full bg-gray-100 focus:border border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                            className="w-full border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
                             value={senha}
                             onChange={(e) => setSenha(e.currentTarget.value)}                            
                         />
@@ -124,7 +124,7 @@ const Cadastrar = () => {
                     <div className="col-span-12">                    
                         <input
                             placeholder="nome. ex: João"  
-                            className="w-full bg-gray-100 focus:border border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                            className="w-full border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
                             type="text" id="nome"
                             value={nome}
                             onChange={(e) => setNome(e.currentTarget.value)} 
@@ -134,7 +134,7 @@ const Cadastrar = () => {
                         <input
                             placeholder="sobrenome. ex: da Silva"  
                             type="text" id="sobrenome" 
-                            className="w-full bg-gray-100 focus:border border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                            className="w-full border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
                             value={sobrenome}
                             onChange={(e) => setSobrenome(e.currentTarget.value)}
                         />

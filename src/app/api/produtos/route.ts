@@ -1,6 +1,6 @@
 import { getImages, getProdutos, getReviews, getTags } from "@/db/produtos";
 import { getCategorias } from "@/db/secoes";
-import { Category, ImageDTO, Product, ProductDTO, Review, ReviewDTO, Tag, TagDTO, Image } from "@/types/types";
+import { Product } from "@/types/types";
 import { Description } from "@mui/icons-material";
 import { NextRequest, NextResponse } from "next/server";
 import { describe } from "node:test";

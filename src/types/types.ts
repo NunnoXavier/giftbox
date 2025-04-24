@@ -1,3 +1,4 @@
+import Produto from '@/components/Produto/Produto';
 import { JwtPayload } from 'jwt-decode'
 
 export interface AuthTokenPayload extends JwtPayload {
@@ -7,20 +8,24 @@ export interface AuthTokenPayload extends JwtPayload {
 }
 
 export interface User {
-    id?:         number;
-    firstName?:  string;
-    lastName?:   string;
-    email:      string;
-    phone?:      string;
-    username?:   string;
-    password:   string;
-    address?:    string;
-    city?:       string;
-    state?:      string;
-    postalCode?: string;
-    cardExpire?: string;
-    cardNumber?: string;
-    role:        |'admin' | 'client';
+    id?:             number;
+    firstName?:      string;
+    lastName?:       string;
+    email:           string;
+    phone?:          string;
+    username?:       string;
+    password?:       string;
+    address?:        string;
+    obs?:            string;
+    city?:           string;
+    state?:          string;
+    postalCode?:     string;
+    cardExpire?:     string;
+    cardNumber?:     string;
+    cardHolderName?: string;
+    cardHolderDoc?:  string;
+    cardCvv?:        number;
+    role:           |'admin' | 'client';
 }
 
 export interface Category {
@@ -135,213 +140,226 @@ export interface ImageDTO{
 
 export interface ProductCart {
     id: number;
+    title: string;
     idProduct: number;
     qtde: number;
+    price?: number;
+    discountPercentage?: number;
+    thumbnail?: string;
 }
 
-export class Convert {
-    public static toProduct(json: string): Product {
-        return cast(JSON.parse(json), r("Product"));
-    }
-
-    public static ProductToJson(value: Product): string {
-        return JSON.stringify(uncast(value, r("Product")), null, 2);
-    }
+export interface Order {
+    id?: number;
+    idUser?: number;
+    date?: Date;
+    dtprev?: Date;
+    products?: OrderProduct[];
+    payment?: OrderPayment;
+    shipping?: OrderShipping;
+    status?: |'pending'|'paid'|'sent'|'received'|'canceled'; 
 }
 
-function invalidValue(typ: any, val: any, key: any, parent: any = ''): never {
-    const prettyTyp = prettyTypeName(typ);
-    const parentText = parent ? ` on ${parent}` : '';
-    const keyText = key ? ` for key "${key}"` : '';
-    throw Error(`Invalid value${keyText}${parentText}. Expected ${prettyTyp} but got ${JSON.stringify(val)}`);
+export interface OrderDTO {
+    id?: number;
+    iduser?: number;
+    date?: Date;
+    dtprev?: Date;
+    status?: |'pending'|'paid'|'sent'|'received'|'canceled'; 
 }
 
-function prettyTypeName(typ: any): string {
-    if (Array.isArray(typ)) {
-        if (typ.length === 2 && typ[0] === undefined) {
-            return `an optional ${prettyTypeName(typ[1])}`;
-        } else {
-            return `one of [${typ.map(a => { return prettyTypeName(a); }).join(", ")}]`;
+export interface OrderProduct {
+    idProduct: number;
+    qtde: number;
+    title: string;
+    thumbnail?: string;
+    price: number;
+    discountPercentage?: number;
+}
+
+export interface OrderProductDTO {
+    idproduct: number;
+    qtde: number;
+    title: string;
+    thumbnail?: string;
+    price: number;
+    discountpercentage?: number;
+}
+
+export interface OrderPayment {
+    date?: Date;
+    parc?: number;
+    value?: number;
+    discountPercentage?: number;
+    paymentMethod?: string;
+    cardExpire?: string,
+    cardNumber?: string;
+    cardHolderName?: string;
+    cardHolderDoc?: string;
+    cardCvv?: number;
+}
+
+export interface OrderPaymentDTO {
+    date?: Date;
+    parc?: number;
+    value?: number;
+    discountpercentage?: number;
+    paymentmethod?: string;
+    cardexpire?: string,
+    cardnumber?: string;
+    cardholdername?: string;
+    cardholderdoc?: string;
+    cardcvv?: number;
+}
+
+export interface OrderShipping {
+    date?: Date;
+    daysprev?: number;
+    value?: number;
+    address?: string;
+    obs?: string;
+    city?: string;
+    state?: string
+    postalCode?: string;
+    receivedBy?: string;
+    receivedAt?: Date;
+}
+export interface OrderShippingDTO {
+    date?: Date;
+    daysprev?: number;
+    value?: number;
+    address?: string;
+    obs?: string;
+    city?: string;
+    state?: string
+    postalcode?: string;
+    receivedby?: string;
+    receivedat?: Date;
+}
+
+export const Convert = {
+    toProductDTO: (product:Product):ProductDTO => {
+        return {
+            id: product.id || 0,
+            idcategory: product.category?.id || 0,
+            availabilitystatus: product.availabilityStatus || "",
+            barcode: product.meta?.barcode || "",
+            brand: product.brand || "",
+            createdat: product.meta?.createdAt || undefined,
+            depth: product.dimensions?.depth || 0,
+            description: product.description || "",
+            discountpercentage: product.discountPercentage || 0,
+            height: product.dimensions?.height || 0,
+            minimumorderquantity: product.minimumOrderQuantity || 0,
+            price: product.price || 0,
+            qrcode: product.meta?.qrCode || "",
+            rating: product.rating || 0,
+            returnpolicy: product.returnPolicy || "",
+            shippinginformation: product.shippingInformation || "",
+            sku: product.sku || "",
+            stock: product.stock || 0,
+            thumbnail: product.thumbnail || "",
+            title: product.title || "",
+            updatedat: product.meta?.updatedAt || undefined,
+            warrantyinformation: product.warrantyInformation || "",
+            weight: product.weight || 0,
+            width: product.dimensions?.width
         }
-    } else if (typeof typ === "object" && typ.literal !== undefined) {
-        return typ.literal;
-    } else {
-        return typeof typ;
-    }
-}
-
-function jsonToJSProps(typ: any): any {
-    if (typ.jsonToJS === undefined) {
-        const map: any = {};
-        typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
-        typ.jsonToJS = map;
-    }
-    return typ.jsonToJS;
-}
-
-function jsToJSONProps(typ: any): any {
-    if (typ.jsToJSON === undefined) {
-        const map: any = {};
-        typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
-        typ.jsToJSON = map;
-    }
-    return typ.jsToJSON;
-}
-
-function transform(val: any, typ: any, getProps: any, key: any = '', parent: any = ''): any {
-    function transformPrimitive(typ: string, val: any): any {
-        if (typeof typ === typeof val) return val;
-        return invalidValue(typ, val, key, parent);
-    }
-
-    function transformUnion(typs: any[], val: any): any {
-        // val must validate against one typ in typs
-        const l = typs.length;
-        for (let i = 0; i < l; i++) {
-            const typ = typs[i];
-            try {
-                return transform(val, typ, getProps);
-            } catch (_) {}
+    },
+    toProduct: (productDTO:ProductDTO):Product => {
+        return {
+            id: productDTO.id || 0,
+            availabilityStatus: productDTO.availabilitystatus || "",
+            brand: productDTO.brand || "",
+            category: {
+                description: "",
+                id: productDTO.idcategory
+            },
+            description: productDTO.description || "",
+            dimensions: {
+                depth: productDTO.depth || 0,
+                height: productDTO.height || 0,
+                width: productDTO.width || 0,                            
+            },
+            discountPercentage: productDTO.discountpercentage || 0,
+            images: [],
+            meta:{
+                barcode: productDTO.barcode || "",
+                createdAt: productDTO.createdat || undefined,
+                qrCode: productDTO.qrcode || "",
+                updatedAt: productDTO.updatedat || undefined,                
+            },
+            minimumOrderQuantity: productDTO.minimumorderquantity || 0,
+            price: productDTO.price || 0,
+            rating: productDTO.rating || 0,
+            returnPolicy: productDTO.returnpolicy || "",
+            reviews: [],
+            shippingInformation: productDTO.shippinginformation || "",
+            sku: productDTO.sku || "",
+            stock: productDTO.stock || 0,
+            tags: [],
+            thumbnail: productDTO.thumbnail || "",
+            title: productDTO.title || "",
+            warrantyInformation: productDTO.warrantyinformation || "",
+            weight: productDTO.weight || 0,            
         }
-        return invalidValue(typs, val, key, parent);
-    }
-
-    function transformEnum(cases: string[], val: any): any {
-        if (cases.indexOf(val) !== -1) return val;
-        return invalidValue(cases.map(a => { return l(a); }), val, key, parent);
-    }
-
-    function transformArray(typ: any, val: any): any {
-        // val must be an array with no invalid elements
-        if (!Array.isArray(val)) return invalidValue(l("array"), val, key, parent);
-        return val.map(el => transform(el, typ, getProps));
-    }
-
-    function transformDate(val: any): any {
-        if (val === null) {
-            return null;
+    },
+    toOrderDtO: (order:Order):OrderDTO => {
+        return {
+            id: order.id || 0,
+            date: order.date || undefined,
+            dtprev: order.dtprev || undefined,
+            iduser: order.idUser || 0,
+            status: order.status || 'pending',            
         }
-        const d = new Date(val);
-        if (isNaN(d.valueOf())) {
-            return invalidValue(l("Date"), val, key, parent);
+    },
+    toOrder: (orderDTO:OrderDTO):Order => {
+        return {
+            id: orderDTO.id || 0,
+            date: orderDTO.date || undefined,
+            dtprev: orderDTO.dtprev || undefined,
+            idUser: orderDTO.iduser || 0,
+            payment: undefined,
+            products: [],
+            shipping: undefined,
+            status: orderDTO.status || 'pending'
         }
-        return d;
-    }
-
-    function transformObject(props: { [k: string]: any }, additional: any, val: any): any {
-        if (val === null || typeof val !== "object" || Array.isArray(val)) {
-            return invalidValue(l(ref || "object"), val, key, parent);
+    },
+    toOrderProduct: (orderProductDTO:OrderProductDTO):OrderProduct => {
+        return {
+            idProduct: orderProductDTO.idproduct || 0,
+            price: orderProductDTO.price || 0,
+            qtde: orderProductDTO.qtde || 0,
+            title: orderProductDTO.title || "",
+            discountPercentage: orderProductDTO.discountpercentage || 0,
+            thumbnail: orderProductDTO.thumbnail || "",            
         }
-        const result: any = {};
-        Object.getOwnPropertyNames(props).forEach(key => {
-            const prop = props[key];
-            const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
-            result[prop.key] = transform(v, prop.typ, getProps, key, ref);
-        });
-        Object.getOwnPropertyNames(val).forEach(key => {
-            if (!Object.prototype.hasOwnProperty.call(props, key)) {
-                result[key] = transform(val[key], additional, getProps, key, ref);
-            }
-        });
-        return result;
+    },
+    toOrderPayment: (orderPaymentDTO: OrderPaymentDTO):OrderPayment => {
+        return {
+            date: orderPaymentDTO.date || undefined,
+            cardCvv: orderPaymentDTO.cardcvv || 0,
+            cardExpire: orderPaymentDTO.cardexpire || "",
+            cardHolderDoc: orderPaymentDTO.cardholderdoc || "",
+            cardHolderName: orderPaymentDTO.cardholdername || "",
+            cardNumber: orderPaymentDTO.cardnumber || "",
+            discountPercentage: orderPaymentDTO.discountpercentage || 0,
+            parc: orderPaymentDTO.parc || 0,
+            paymentMethod: orderPaymentDTO.paymentmethod || "",
+            value: orderPaymentDTO.value || 0,
+        }
+    },
+    toOrderShipping: (orderShipptingDTO:OrderShippingDTO):OrderShipping => {
+        return {
+            address: orderShipptingDTO.address || "",
+            city: orderShipptingDTO.city || "",
+            date: orderShipptingDTO.date || undefined,
+            daysprev: orderShipptingDTO.daysprev || 0,
+            obs: orderShipptingDTO.obs || "",
+            postalCode: orderShipptingDTO.postalcode || "",
+            receivedAt: orderShipptingDTO.receivedat || undefined,
+            receivedBy: orderShipptingDTO.receivedby || "",
+            state: orderShipptingDTO.state || "",
+            value: orderShipptingDTO.value || 0,            
+        }
     }
-
-    if (typ === "any") return val;
-    if (typ === null) {
-        if (val === null) return val;
-        return invalidValue(typ, val, key, parent);
-    }
-    if (typ === false) return invalidValue(typ, val, key, parent);
-    let ref: any = undefined;
-    while (typeof typ === "object" && typ.ref !== undefined) {
-        ref = typ.ref;
-        typ = typeMap[typ.ref];
-    }
-    if (Array.isArray(typ)) return transformEnum(typ, val);
-    if (typeof typ === "object") {
-        return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
-            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
-            : invalidValue(typ, val, key, parent);
-    }
-    // Numbers can be parsed by Date but shouldn't be.
-    if (typ === Date && typeof val !== "number") return transformDate(val);
-    return transformPrimitive(typ, val);
 }
-
-function cast<T>(val: any, typ: any): T {
-    return transform(val, typ, jsonToJSProps);
-}
-
-function uncast<T>(val: T, typ: any): any {
-    return transform(val, typ, jsToJSONProps);
-}
-
-function l(typ: any) {
-    return { literal: typ };
-}
-
-function a(typ: any) {
-    return { arrayItems: typ };
-}
-
-function u(...typs: any[]) {
-    return { unionMembers: typs };
-}
-
-function o(props: any[], additional: any) {
-    return { props, additional };
-}
-
-function m(additional: any) {
-    return { props: [], additional };
-}
-
-function r(name: string) {
-    return { ref: name };
-}
-
-const typeMap: any = {
-    "Product": o([
-        { json: "id", js: "id", typ: 0 },
-        { json: "title", js: "title", typ: "" },
-        { json: "description", js: "description", typ: "" },
-        { json: "category", js: "category", typ: "" },
-        { json: "price", js: "price", typ: 3.14 },
-        { json: "discountPercentage", js: "discountPercentage", typ: 3.14 },
-        { json: "rating", js: "rating", typ: 3.14 },
-        { json: "stock", js: "stock", typ: 0 },
-        { json: "tags", js: "tags", typ: a("") },
-        { json: "brand", js: "brand", typ: "" },
-        { json: "sku", js: "sku", typ: "" },
-        { json: "weight", js: "weight", typ: 0 },
-        { json: "dimensions", js: "dimensions", typ: r("Dimensions") },
-        { json: "warrantyInformation", js: "warrantyInformation", typ: "" },
-        { json: "shippingInformation", js: "shippingInformation", typ: "" },
-        { json: "availabilityStatus", js: "availabilityStatus", typ: "" },
-        { json: "reviews", js: "reviews", typ: a(r("Review")) },
-        { json: "returnPolicy", js: "returnPolicy", typ: "" },
-        { json: "minimumOrderQuantity", js: "minimumOrderQuantity", typ: 0 },
-        { json: "meta", js: "meta", typ: r("Meta") },
-        { json: "images", js: "images", typ: a("") },
-        { json: "thumbnail", js: "thumbnail", typ: "" },
-    ], false),
-    "Dimensions": o([
-        { json: "width", js: "width", typ: 3.14 },
-        { json: "height", js: "height", typ: 3.14 },
-        { json: "depth", js: "depth", typ: 3.14 },
-    ], false),
-    "Meta": o([
-        { json: "createdAt", js: "createdAt", typ: Date },
-        { json: "updatedAt", js: "updatedAt", typ: Date },
-        { json: "barcode", js: "barcode", typ: "" },
-        { json: "qrCode", js: "qrCode", typ: "" },
-    ], false),
-    "Review": o([
-        { json: "rating", js: "rating", typ: 0 },
-        { json: "comment", js: "comment", typ: "" },
-        { json: "date", js: "date", typ: Date },
-        { json: "reviewerName", js: "reviewerName", typ: "" },
-        { json: "reviewerEmail", js: "reviewerEmail", typ: "" },
-    ], false),
-};
