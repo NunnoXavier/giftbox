@@ -23,7 +23,7 @@ const Login = () => {
             })
 
             if(res.status === 200){ 
-                router.push("/dashboard")                            
+                router.push("/dashboard")
             }else{
                 const data = await res.json()
                 setMensagem(data.error)    

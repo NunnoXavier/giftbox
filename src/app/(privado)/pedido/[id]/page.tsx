@@ -37,7 +37,7 @@ const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
         }
     }    
 
-    const valorParc = (data.payment?.value || 0) / (data.payment?.parc || 1)
+    const valorParc = (data.payment?.value || 0) - ( data.payment?.discountPercentage || 0 ) / (data.payment?.parc || 1)
 
     return (
         <form action={pagar} className="flex flex-col gap-4 items-center">

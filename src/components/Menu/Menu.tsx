@@ -40,7 +40,7 @@ export default async function Menu({ className }: { className?: string }){
             alt="Logo"
           />
         </Link>  
-        <Hamburger />
+        <Hamburger usuario={usuario} />
       </div>
       {/* */}
 

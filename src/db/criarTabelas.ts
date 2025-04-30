@@ -38,8 +38,8 @@ const criarTabelas = async () => {
         await query(`
             CREATE TABLE if not EXISTS products(
                 id SERIAL,        
-                title varchar(50),
-                description varchar(200),
+                title varchar(255),
+                description varchar(255),
                 idcategory INT default 0,
                 price NUMERIC(12,2) default 0,
                 discountPercentage NUMERIC(12,2) default 0,
@@ -117,7 +117,7 @@ const criarTabelas = async () => {
                 idorder BIGINT default 0,
                 idproduct INT default 0,
                 qtde INT default 0,
-                title varchar(50),
+                title varchar(255),
                 thumbnail varchar(999), 
                 price NUMERIC(12,2) default 0,
                 discountPercentage NUMERIC(12,2) default 0,

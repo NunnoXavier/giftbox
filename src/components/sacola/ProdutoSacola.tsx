@@ -23,7 +23,7 @@ const ProdutoSacola = ({ className }:QtdSacolaProps) => {
    
     return (
 
-        <div className={`${className} bg-white flex flex-col gap-2 text-sm`}>
+        <div className={`${className} bg-white flex flex-col gap-2 text-sm w-lg md:w-2xl h-150`}>
             <div className="grid grid-cols-24 gap-2 p-2 font-bold">
                 <span className="col-span-7 text-center">Produto</span>
                 <span className="col-span-4 text-center">Qtde</span>

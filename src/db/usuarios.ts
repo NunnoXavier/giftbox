@@ -50,7 +50,7 @@ export const putUsuario = async (novoUsuario: User):Promise<ResultId> => {
                     '${novoUsuario.username || ""}','${novoUsuario.password || ""}','${novoUsuario.address || ""}','${novoUsuario.city || ""}',
                     '${novoUsuario.state || ""}','${novoUsuario.postalCode || ""}', '${novoUsuario.cardExpire || ""}','${novoUsuario.cardNumber || ""}',
                     '${novoUsuario.cardHolderName || ""}','${novoUsuario.cardHolderDoc || ""}',
-                    '${novoUsuario.cardCvv || ""}','${novoUsuario.role || ""}') RETURNING id
+                    ${novoUsuario.cardCvv || 0},'${novoUsuario.role || ""}') RETURNING id
         `)
         
         const id = res.rows[0].id

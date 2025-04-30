@@ -85,7 +85,7 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
 
 
     const confirmar = async() => {
-        if(!pagto.cardNumber || pagto.cardNumber === ''){
+        if(pagto.paymentMethod === 'C' && !pagto.cardNumber || pagto.cardNumber === ''){
             alert('Você precisa informar os dados do cartão antes de confirmar o pedido.')
             return
         }

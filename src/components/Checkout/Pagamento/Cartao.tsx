@@ -104,6 +104,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
     }
 
     const alterarDadosLocais = async () => {
+        if(dataPagto?.paymentMethod !== 'C') return
         await fnAlterarDados({
             cardCvv: usuario.cardCvv,
             cardExpire: usuario.cardExpire,

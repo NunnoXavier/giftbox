@@ -11,9 +11,7 @@ export const compararPrecos = (itemSacola:ProductCart, precoCadastro: Precos):bo
     return ( itemSacola.price === precoCadastro.price && itemSacola.discountPercentage === precoCadastro.discountpercentage )
 }
 
-export const createQuerySacola = () => {
-
-    
+export const createQuerySacola = () => {    
     const fetchSacola = async():Promise<ProductCart[]> => {
         const storage = localStorage.getItem('sacola')
         const itensSacola:ProductCart[] = storage? JSON.parse(storage) : []
@@ -60,7 +58,7 @@ export const fetchAltItem = async(item:ProductCart):Promise<ProductCart> => {
 export const fetchAddItem = async(item:ProductCart):Promise<ProductCart> => {
     const storage = localStorage.getItem('sacola')
     const itensSacola:ProductCart[] = storage? JSON.parse(storage) : []
-    const novoId = itensSacola.length +1
+    const novoId = procurarIdLivre(itensSacola)
     const novoItensSacola = [ ...itensSacola, { ...item, id: novoId } ]    
     localStorage.setItem('sacola', JSON.stringify(novoItensSacola))
     return item
@@ -74,3 +72,20 @@ export const fetchRemoveItem = async(item:ProductCart):Promise<ProductCart> => {
     return item
 }
 
+
+const procurarIdLivre = (itensSacola: ProductCart[]):number => {
+    let id = 0;
+    
+    while (id < 1000) {
+        id ++
+        if( !itensSacola.map((item) => item.id).includes(id) ){
+            break
+        }
+    }
+    
+    return id
+}
+
+export const fetchRemoveAllItems = async():Promise<void> => {
+    localStorage.setItem('sacola', JSON.stringify([]))
+}

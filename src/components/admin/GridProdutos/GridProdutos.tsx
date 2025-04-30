@@ -50,14 +50,14 @@ const GridProdutos = ({produtos}:{produtos:Product[]}) => {
 
 
     return(
-        <div className=" bg-white flex flex-col justify-between w-96  h-96 border border-gray-200 rounded-md">
+        <div className=" bg-white flex flex-col justify-between w-96 h-96 border border-gray-200 rounded-md">
             <div>
                 <div className="flex flex-row font-bold text-gray-200 bg-cyan-700 pt-1 px-2 rounded-t-md">
                     <div className="w-1/10">ID</div>
                     <div className="w-5/10">Titulo</div>
                     <div className="w-4/10">Seção</div>
                 </div>
-                <div ref={linhas} className="w-95.5 h-80 overflow-scroll text-gray-600">
+                <div ref={linhas} className="w-95.5 h-max overflow-scroll text-gray-600">
                     {
                         produtos.map((produto) => (
                             <div key={produto.id} className="flex flex-row odd:bg-gray-100 px-2" 

@@ -21,7 +21,7 @@ export const token = async () => {
     const rawToken = myCookie?.value || ""
 
     const token = await verificarToken(rawToken)
-    if(myCookie && !token.id){
+    if(myCookie && (!token.id || token.id === 0)){
         redirect('http://localhost:3000/api/usuarios/logout')
     }
     return token

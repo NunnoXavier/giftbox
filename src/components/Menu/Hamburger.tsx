@@ -3,8 +3,9 @@
 import { Menu, ChevronDown, ChevronUp, UserRoundPlus, ChevronLeft, LogIn } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import AlertaSacola from './AlertaSacola'
+import { User } from '@/types/types'
 
-const Hamburger = ({className}:{className?:string}) => {
+const Hamburger = ({className, usuario}:{className?:string, usuario?:User}) => {
     const [open, setOpen] = useState(false)
     const [menuOcasioesOpen, setMenuOcasioesOpen] = useState(false)
     const [menuDatasOpen, setMenuDatasOpen] = useState(false)
@@ -50,16 +51,32 @@ const Hamburger = ({className}:{className?:string}) => {
                         src="/texto-sigiftbox.svg"
                         alt="Logo"
                     />
-                <div className="flex gap-2 mt-4 mb-2 mx-2 justify-evenly">
-                    <a href="/login" className='flex flex-1 justify-center items-center gap-2 border border-gray-500 rounded-lg px-2 py-1'>
-                        login
-                        <LogIn size={20}/>
-                    </a>                    
-                    <a href="/cadastrar" className='flex flex-1 justify-center items-center gap-2 border border-gray-500 rounded-lg px-2 py-1'>
-                        criar conta
-                        <UserRoundPlus size={20}/>
-                    </a>                    
-                </div>
+                {
+                    usuario? 
+                    (
+                        <div className="flex gap-2 mt-4 mb-2 mx-2 justify-evenly">
+                            <span className='justify-center items-center px-2 py-1'>
+                                {`Olá, ${usuario.firstName}!`}
+                            </span>                    
+                            <a href="/dashboard" className='flex justify-center items-center gap-2 px-2 py-1'>
+                                Sua página
+                            </a>                    
+                        </div>
+
+                    )
+                    :(
+                        <div className="flex gap-2 mt-4 mb-2 mx-2 justify-evenly">
+                            <a href="/login" className='flex flex-1 justify-center items-center gap-2 border border-gray-500 rounded-lg px-2 py-1'>
+                                login
+                                <LogIn size={20}/>
+                            </a>                    
+                            <a href="/cadastrar" className='flex flex-1 justify-center items-center gap-2 border border-gray-500 rounded-lg px-2 py-1'>
+                                criar conta
+                                <UserRoundPlus size={20}/>
+                            </a>                    
+                        </div>
+                    )
+                }
 
                 </div>
                 <div className='border-b border-gray-300 my-4 pb-3 pl-4'>

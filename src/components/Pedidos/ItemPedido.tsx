@@ -21,8 +21,10 @@ const ItemPedido = ({ item }:{ item:OrderProduct }) => {
                     </div>                    
                 )
             }
-            <div className="flex flex-col">
-                <span className="font-semibold text-gray-700">{item.title}</span>
+            <div className="flex flex-col flex-1">
+                <span className="font-semibold text-gray-700 text-wrap">
+                    {`${item.title.slice(0,100)}${item.title.length > 100? '...':''}`}
+                </span>
                 <span className="text-gray-700 text-sm">
                     {`Qtd: ${item.qtde} unidade${(item.qtde > 1)? 's':''}`}
                 </span>

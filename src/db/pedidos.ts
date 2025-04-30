@@ -185,7 +185,16 @@ export const getPagtoPedido = async (props?: getProps ):Promise<ResultOPays> => 
     
         const orderPayments:OrderPayment[] = rows.map((row) => {
             return {
-                ...row
+                cardCvv: row.cardcvv,
+                cardExpire: row.cardexpire,
+                cardHolderDoc: row.cardholderdoc,
+                cardHolderName: row.cardholdername,
+                cardNumber: row.cardnumber,
+                date: row.date,
+                discountPercentage: row.discountpercentage,
+                parc: row.parc,
+                paymentMethod: row.paymentmethod,
+                value: row.value
             }
         })
     
@@ -197,8 +206,8 @@ export const getPagtoPedido = async (props?: getProps ):Promise<ResultOPays> => 
 
 export const putPagtoPedido = async (pedido:number, novoPagto: OrderPayment):Promise<ResultId> => {
     try {
-        const res = await query(`insert into order_payments (idorder, date, parc, value, discountPercentage,
-                paymentmethod, cardExpire, cardNumber, cardHolderName, cardHolderDoc, cardcvv)
+        const res = await query(`insert into order_payments (idorder, date, parc, value, discountpercentage,
+                paymentmethod, cardexpire, cardnumber, cardholdername, cardholderdoc, cardcvv)
             values( ${pedido}, '${novoPagto.date?.toString()?.slice(0,10) || '1900-01-01' }', ${novoPagto.parc?.toString() || 0},
             ${novoPagto.value?.toString() || 0}, ${novoPagto.discountPercentage?.toString() || 0}, '${novoPagto.paymentMethod || "" }',
              '${novoPagto.cardExpire || "" }', '${novoPagto.cardNumber || "" }', '${novoPagto.cardHolderName || "" }', 

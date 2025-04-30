@@ -70,15 +70,20 @@ const Cadastrar = () => {
                 headers: {
                     "Content-type": "Application-json"
                 },
-                body: JSON.stringify({usuario: usuario}) 
+                body: JSON.stringify(usuario),
+                cache: "no-cache"
             })
             
-            const data = await res.json()
+            const {data, error} = await res.json()
+            if(!data){
+                throw new Error(error)
+            }
             usuario.id = data.id
     
-            router.push("/")
+            router.push("/dashboard")
             
         } catch (error:any) {
+            console.log(error.message)
             setMensagem(error.message)
         }finally{
             setLoading(false)
