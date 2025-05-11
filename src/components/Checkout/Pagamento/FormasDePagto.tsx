@@ -31,8 +31,6 @@ const FormasDePagto = () => {
         }
     })
 
-
-
     return (
         <div className="bg-white flex flex-col">
             <div className="flex gap-2">
@@ -72,7 +70,5 @@ const FormasDePagto = () => {
         </div>
     )
 }
-
-
 
 export default FormasDePagto

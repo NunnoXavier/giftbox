@@ -27,24 +27,28 @@ const ImagemProduto = ({ className, imagens }:ImagemProdutoProps) => {
         
     return (
         <div className={`${className}`}>
-            <div className=" bg-white h-96 md:h-[620px] overflow-hidden border border-gray-200 rounded-lg relative">
+            <div 
+                className=" bg-white h-96 md:h-[620px] overflow-hidden border 
+                border-gray-200 rounded-lg relative"
+            >
                 <img 
-                    className="max-h-[420px] md:max-h-[640px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2" 
+                    className="max-h-[420px] md:max-h-[640px] absolute top-1/2 -translate-y-1/2 
+                    left-1/2 -translate-x-1/2" 
                     src={imagemSelecionada} alt={'imagem'} 
                 />
             </div>
             
-            <div className="flex gap-2 justify-center w-full">
+            <div className="flex gap-2 justify-center w-full my-4">
                 {
                     listaImagens.map((imagem, index) => {
                         return(
                             <button 
                                 key={index} 
-                                className="bg-white hover:bg-gray-200 cursor-pointer"
+                                className="bg-white hover:bg-gray-200 cursor-pointer border border-gray-200 rounded-lg"
                                 onClick={() => setImagemSelecionada(imagem) }
                             >
                                 <img 
-                                    className="md:h-20 h-[60px]"
+                                    className="md:h-20 h-[60px] rounded-lg"
                                     src={imagem} alt="miniatura" 
                                 />
                             </button>

@@ -56,7 +56,7 @@ export const cpfCnpj = (value: string) => {
     return `${reais}.${cents}`;
 }
 
-export function cep(cep: string): string {
+export function maskCep(cep: string): string {
   // Remove tudo que não for número
   const numeros = cep.replace(/\D/g, '');
 

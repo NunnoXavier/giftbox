@@ -3,7 +3,6 @@ import { revalidateTag } from 'next/cache'
 import CamposProduto from './CamposProduto'
 import { fetchProdutos } from '@/cachedFetchs/fetchsProdutos'
 import { fetchSecoes } from '@/cachedFetchs/fetchsSecoes'
-import { Description } from '@mui/icons-material'
 
 const CadastrarProduto = async () => {
 

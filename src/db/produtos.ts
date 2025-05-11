@@ -1,14 +1,13 @@
 import query from "./postgres"
-import {ImageDTO, Product, ProductDTO, Review, ReviewDTO, Tag, TagDTO } from "@/types/types"
+import { Product, ProductDTO } from "@/types/types"
+import { getCategorias } from "./secoes"
+import { getReviews } from "./reviews"
+import { getImages } from "./images"
+import { getTags } from "./tags"
 
 type getProductProps = {campo?:string, valor?:any}
 
-type SetProductProps = {
-    id: number,
-    campos: [ getProductProps ]
-}
-
-type Result = {data:|ProductDTO[]|null, error: |string|null}
+type Result = {data:|Product[]|null, error: |string|null}
 
 export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
     try {
@@ -18,11 +17,61 @@ export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
         const res = await query(sql)
         const rows = res.rows
     
-        const products:ProductDTO[] = rows.map((row) => {
+        const products:Product[] = rows.map((row):Product => {
             return {
-                ...row
+                id: row.id,
+                availabilityStatus: row.availabilitystatus,
+                brand: row.brand,
+                category: {
+                    id:  row.idcategory,
+                    description: "",
+                },
+                description: row.description,
+                dimensions: {
+                    depth: row.depth,
+                    height: row.height,
+                    width: row.width,
+                },
+                discountPercentage: row.discountpercentage,
+                price: row.price,
+                images: [],
+                meta: {
+                    createdAt: row.createdat,
+                    updatedAt: row.updatedat,
+                    barcode: row.barcode,
+                    qrCode: row.qrcode,
+                },
+                rating: row.rating,
+                reviews: [],
+                sku: row.sku,
+                stock: row.stock,
+                tags: [],
+                title: row.title,
+                warrantyInformation: row.warrantyinformation,
+                weight: row.weight,
+                shippingInformation: row.shippinginformation,
+                returnPolicy: row.returnpolicy,
+                minimumOrderQuantity: row.minimumorderquantity,
+                thumbnail: row.thumbnail                   
             }
         })
+
+        for(const produto of products) {
+            const category = await getCategorias({campo: "id", valor: produto.category?.id})
+            produto.category = {
+                id: category.data?.[0].id || 0,
+                description: category.data?.[0].description || ""
+            }
+
+            const reviews = await getReviews({campo: "idproduct", valor: produto.id})
+            produto.reviews = reviews.data || []
+            
+            const images = await getImages({campo: "idproduct", valor: produto.id})
+            produto.images = images.data || []
+            
+            const tags = await getTags({campo: "idproduct", valor: produto.id})
+            produto.tags = tags.data || []
+        }
     
         return { data: products, error: null }        
     } catch (error:any) {
@@ -56,7 +105,7 @@ export const putProduto = async (novoProduto: Product):Promise<ResultId> => {
                                  rating, stock, brand, sku, weight, width, height, depth, warrantyInformation,
                                  shippingInformation, availabilityStatus, returnPolicy, minimumOrderQuantity,
                                  createdAt, updatedAt, barcode, qrCode, thumbnail )
-            values('${novoProduto.title || ''}', '${novoProduto.description ||''}', ${novoProduto.category?.id.toString()||9999}, 
+            values('${novoProduto.title || ""}', '${novoProduto.description ||""}', ${novoProduto.category?.id.toString()||9999}, 
                     ${novoProduto.price?.toString() || 0}, ${novoProduto.discountPercentage?.toString() || 0},
                     ${novoProduto.rating?.toString() || 0}, ${novoProduto.stock?.toString() || 0}, 
                    '${novoProduto.brand || ''}', '${novoProduto.sku || ''}', 
@@ -83,7 +132,7 @@ export const updateProduto = async (novoProduto: Product):Promise<ResultProduct>
         if(!novoProduto.id || novoProduto.id ===0){
             throw new Error('id não informado')
         }
-        const res = await query(`update products set 
+        await query(`update products set 
             title='${novoProduto.title || ''}', description='${novoProduto.description ||''}', 
             idcategory=${novoProduto.category?.id.toString()||9999}, price=${novoProduto.price?.toString() || 0}, 
             discountPercentage=${novoProduto.discountPercentage?.toString() || 0},
@@ -101,98 +150,15 @@ export const updateProduto = async (novoProduto: Product):Promise<ResultProduct>
             barcode='${novoProduto.meta?.barcode || ''}', qrCode='${novoProduto.meta?.qrCode || ''}', 
             thumbnail='${novoProduto.thumbnail || ''}'
             where id = ${novoProduto.id?.toString()}`)
+
+        const { data:res, error:errorRes } = await getProdutos({campo:'id', valor:novoProduto.id})
+        if(!res){
+            throw new Error(errorRes || 'erro inexperado ao obter produto')
+        }
+
+        const result = res[0]
         
-        const result = novoProduto
         return { data:result, error:null }        
-    } catch (error:any) {
-        return { data:null, error:error.message }
-    }
-}
-
-type ResultReview = {data:|ReviewDTO[]|null, error: |string|null}
-export const getReviews = async (props?: getProductProps ):Promise<ResultReview> => {
-    try {
-        const sql = !props?.campo? `select * from reviews` : 
-                            `select * from reviews where ${props?.campo} = '${props?.valor}'`
-        
-        const res = await query(sql)
-        const rows = res.rows
-    
-        const reviews:ReviewDTO[] = rows.map((row) => {
-            return {
-                ...row
-            }
-        })
-    
-        return { data:reviews, error: null }
-        
-    } catch (error:any) {
-        return { data:null, error: error.message }        
-    }
-}
-
-type ResultTag = {data:|TagDTO[]|null, error: |string|null}
-export const getTags = async (props?: getProductProps ):Promise<ResultTag> => {
-    try {
-        const sql = !props?.campo? `select * from tags` : 
-                            `select * from tags where ${props?.campo} = '${props?.valor}'`
-        
-        const res = await query(sql)
-        const rows = res.rows
-    
-        const tags:TagDTO[] = rows.map((row) => {
-            return {
-                ...row
-            }
-        })
-    
-        return { data:tags, error: null }
-        
-    } catch (error:any) {
-        return { data:null, error: error.message }        
-    }
-}
-
-type ResultImage = {data:|ImageDTO[]|null, error: |string|null}
-export const getImages = async (props?: getProductProps ):Promise<ResultImage> => {
-    try {
-        const sql = !props?.campo? `select * from images` : 
-                            `select * from images where ${props?.campo} = '${props?.valor}'`
-        
-        const res = await query(sql)
-        const rows = res.rows
-    
-        const images:ImageDTO[] = rows.map((row) => {
-            return {
-                ...row
-            }
-        })
-    
-        return { data:images, error: null }
-        
-    } catch (error:any) {
-        return { data:null, error: error.message }        
-    }
-}
-
-export const putImage = async (url:string, idProduct:number):Promise<ResultId> => {
-    try {
-        const res = await query(`insert into images ( url, idproduct )
-            values('${url}', ${idProduct.toString()}) RETURNING id
-        `)
-        
-        const id = res.rows[0].id
-        return { data:id, error:null }
-    } catch (error:any) {
-        return { data:null, error:error.message }
-    }
-}
-
-export const removeImage = async ({id}:{id:number}):Promise<ResultId> => {
-    try {
-        const res = await query(`delete from images where id = ${id.toString()}`)
-        
-        return { data:id, error:null }
     } catch (error:any) {
         return { data:null, error:error.message }
     }

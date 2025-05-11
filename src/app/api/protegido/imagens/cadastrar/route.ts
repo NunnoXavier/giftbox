@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { putImage } from '@/db/produtos'
-import { ImageDTO } from '@/types/types'
-import { Console } from 'console'
+import { putImage } from '@/db/images'
+import { Image } from '@/types/types'
 
 export const POST = async (request:NextRequest) => {    
     try {
@@ -9,12 +8,9 @@ export const POST = async (request:NextRequest) => {
         
         if(!body){
             return NextResponse.json({ data: null, error: 'erro backend: nenhuma imagem enviada no body' })            
-
         }
-        const Image:ImageDTO = { ...body }
         
-        
-        const { data, error } = await putImage(Image.url,Image.idproduct)
+        const { data, error } = await putImage(body.url,body.idproduct)
         if(!data){
             return NextResponse.json({ data: null, error: 'erro ao gravar imagem no banco de dados: ' + error })            
         }

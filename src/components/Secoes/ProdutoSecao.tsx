@@ -1,5 +1,6 @@
 import { Product } from "@/types/types"
 import BtnAddSacola from "../BtnAddSacola/BtnAddSacola"
+import FlagPromo from "./FlagPromo"
 
 type ProdutoSecaoProps = {
     className?: string,
@@ -44,9 +45,7 @@ const ProdutoSecao = ({ className, produto }: ProdutoSecaoProps) => {
 
     return (
         <div className={`${className} bg-white flex flex-col relative items-center w-48  md:w-96 shrink-0 snap-start justify-between pb-4 text-center break-words border border-gray-200 rounded-md`}>
-            <div className={`${promo < preco? 'block': 'hidden'} absolute text-xs font-bold text-white bg-red-400 px-2 rounded-lg -rotate-24 -left-4 z-10`}>
-                {perc.toFixed(2)}% OFF
-            </div>    
+            <FlagPromo perc={perc} visible={perc > 0} />
             <a href={`/produto/${produto.id}`}>
                 <div className="min-h-48 md:min-h-92">                   
                     {

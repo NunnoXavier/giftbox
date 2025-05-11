@@ -18,6 +18,7 @@ export const PUT = async (request:NextRequest) => {
         return NextResponse.json({ data: null, error: error.message })
     }
 }
+
 export const POST = async (request:NextRequest) => {    
     try {
         const body = await request.json()

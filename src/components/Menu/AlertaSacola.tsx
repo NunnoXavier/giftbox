@@ -12,5 +12,4 @@ const AlertaSacola = ({className}:{className?: string}) => {
     )
 }
 
-
 export default AlertaSacola

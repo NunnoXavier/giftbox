@@ -12,6 +12,7 @@ export interface User {
     firstName?:      string;
     lastName?:       string;
     email:           string;
+    birthday?:       Date;
     phone?:          string;
     username?:       string;
     password?:       string;
@@ -156,7 +157,14 @@ export interface Order {
     products?: OrderProduct[];
     payment?: OrderPayment;
     shipping?: OrderShipping;
-    status?: |'pending'|'paid'|'sent'|'received'|'canceled'; 
+    status?: OrderStatus;
+}
+
+export type OrderStatus = |'pending'|'paid'|'sent'|'received'|'canceled'; 
+
+export type ChStatus = {
+    novoStatus: OrderStatus,
+    idPedido: number
 }
 
 export interface OrderDTO {
@@ -362,4 +370,25 @@ export const Convert = {
             value: orderShipptingDTO.value || 0,            
         }
     }
+}
+
+export interface CepProps {
+    cep:         string;
+    logradouro:  string;
+    complemento: string;
+    unidade:     string;
+    bairro:      string;
+    localidade:  string;
+    uf:          string;
+    estado:      string;
+    regiao:      string;
+    ibge:        string;
+    gia:         string;
+    ddd:         string;
+    siafi:       string;
+}
+
+export interface CoordProps {
+    lat: number;
+    lon: number;
 }

@@ -5,8 +5,7 @@ import { createQuerySacola, fetchAddQtdeItem, fetchRemoveItem, fetchSubQtdeItem 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export type QtdSacolaProps = {
-    className?: string,
-    produtos: Product[]
+    className?: string
 }
 
 const ProdutoSacola = ({ className }:QtdSacolaProps) => {
@@ -33,9 +32,19 @@ const ProdutoSacola = ({ className }:QtdSacolaProps) => {
             </div>                        
 
             {
-                itensSacola.map((produto) => (
-                    <P key={produto.id} produto={produto}/>
-                ))
+                itensSacola.length === 0?
+                (
+                    <div className="flex justify-center items-center h-full">
+                        <span className='text-lg'>Sua sacola está vazia 🥲</span>
+                    
+                    </div>
+                )
+                :
+                (
+                    itensSacola.map((produto) => (
+                        <P key={produto.id} produto={produto}/>
+                    ))
+                )
             }
 
         </div>

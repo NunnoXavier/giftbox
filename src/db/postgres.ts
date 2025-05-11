@@ -21,17 +21,21 @@ const config: PoolConfig ={
 
 const pool = new Pool(config)
 
+
 const query = async( command: string ) => {
     const str = command.replaceAll(`"`,`'`)
     try {
         const result:QueryResult<any> = await pool.query(str)
         return result
-
-    } catch (error) {
-        console.log(error,str)
-        throw { erro: error, sql: str }
+        
+    } catch (error:any) {
+        throw new Error(`Postgres Error. Code: ${error.code} 
+            sql: ${str}`)
         
     }
 }
+
+export type getQueryProps = {campo?:string, valor?:any}
+export type ResultId = {data:|number|null, error: |string|null}
 
 export default query

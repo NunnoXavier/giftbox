@@ -8,3 +8,12 @@ export const toDateBr = ( date?: Date|string ):string => {
     const year = dt.getFullYear().toString().padStart(4,'0')
     return `${day}/${month}/${year}`
 }
+
+export const dateBrToISO = (date: string): string => {
+    const [dia, mes, ano] = date.split('/')
+    return `${ano}-${mes}-${dia}`
+}
+
+export const filtraNumeros = (entrada: string): string => {
+    return entrada.replace(/\D/g, '');
+}

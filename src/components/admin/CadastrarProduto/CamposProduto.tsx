@@ -198,7 +198,7 @@ const CamposProduto = ({ className, produtos, categorias }:{ className?:string, 
                 onChange={(e) => setProduto({ ...produto, minimumOrderQuantity: Number(e.currentTarget.value) })}
                 />
             <Campo
-                name="returnpolicity"
+                name="returnpolicy"
                 classWidth='flex-1'
                 label='Polít. de Devolução:'
                 inputType='textarea'

@@ -1,7 +1,7 @@
 'use client'
 
 import { User } from '@/types/types'
-import { LoaderCircle } from 'lucide-react'
+import { Eye, EyeOff, LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -12,8 +12,10 @@ const Cadastrar = () => {
     const [ verificado, setVerificado ] = useState(false)
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
+    const [ mostrarSenha, setMostrarSenha ] = useState(false)
     const [nome, setNome] = useState("")
     const [sobrenome, setSobrenome] = useState("")
+    const [nascimento, setNascimento] = useState("")
     const router = useRouter()
 
     const verificarEmail = async () => {
@@ -62,6 +64,7 @@ const Cadastrar = () => {
                 password: senha,
                 firstName: nome,
                 lastName: sobrenome,
+                birthday: new Date(sobrenome),
                 role: 'client'
             }
             
@@ -92,27 +95,39 @@ const Cadastrar = () => {
 
     return (
         <div className="bg-white border border-gray-200 rounded-lg p-2 text-center place-center m-auto max-w-96">
-            <h1 className="text-xl text-gray-700 m-2 font-bold">CADASTRO</h1>
+            <h1 className="text-xl text-gray-700 m-2 font-bold">{ verificado?'CADASTRO':'VERIFICAR EMAIL' }</h1>
 
             <div>
                 <div className={`${verificado? 'hidden': ''} grid grid-cols-12 gap-4 m-2 p-2 max-w-96 mx-auto`}>
-                    <div className="col-span-12">
+                    <div className="col-span-12 border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 px-2">
                         <input
-                            placeholder="email. ex: joaodasilva@giftbox.com" 
+                            placeholder="email" 
                             type="email" id="email"
-                            className="w-full  border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                            className="w-full  caret-gray-700 px-2"
                             value={email}
                             onChange={(e) => setEmail(e.currentTarget.value)}
                         />
                     </div>
-                    <div className="col-span-12">                    
+                    <div className="col-span-12 flex gap-2 border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 px-2">                    
                         <input
-                            placeholder="senha. escolha uma senha com ao menos 6 digitos"  
-                            type="password" id="senha" 
-                            className="w-full border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                            placeholder="senha"  
+                            type={`${ mostrarSenha? 'text':'password' }`} id="senha" 
+                            className="w-full   caret-gray-700 px-2"
                             value={senha}
                             onChange={(e) => setSenha(e.currentTarget.value)}                            
                         />
+                        <button onClick={() => setMostrarSenha(!mostrarSenha)}>
+                            {
+                                mostrarSenha?
+                                (
+                                    <EyeOff className="text-gray-500"/>
+                                )
+                                :
+                                (
+                                    <Eye className="text-gray-500"/>
+                                )
+                            }
+                        </button>
                     </div>
                     <div className="col-span-12 text-center">                    
                         <button className="w-full relative bg-violet-400 text-white rounded-lg h-10"
@@ -142,6 +157,15 @@ const Cadastrar = () => {
                             className="w-full border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
                             value={sobrenome}
                             onChange={(e) => setSobrenome(e.currentTarget.value)}
+                        />
+                    </div>
+                    <div className="col-span-12">                    
+                        <input
+                            placeholder="Data de Nascimento. Ex: 23/01/1984"  
+                            type="date" id="nascimento" 
+                            className="w-full border border-gray-200 focus:border-violet-400 rounded-lg text-gray-700 caret-gray-700 px-2"
+                            value={nascimento}
+                            onChange={(e) => setNascimento(e.currentTarget.value)}
                         />
                     </div>
                     <div className="col-span-12 text-center">                    

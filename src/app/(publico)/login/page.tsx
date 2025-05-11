@@ -2,6 +2,7 @@
 import { LoaderCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import Link from "next/link"
 
 const Login = () => {
     const [ loading, setLoading ] = useState(false)
@@ -22,11 +23,16 @@ const Login = () => {
                 cache: "no-cache"
             })
 
-            if(res.status === 200){ 
-                router.push("/dashboard")
-            }else{
+            if(res.status !== 200){ 
                 const data = await res.json()
                 setMensagem(data.error)    
+            }else{
+                const { data, error } = await res.json()
+                if(!data){
+                    setMensagem(error)
+                }else{
+                    router.push("/dashboard")
+                }
             }
         } catch (error:any) {
             setMensagem(error.message)
@@ -65,7 +71,10 @@ const Login = () => {
                         <span className='text-center inline-block'>Entrar</span>
                         <LoaderCircle className={`absolute top-1/4 right-1/6 animate-spin ${ loading? 'block' : 'hidden' }`}/>
 
-                    </button>
+                    </button>                    
+                </div>
+                <div className="col-span-12">
+                    <Link href="/recuperar-senha" className="text-blue-500 text-sm hover:underline">Esqueci minha senha</Link>
                 </div>
                 <div className="col-span-12 text-center">                    
                     <span className='text-center inline-block'>{mensagem}</span>

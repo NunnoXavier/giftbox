@@ -1,7 +1,7 @@
 import { Star, StarHalf } from 'lucide-react'
 
 
-type AvaliarProdutoProps = {
+type AvaliacaoProdutoProps = {
     className?: string,
     rating?: number,
 }
@@ -19,7 +19,7 @@ function contarEstrelas(rating: number){
     return estrelas
 }
 
-const AvaliarProduto = ({ className, rating }:AvaliarProdutoProps) => {
+const AvaliacaoProduto = ({ className, rating }:AvaliacaoProdutoProps) => {
     return (
         <div className="bg-white flex flex-col place-items-center">
             <div className="flex space-x-2 text-gray-500">
@@ -32,4 +32,4 @@ const AvaliarProduto = ({ className, rating }:AvaliarProdutoProps) => {
     )
 }
 
-export default AvaliarProduto
+export default AvaliacaoProduto

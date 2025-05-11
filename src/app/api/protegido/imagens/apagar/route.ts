@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { removeImage } from '@/db/produtos'
+import { removeImage } from '@/db/images'
 
 export const DELETE = async (request:NextRequest) => {    
     try {

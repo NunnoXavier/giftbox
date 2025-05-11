@@ -8,9 +8,14 @@ type SecoesProps = {
 }
 
 const Secoes = async ({ className }: SecoesProps) => {
-    const umaHora = 3600
     const res = await fetchSecoes()
-    const { data:dataCategorias, error:errorCategorias }:{ data:Category[], error: string } = await res.json()
+    const { 
+        data:dataCategorias, 
+        error:errorCategorias 
+    }:{ 
+        data:Category[], 
+        error: string 
+    } = await res.json()
     if(!dataCategorias){
         console.log(errorCategorias)
         return ( <>Erro ao carregar dados tente mais tarde</> )

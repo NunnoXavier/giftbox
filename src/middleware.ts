@@ -3,15 +3,10 @@ import { jwtDecode } from 'jwt-decode'
 import { AuthTokenPayload } from './types/types'
 
 
-const getIds = ():string[] => {
-    const numbers = Array.from({ length: 999 }, (_, i) => i +1)
-
-    return numbers.map((n) => n.toString())
-}
 
 const rotasAdmin = [
-    { path: '/admin', quandoAutenticado: 'redirecionar' },
-    { path: '/api/protegida:path*', quandoAutenticado: 'redirecionar' },
+    { path: '/admin', quandoAutenticado: 'next' },
+    { path: '/api/protegida:path*', quandoAutenticado: 'next' },
 ]
 
 const rotasPublicas = [
@@ -19,32 +14,35 @@ const rotasPublicas = [
     { path: '/cadastrar', quandoAutenticado: 'redirecionar' },
     { path: '/', quandoAutenticado: 'next' },
     { path: '/sobre', quandoAutenticado: 'next' },    
-    { path: '/sacola', quandoAutenticado: 'next' },    
+    { path: '/sacola', quandoAutenticado: 'next' },
+    { path: '/produto', quandoAutenticado: 'next' },
 ]
-
-const ids = getIds()
-
-ids.map((id) => {
-    rotasPublicas.push(
-        { path: `/produto/${id}`, quandoAutenticado: 'next' },
-    )
-})
 
 const REDIRECIONAR_QUANDO_NAO_AUTENTICADO = '/login'
 
 export function middleware(request: NextRequest){
+    //testa se o usuario é um bot
+    const userAgent = request.headers.get('user-agent')
+    const isBot = /bot|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|MetaInspector/i.test(userAgent || '')
+    if(isBot){
+        const redirecionarUrl = request.nextUrl.clone()
+        redirecionarUrl.pathname = REDIRECIONAR_QUANDO_NAO_AUTENTICADO        
+        return NextResponse.redirect(redirecionarUrl)            
+    }
+
     const path = request.nextUrl.pathname
-    const rotaPublica = rotasPublicas.find((rota) => rota.path === path)
-    const rotaAdmin = rotasAdmin.find((rota) => rota.path === path)
+    const rotaPublica = rotasPublicas.find((rota) => rota.path === path.slice(0,rota.path.length))
+    const rotaAdmin = rotasAdmin.find((rota) => rota.path === path.slice(0,rota.path.length))
     const authToken = request.cookies.get('SIGIFTBOX_AUTH_TOKEN')
 
-    //Este trecho libera as rotas admin somente com credenciais de administrador
+    //se o usuario tentar acessar uma rota de admin sem estar logado
     if(rotaAdmin && !authToken){
         const redirecionarUrl = request.nextUrl.clone()
         redirecionarUrl.pathname = REDIRECIONAR_QUANDO_NAO_AUTENTICADO        
         return NextResponse.redirect(redirecionarUrl)            
     }
     
+    //se o usuario tentar acessar uma rota de admin e estiver logado
     if(rotaAdmin && authToken){
         const { role } = jwtDecode(authToken.value) as AuthTokenPayload
         if(role === 'admin'){
@@ -55,13 +53,13 @@ export function middleware(request: NextRequest){
             return NextResponse.redirect(redirecionarUrl) 
         }
     }
-    //
     
-    //a partir daqui vefifica as rotas publicas e privadas
+    //se o usuario tentar acessar uma rota publica e estiver logado
     if(rotaPublica && !authToken){
         return NextResponse.next()
     }
 
+    //se o usuario tentar acessar uma rota privada e nao estiver logado
     if(!rotaPublica && !authToken){
         const redirecionarUrl = request.nextUrl.clone()
         redirecionarUrl.pathname = REDIRECIONAR_QUANDO_NAO_AUTENTICADO
@@ -70,6 +68,7 @@ export function middleware(request: NextRequest){
         return NextResponse.redirect(redirecionarUrl)
     }
     
+    //se o usuario tentar acessar uma rota publica e estiver logado
     if(rotaPublica && authToken && rotaPublica.quandoAutenticado === 'redirecionar'){
         console.log('middleware: usuario autenticado tentando acessar rota de autenticacao')
         const redirecionarUrl = request.nextUrl.clone()
@@ -94,7 +93,6 @@ export function middleware(request: NextRequest){
                 
     }
 
-
     return NextResponse.next()
 }
 
@@ -107,9 +105,8 @@ export const config: MiddlewareConfig = {
          * - _next/image (image optimization files)
          * - favicon.ico, sitemap.xml, robots.txt (metadata files)
          */
-        //'/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|texto-sigiftbox.svg|robots.txt).*)',
         '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|.*\\.svg$|.*\\.jpeg$|.*\\.jpg$|.*\\.png$|.*\\.webp$|.*\\.gif$|.*\\.avif$|robots.txt).*)',
-        '/api/protegida/:path*',
+        //'/api/:path*',
       ],
 }
 

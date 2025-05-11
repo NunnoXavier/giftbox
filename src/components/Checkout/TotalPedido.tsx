@@ -8,7 +8,7 @@ import { createQueryUsuario } from "../Store/UsuarioStore"
 import BtnConfirmarPedido from "./BtnConfirmarPedido"
 import Alerta from "../Alerta/Alerta"
 import { Order, OrderProduct } from "@/types/types"
-import { inserirPedido } from "../Store/PedidoStore"
+import { createStorePedido, inserirPedido, updatePedido } from "../Store/PedidoStore"
 
 type TotalPedidosProps = {
     precos: {
@@ -19,16 +19,17 @@ type TotalPedidosProps = {
 }
 
 const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
-    
     const { data:sacola, error, isLoading } = createQuerySacola()
     const { data:pagto, error:errorPagto, isLoading:isLoadingPagto } = createQueryPagto()
     const { data:usuario, error:errorUsuario, isLoading:isLoadingUsuario } = createQueryUsuario() 
+    const pedido:Order = createStorePedido()
+    
     const router = useRouter()
-        
+    
     if(!precos){
         return (<><Loader className="animate-spin m-auto" /></>) 
     }
-
+    
     if(error){
         console.log(error.message)
     }
@@ -36,26 +37,29 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
     if(isLoading || isLoadingPagto || isLoadingUsuario){
         return (<><Loader className="animate-spin m-auto" /></>)    
     }
-
-    if(!sacola){
-        return 
-    }
+    
     
     if(errorPagto){
         console.log(errorPagto.message)
     }
-
+    
     if(errorUsuario){
         console.log(errorUsuario.message)
+    }
+
+    if(!sacola || sacola.length === 0){
+        router.push('/sacola')
+        return
     }
     
     if(!pagto){
         return 
     }
-
+    
     if(!usuario){
         return 
     }
+    
 
     const produtosAlterados = sacola.filter((item) => {
         const precoCadastro = precos.find((p) => p.id === item.idProduct) || { id: item.idProduct, price: item.price, discountpercentage: item.discountPercentage }
@@ -109,8 +113,8 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
             return
         }
 
-        const pedido:Order = {
-            id: 0,
+        const novoPedido:Order = {
+            id: pedido? pedido.id : 0,
             date: new Date(),
             dtprev: new Date(),
             idUser: usuario.id,
@@ -144,15 +148,11 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
             }))
         }
 
-        const p = await inserirPedido(pedido)
-        if(p){
-            router.push(`/pedido/${p.id}`)
-        }else{
-            //adicionar mensagem de erro            
+        const result = !pedido? await inserirPedido(novoPedido) : await updatePedido(novoPedido) // se exister um pedido, altera, senão, insere
+        if(result){
+            router.push(`/pedido/${result.id}`)
         }
-
-    }    
-
+    }
 
     return (
         <div className="flex flex-col gap-4 bg-white border border-gray-200 w-full p-4 rounded-lg">

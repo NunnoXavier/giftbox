@@ -6,7 +6,7 @@ const Checkout = async () => {
     const { data:precos, error } = await res.json()
     if(!precos){
         console.log(error)
-        throw new Error('createQuerySacola: Não foi possível obter o preço atual dos produtos: ')
+        throw new Error('createQuerySacola: Não foi possível obter o preço atual dos produtos: ' + error)
     }
 
     return (

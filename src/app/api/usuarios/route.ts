@@ -34,15 +34,34 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
     try {
-        const novoUsuario = await request.json()
-    
-        const { data, error } = await updateUsuario(novoUsuario)
+        const authToken = request.cookies.get('SIGIFTBOX_AUTH_TOKEN')
+        
+        if(!authToken){
+            return NextResponse.json({ data: null, error: "token não informado" })
+        }
+        
+        const { id } = jwtDecode(authToken.value) as AuthTokenPayload
+        if(!id || isNaN(id)){
+            return NextResponse.json({ data: null, error: 'id inválido'})
+        }
+
+        const { data, error } = await getUsuarios({campo:"id", valor:id})
     
         if(!data){
             return NextResponse.json({ data: null, error: error})
+        }    
+    
+        const usuario = data[0]
+
+        const novoUsuario = await request.json()
+    
+        const { data:update, error:errorUpdate } = await updateUsuario({ ... novoUsuario, id:usuario.id })
+    
+        if(!update){
+            return NextResponse.json({ data: null, error: errorUpdate})
         }
     
-        return NextResponse.json({data: novoUsuario, error: null})        
+        return NextResponse.json({data: update, error: null})        
     } catch (error:any) {
         return NextResponse.json({data: null, error: error.message})        
         

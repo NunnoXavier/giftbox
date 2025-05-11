@@ -6,7 +6,6 @@ export const POST = async (req:NextRequest) => {
     try {
         const data = await req.formData()
         const file = data.get('file') as unknown as File
-
    
         if(!file ||file.size === 0 ){
             return NextResponse.json({ data: null, error: 'nenhum arquivo recebido' })

@@ -1,9 +1,8 @@
 'use client'
-import { Product, ProductCart } from "@/types/types"
 import { createQuerySacola } from "../Store/SacolaStore"
 import BtnPagamento from "./BtnPagamento"
 
-const TotalSacola = ({ produtos }:{ produtos:Product[] }) => {
+const TotalSacola = () => {
     
     const { data:itens, isLoading, isError, error } = createQuerySacola()
     
@@ -48,7 +47,7 @@ const TotalSacola = ({ produtos }:{ produtos:Product[] }) => {
                 <span>{(total - desc).toFixed(2)}</span>
             </div>
 
-            <BtnPagamento />
+            <BtnPagamento enabled={itens.length > 0}/>
         </div>               
     )
 }

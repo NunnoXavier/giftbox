@@ -156,5 +156,4 @@ const ModalAddEndereco = () => {
     )
 }
 
-
 export default ModalAddEndereco

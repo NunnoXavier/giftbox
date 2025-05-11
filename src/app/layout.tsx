@@ -1,3 +1,4 @@
+import Rodape from "@/components/Rodape.tsx/Rodape";
 import "./globals.css"
 import QueryProviderStore from "@/components/Store/QueryProviderStore";
 
@@ -11,6 +12,7 @@ export default function RootLayout({
        <body className="bg-gray-100">
        <QueryProviderStore>
         {children}
+        <Rodape></Rodape>
        </QueryProviderStore>
       </body>
     </html>

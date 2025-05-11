@@ -1,9 +1,8 @@
 import BtnPagar from "@/components/Pedido/BtnPagar"
-import { cep } from "@/services/useMask"
-import { Order } from "@/types/types"
+import { maskCep } from "@/services/useMask"
+import { ChStatus, Order, User } from "@/types/types"
 import { Undo2 } from "lucide-react"
 import { cookies } from "next/headers"
-import { redirect } from 'next/navigation'
 
 const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
     const id = (await params).id
@@ -18,29 +17,72 @@ const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
 
     if(!data){
         console.log(error)
+        return <h1>Pedido não encontrado!</h1>
     }
 
-    const pagar = async () => {
-        'use server'
-        
+    if(!id){
+        return <h1>Pedido não informado!</h1>
+    }
 
-        const res = await fetch('http://localhost:3000/api/mock',{
-            method: 'POST',
-            body: JSON.stringify(data)
-        })
-
-        const { data:result, error:errorResult} = await res.json()
-
-        if(data){
+    const pagar = async ():Promise<boolean> => {
+        'use server'        
+        try {            
+            const res = await fetch('http://localhost:3000/api/mock',{
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
             
-            redirect('/confirmacao-pagto')
+            const { data:result, error:errorResult} = await res.json()
+            
+            if(!result){
+                console.log(errorResult)
+                return false
+            }else{
+                const chPedido:ChStatus = {
+                    idPedido: Number(id),
+                    novoStatus: "paid"
+                }
+
+                const res = await fetch('http://localhost:3000/api/pedidos/status',{                    
+                    method: 'POST',
+                    headers: { Cookie:`SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}` },
+                    body: JSON.stringify(chPedido)
+                })
+                const { data:resultStatus, error:errorResultStatus} = await res.json()
+                            
+                if(!resultStatus){
+                    console.log(errorResultStatus)
+                    return false
+                }else{
+                    const usuario = await fetch('http://localhost:3000/api/usuario',{
+                        method: 'GET',
+                        headers: { Cookie:`SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}` },
+                    })
+                    const { data:usuarioData, error:usuarioError}:{ data:User, error:string } = await usuario.json()
+                    if(!usuarioData){
+                        console.log(usuarioError)
+                        return false
+                    }
+                    await fetch('http://localhost:3000/api/email',{
+                        method: 'POST',
+                        body: JSON.stringify({ 
+                            to: usuarioData.email, 
+                            subject: 'Pedido Confirmado', 
+                            html: `<p>Olá ${usuarioData.firstName}, seu pedido foi confirmado!</p>` })
+                    })
+                    
+                    return true
+                }
+            }
+        } catch (error) {
+            return false            
         }
     }    
 
     const valorParc = (data.payment?.value || 0) - ( data.payment?.discountPercentage || 0 ) / (data.payment?.parc || 1)
 
     return (
-        <form action={pagar} className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-4 items-center">
             <h1 className="text-xl text-gray-700 font-bold text-center">Confirmacão dos Dados do Pedido</h1>
             
             <div className="bg-white p-4  rounded-lg w-md md:w-lg">
@@ -90,19 +132,37 @@ const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
                 <div className="flex gap-2">
                     <h2 className="">{data.shipping?.city}</h2>
                     <h2 className="">{data.shipping?.state}</h2>
-                    <h2 className="">{ cep(data.shipping?.postalCode || "") }</h2>
+                    <h2 className="">{ maskCep(data.shipping?.postalCode || "") }</h2>
                 </div>                
 
             </div>
             <div className="flex p-4  justify-between items-center w-md md:w-lg">
                 <div className="w-1/3 overflow-hidden">
                     <a href="/checkout" className="text-blue-600"><Undo2 /></a>                
-                </div> 
-                <BtnPagar fnPagar={pagar}/>
+                </div>
+                {
+                    data.status === "canceled"
+                    ?
+                    <h1 className="text-red-500 font-bold text-lg">Pedido Cancelado</h1>
+                    :
+                    data.status === "paid"
+                    ?
+                    <h1 className="text-green-500 font-bold text-lg">Pedido Pago</h1>
+                    :
+                    data.status === "received"
+                    ?
+                    <h1 className="text-blue-500 font-bold text-lg">Pedido Entrege</h1>
+                    :
+                    data.status === "sent"
+                    ?
+                    <h1 className="text-blue-500 font-bold text-lg">Pedido Enviado</h1>
+                    :
+                    <BtnPagar fnPagar={pagar}/>
+                } 
                 <div className="w-1/3 overflow-hidden"></div> {/* esta div esta aqui somente para manter o botao no meio */}
             </div>
 
-        </form>
+        </div>
     )
 }
 

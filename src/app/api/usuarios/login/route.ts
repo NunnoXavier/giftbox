@@ -16,6 +16,9 @@ export const POST = async (request:NextRequest) => {
             return NextResponse.json({ data: null, error: 'DB: ' + error })    
         }
 
+        // if(users.length === 0){
+        //     return NextResponse.json({ data: null, error: "usuario nao encontrado" })
+        // }
         const user:User = users[0]
         
         if(!user){
@@ -35,8 +38,10 @@ export const POST = async (request:NextRequest) => {
             httpOnly: true,
             path: "/",
             maxAge: 60 * 60 * 24 * 30, // 30 dias em segundo
+            sameSite: "strict",
          })
     
+        
         return NextResponse.json({data:token, error: null})
         
     } catch (error:any) {

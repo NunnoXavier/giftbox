@@ -1,12 +1,7 @@
-import { Convert, Order, OrderDTO, OrderPayment, OrderProduct, OrderProductDTO, OrderShipping } from "@/types/types"
+import { ChStatus, Order, OrderPayment, OrderProduct, OrderShipping, OrderStatus } from "@/types/types"
 import query from "./postgres"
 
 type getProps = {campo?:string, valor?:any}
-
-type SetProps = {
-    id: number,
-    campos: [ getProps ]
-}
 
 type Result = {data:|Order[]|null, error: |string|null}
 
@@ -18,16 +13,25 @@ export const getPedidos = async (props?: getProps ):Promise<Result> => {
         const res = await query(sql)
         const rows = res.rows
     
-        const orders:Order[] = rows.map((row) => {
-            return Convert.toOrder(row as OrderDTO)
+        const orders:Order[] = rows.map((row):Order => {
+            
+            return {
+                id: row.id,
+                date: row.date || undefined,
+                dtprev: row.dtprev || undefined,
+                idUser: row.iduser,
+                payment: undefined,
+                products: [],
+                shipping: undefined,
+                status: row.status || 'pending'
+            }
         })
     
         for( const order of orders ){
-            const { data:produtosDTO} = await getProdutosPedido({ campo: "idorder", valor: order.id })
+            const { data:produtos} = await getProdutosPedido({ campo: "idorder", valor: order.id })
             const { data:pagtos} = await getPagtoPedido({ campo: "idorder", valor: order.id })
             const { data:entregas} = await getEntregaPedido({ campo: "idorder", valor: order.id })
 
-            const produtos = produtosDTO?.map((p) => Convert.toOrderProduct(p))
             const pagamento = pagtos? pagtos[0] : undefined
             const entrega = entregas? entregas[0] : undefined
 
@@ -64,12 +68,19 @@ export const updatePedido = async (novoPedido: Order):Promise<ResultOrder> => {
             throw new Error('id não informado')
         }
 
-        const res = await query(`update orders set 
-            date='${novoPedido.date?.toString()?.slice(0,10) || '1900-01-01'}',
-            dtprev='${novoPedido.dtprev?.toString()?.slice(0,10) || '1900-01-01'}'
-            where id = ${novoPedido.id?.toString()}`)
+        await query(`update orders set 
+            date='${novoPedido.date?.toString()?.slice(0,10) || "1900-01-01"}',
+            dtprev='${novoPedido.dtprev?.toString()?.slice(0,10) || "1900-01-01"}'
+            where id = ${novoPedido.id.toString()}`)
+    
+        const { data:pedidos, error:errorPedidos } = await getPedidos({campo: 'id', valor: novoPedido.id.toString()})
         
-        const result = novoPedido
+        if(!pedidos){
+            throw new Error(errorPedidos || "erro inexperado ao obter pedido")
+        }
+
+        const result = pedidos[0]
+
         return { data:result, error:null }        
     } catch (error:any) {
         return { data:null, error:error.message }
@@ -87,7 +98,7 @@ export const removePedido = async ({id}:{id:number}):Promise<ResultId> => {
 }
 
 //////////////////////////////  OrderProducts //////////////////////////////////////
-type ResultOPs = {data:|OrderProductDTO[]|null, error: |string|null}
+type ResultOPs = {data:|OrderProduct[]|null, error: |string|null}
 export const getProdutosPedido = async (props?: getProps ):Promise<ResultOPs> => {
     try {
         const sql = !props?.campo? `select * from order_products` : 
@@ -96,9 +107,14 @@ export const getProdutosPedido = async (props?: getProps ):Promise<ResultOPs> =>
         const res = await query(sql)
         const rows = res.rows
     
-        const orderProducts:OrderProductDTO[] = rows.map((row) => {
+        const orderProducts:OrderProduct[] = rows.map((row) => {
             return {
-                ...row
+                idProduct: row.idproduct || 0,
+                price: row.price || 0,
+                qtde: row.qtde || 0,
+                title: row.title || "",
+                discountPercentage: row.discountpercentage || 0,
+                thumbnail: row.thumbnail || "",            
             }
         })
     
@@ -150,25 +166,40 @@ export const updateProdutoPedido = async (pedido:number, novoProduto: OrderProdu
             throw new Error('pedido não informado')
         }
 
-        const res = await query(`update order_product set 
+        await query(`update order_product set 
             qtde=${novoProduto.qtde.toString() || 0}, title='${novoProduto.title}', 
             thumbnail='${novoProduto.thumbnail || ''}', price=${novoProduto.price?.toString() || 0 }, 
             discountPercentage=${novoProduto.discountPercentage?.toString() || 0 }
             where idOrder = ${pedido} and idproduct = ${novoProduto.idProduct.toString() || 0 }`)
-        
-        const result = novoProduto
+
+        const res = await query(`select * from order_product 
+            where idOrder = ${pedido.toString()} and idproduct = ${pedido.toString()}`)
+
+        const row = res.rows[0]
+
+        const result:OrderProduct = {
+            idProduct: row.idproduct,
+            price: row.price,
+            qtde: row.qtde,
+            title: row.title,
+            discountPercentage: row.discountpercentage,
+            thumbnail: row.thumbnail,
+        }
+
         return { data:result, error:null }        
     } catch (error:any) {
         return { data:null, error:error.message }
     }
 }
 
-export const removeProdutoPedido = async ({pedido, id}:{pedido:number, id:number}):Promise<ResultId> => {
+export const removeProdutoPedido = async ({pedido, id}:{pedido:number, id?:number}):Promise<ResultId> => {
     try {
-        const res = await query(`delete from order_products 
-            where idorder = ${pedido.toString()} and idproduct= ${id.toString()}`)
+        const sql = id?
+            `delete from order_products where idorder = ${pedido.toString()} and idproduct= ${id.toString()}`
+        :   `delete from order_products where idorder = ${pedido.toString()}`
+        await query(sql)
         
-        return { data:id, error:null }
+        return { data:pedido, error:null }
     } catch (error:any) {
         return { data:null, error:error.message }
     }
@@ -228,7 +259,7 @@ export const updatePagtoPedido = async (pedido:number, novoPagto: OrderPayment):
             throw new Error('pedido não informado')
         }
 
-        const res = await query(`update order_payments set 
+        await query(`update order_payments set 
             date='${novoPagto.date?.toString()?.slice(0,10) || '1900-01-01' }', 
             parc=${novoPagto.parc?.toString() || 0}, value=${novoPagto.value?.toString() || 0}, 
             discountPercentage=${novoPagto.discountPercentage?.toString() || 0},
@@ -237,8 +268,23 @@ export const updatePagtoPedido = async (pedido:number, novoPagto: OrderPayment):
             cardHolderDoc='${novoPagto.cardHolderDoc || "" }', cardcvv=${novoPagto.cardCvv?.toString() || 0 }
             where idorder = ${pedido}`)
 
+        const res = await query(`select * from order_payments where idorder = ${pedido}`)
+
+        const row = res.rows[0]
         
-        const result = novoPagto
+        const result:OrderPayment = {
+            cardCvv: row.cardcvv,
+            cardExpire: row.cardexpire,
+            cardHolderDoc: row.cardholderdoc,
+            cardHolderName: row.cardholdername,
+            cardNumber: row.cardnumber,
+            date: row.date,
+            discountPercentage: row.discountpercentage,
+            parc: row.parc,
+            paymentMethod: row.paymentmethod,
+            value: row.value
+        }
+
         return { data:result, error:null }        
     } catch (error:any) {
         return { data:null, error:error.message }
@@ -257,7 +303,16 @@ export const getEntregaPedido = async (props?: getProps ):Promise<ResultOSs> => 
     
         const orderShippings:OrderShipping[] = rows.map((row) => {
             return {
-                ...row
+                address: row.address,
+                city: row.city,
+                date: row.date || undefined,
+                daysprev: row.daysprev,
+                obs: row.obs,
+                postalCode: row.postalcode,
+                receivedAt: row.receivedat || undefined,
+                receivedBy: row.receivedby,
+                state: row.state,
+                value: row.value,
             }
         })
     
@@ -293,7 +348,7 @@ export const updateEntregaPedido = async (pedido:number, novaEntrega: OrderShipp
             throw new Error('pedido não informado')
         }
 
-        const res = await query(`update order_shipping set 
+        await query(`update order_shipping set 
                 date='${novaEntrega.date?.toString()?.slice(0,10) || '1900-01-01' }',  
                 daysprev=${novaEntrega.daysprev?.toString() || 0 }, value=${novaEntrega.value?.toString() || 0},
                 address='${novaEntrega.address || ""}', obs='${novaEntrega.obs || "" }',                
@@ -302,7 +357,44 @@ export const updateEntregaPedido = async (pedido:number, novaEntrega: OrderShipp
                 receivedAt='${novaEntrega.receivedAt?.toString()?.slice(0,10) || '1900-01-01' }'
                 where idorder=${pedido}`)
         
-        const result = novaEntrega
+
+        const res = await query(`select * from order_shipping where idorder = ${pedido}`)
+        const row = res.rows[0]
+        const result:OrderShipping = {
+            address: row.address,
+            city: row.city,
+            date: row.date || undefined,
+            daysprev: row.daysprev,
+            obs: row.obs,
+            postalCode: row.postalCode,
+            receivedAt: row.receivedat || undefined,
+            receivedBy: row.receivedby,
+            state: row.state,
+            value: row.value,
+        }
+
+        return { data:result, error:null }        
+    } catch (error:any) {
+        return { data:null, error:error.message }
+    }
+}
+
+export const updateStatusPedido = async ({ idPedido, novoStatus}:ChStatus):Promise<ResultOrder> => {
+    try {
+        if(!idPedido || idPedido ===0){
+            throw new Error('id não informado')
+        }
+
+        await query(`update orders set status = '${novoStatus}' where id = ${idPedido}`)
+    
+        const { data:pedidos, error:errorPedidos } = await getPedidos({campo: 'id', valor: idPedido.toString()})
+        
+        if(!pedidos){
+            throw new Error(errorPedidos || "erro inexperado ao obter pedido")
+        }
+
+        const result = pedidos[0]
+
         return { data:result, error:null }        
     } catch (error:any) {
         return { data:null, error:error.message }

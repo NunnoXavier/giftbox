@@ -2,8 +2,6 @@ import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
 import { ImageDTO } from "@/types/types"
 import { revalidateTag } from "next/cache"
 import DadosProduto from "./DadosProduto"
-import { Pointer } from 'lucide-react'
-
 
 const CadastrarImagens = async () => {
 

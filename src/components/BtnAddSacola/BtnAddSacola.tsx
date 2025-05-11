@@ -10,15 +10,14 @@ type BtnAddSacolaProps = {
 }
 
 const BtnAddSacola = ({ produto, className }:BtnAddSacolaProps) => {
-
     const queryClient = useQueryClient()
-
+    
     const { mutateAsync:addSacola } = useMutation({
         mutationFn: fetchAddItem,
         mutationKey: ['sacola'],
-        onSuccess: (_, variables, context) => {
+        onSuccess: (_, variables) => {
             queryClient.setQueryData<ProductCart[]>(['sacola'], data => {
-                return data? [ ...data, { ...variables } ] : []
+                return data? [ ...data, { ...variables } ] : [{ ...variables }]
             })
         }
     })

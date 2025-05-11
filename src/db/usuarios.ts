@@ -18,6 +18,7 @@ export const getUsuarios = async (props?: getUsuariosProps ):Promise<ResultUser>
                 firstName: row.firstname,
                 lastName: row.lastname,
                 email: row.email,
+                birthday: row.birthday,
                 phone: row.phone,
                 username: row.username,
                 password: row.password,
@@ -44,9 +45,10 @@ export const getUsuarios = async (props?: getUsuariosProps ):Promise<ResultUser>
 type ResultId = { data: number| null, error: string| null}
 export const putUsuario = async (novoUsuario: User):Promise<ResultId> => {
     try {
-        const res = await query(`insert into users (firstname, lastname, email, phone, username, password, address, city, state, postalCode, 
+        const res = await query(`insert into users (firstname, lastname, email, birthday, phone, username, password, address, city, state, postalCode, 
             cardExpire, cardNumber,cardholdername, cardholderdoc,cardcvv, role)
-            values('${novoUsuario.firstName || ""}', '${novoUsuario.lastName || ""}','${novoUsuario.email || ""}','${novoUsuario.phone || ""}',
+            values('${novoUsuario.firstName || ""}', '${novoUsuario.lastName || ""}','${novoUsuario.email || ""}','${novoUsuario.birthday?.toString().slice(0,10) || "1900-01-01"}',
+                '${novoUsuario.phone || ""}',
                     '${novoUsuario.username || ""}','${novoUsuario.password || ""}','${novoUsuario.address || ""}','${novoUsuario.city || ""}',
                     '${novoUsuario.state || ""}','${novoUsuario.postalCode || ""}', '${novoUsuario.cardExpire || ""}','${novoUsuario.cardNumber || ""}',
                     '${novoUsuario.cardHolderName || ""}','${novoUsuario.cardHolderDoc || ""}',
@@ -64,9 +66,11 @@ export const putUsuario = async (novoUsuario: User):Promise<ResultId> => {
 
 type ResultTrueOrNull = { data: boolean| null, error: string| null}
 export const updateUsuario = async (novoUsuario: User):Promise<ResultTrueOrNull> => {
+
     try {
-        const res = await query(`update users set 
+        await query(`update users set 
             firstname='${novoUsuario.firstName || ""}', lastname='${novoUsuario.lastName || ""}', 
+            birthday='${novoUsuario.birthday?.toString().slice(0,10) || "1900-01-01"}', 
             phone='${novoUsuario.phone || ""}', username='${novoUsuario.username || ""}',
             address='${novoUsuario.address || ""}', city='${novoUsuario.city || ""}', 
             state='${novoUsuario.state || ""}', postalCode='${novoUsuario.postalCode || ""}', 
@@ -74,12 +78,24 @@ export const updateUsuario = async (novoUsuario: User):Promise<ResultTrueOrNull>
             obs='${novoUsuario.obs || ""}',cardholdername='${novoUsuario.cardHolderName || ""}',
             cardholderdoc='${novoUsuario.cardHolderDoc || ""}',cardcvv=${novoUsuario.cardCvv || 0}
             where id =${novoUsuario.id}`)
-        
+
         return { data: true, error: null }        
     } catch (error:any) {
         return { data: null, error: error.message }        
 
     }
+}
 
+export const updateSenha = async ({ id, novaSenha }:{ id:number, novaSenha:string }):Promise<ResultTrueOrNull> => {
+
+    try {
+        const res = await query(`update users set password='${novaSenha}' 
+            where id=${id}`)
+
+        return { data: true, error: null }        
+    } catch (error:any) {
+        return { data: null, error: error.message }        
+
+    }
 }
 
