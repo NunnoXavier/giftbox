@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const ItemPedido = ({ item }:{ item:OrderProduct }) => {
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-4">
             {
                 item.thumbnail? (
                     <Image  
@@ -13,19 +13,19 @@ const ItemPedido = ({ item }:{ item:OrderProduct }) => {
                         alt="img"
                     />
                 ): (
-                    <div className="bg-white relative md:h-25 h-25 w-25 border border-gray-200">                        
-                        <div className="absolute z-2 w-5 h-1 bg-gray-200 top-4/12 md:top-4/12  left-4/12 -translate-1/2 rounded-xs"></div>
+                    <div className="bg-white relative md:h-25 h-25 w-25 border border-borda">                        
+                        <div className="absolute z-2 w-5 h-1 bg-background top-4/12 md:top-4/12  left-4/12 -translate-1/2 rounded-xs"></div>
                         <div className="absolute z-5 w-6 h-6 bg-white top-6/12 left-1/2 -translate-1/2 rounded-full"></div>
-                        <div className="absolute z-6 w-5 h-5 bg-gray-200 top-6/12 left-1/2 -translate-1/2 rounded-full"></div>
-                        <div className="absolute w-15 h-8 bg-gray-200 top-6/12 left-1/2 -translate-1/2 rounded-xs"></div>
+                        <div className="absolute z-6 w-5 h-5 bg-background top-6/12 left-1/2 -translate-1/2 rounded-full"></div>
+                        <div className="absolute w-15 h-8 bg-background top-6/12 left-1/2 -translate-1/2 rounded-xs"></div>
                     </div>                    
                 )
             }
-            <div className="flex flex-col flex-1">
-                <span className="font-semibold text-gray-700 text-wrap">
+            <div className="flex flex-col flex-1 py-1">
+                <span className="font-semibold text-texto text-wrap">
                     {`${item.title.slice(0,100)}${item.title.length > 100? '...':''}`}
                 </span>
-                <span className="text-gray-700 text-sm">
+                <span className="text-texto text-sm">
                     {`Qtd: ${item.qtde} unidade${(item.qtde > 1)? 's':''}`}
                 </span>
             </div>

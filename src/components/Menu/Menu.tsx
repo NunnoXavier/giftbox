@@ -9,6 +9,7 @@ import AlertaSacola from './AlertaSacola'
 import Submenu from './Submenu'
 import { User } from '@/types/types'
 import { token as verificarToken } from './autenticar'
+import Image from 'next/image'
  
 export default async function Menu({ className }: { className?: string }){
   const headerList = await headers()
@@ -34,10 +35,12 @@ export default async function Menu({ className }: { className?: string }){
       <div className='flex md:hidden justify-between mr-4 items-center'>
         <BuscarProduto mobile className=''/>
         <Link href={ proto+'://'+host }>
-          <img 
+          <Image
             className='w-36'
-            src="/texto-sigiftbox.svg"
+            src="/logo-novo.svg"
             alt="Logo"
+            width={100}
+            height={100}
           />
         </Link>  
         <Hamburger usuario={usuario} />
@@ -47,20 +50,23 @@ export default async function Menu({ className }: { className?: string }){
 
       {/* menu tela grande */}
       <div className={`hidden md:block`}>
-        <ul className="w-full flex justify-evenly items-end text-gray-700 relative pb-4">
-          <li>
+        <ul className="w-full flex justify-evenly items-end text-texto relative pb-4 px-30">
+          <li className='w-40'>
             <Link href={ proto+'://'+host }>
-              <img 
-                className='w-36 absolute -top-2'
-                src="/texto-sigiftbox.svg"
+              <Image 
+                className='w-36 text-texto2 absolute -top-2'
+                //src="/texto-sigiftbox.svg"
+                src="/logo-novo.svg"
                 alt="Logo"
+                width={100}
+                height={100}
               />
             </Link>
           </li>
-          <li>
+          <li className='flex-1'>
             <BuscarProduto />
           </li>
-          <li>
+          <li className='w-max'>
             <div className='inline-flex flex-row justify-end w-full'>
               {
                 usuario? (

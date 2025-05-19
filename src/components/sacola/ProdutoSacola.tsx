@@ -1,8 +1,9 @@
 'use client'
-import { Product, ProductCart } from '@/types/types'
+import { ProductCart } from '@/types/types'
 import { PlusCircle, MinusCircle, Trash } from 'lucide-react'
 import { createQuerySacola, fetchAddQtdeItem, fetchRemoveItem, fetchSubQtdeItem } from '../Store/SacolaStore'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import Image from 'next/image'
 
 export type QtdSacolaProps = {
     className?: string
@@ -96,8 +97,12 @@ const P = ({ produto }:{ produto: ProductCart }) => {
                 <div className="w-1/2">
                     {
                         !produto.thumbnail || produto.thumbnail === ''?
-                        (<img src={'/images/placeholder.jpeg'} alt="" />)                                    
-                        :(<img src={produto.thumbnail} alt="" />)
+                        (<Image src={'/images/placeholder.jpeg'} alt="" 
+                            width={100} height={100}    
+                        />)                                    
+                        :(<Image src={produto.thumbnail} alt="" 
+                            width={100} height={100}    
+                        />)
                     }
                 </div>
                 <span className="text-center">{produto.title}</span>
@@ -105,17 +110,17 @@ const P = ({ produto }:{ produto: ProductCart }) => {
             <div className="col-span-4 flex justify-center items-center">
                 <div className="flex justify-center items-center gap-1">
                     <MinusCircle 
-                        className="text-gray-400 hover:text-gray-600" 
+                        className="text-texto-label hover:text-texto" 
                         size={15} 
                         onClick={() => subQtde(produto)} 
                     />
-                    <span className="border border-gray-300 px-2 rounded-sm">{produto.qtde}</span>
+                    <span className="border border-borda px-2 rounded-sm">{produto.qtde}</span>
                     <PlusCircle 
-                        className="text-gray-400 hover:text-gray-600" 
+                        className="text-texto-label hover:text-texto" 
                         size={15} 
                         onClick={() => addQtde(produto)} />
                     <Trash 
-                        className={`${ produto.qtde === 0? 'block':'hidden' } text-red-500 hover:opacity-90 cursor-pointer`} 
+                        className={`${ produto.qtde === 0? 'block':'hidden' } text-texto-alerta hover:opacity-90 cursor-pointer`} 
                         size={15} fill='#fb2c36' 
                         onClick={() => removeItem(produto)}
                     />
@@ -126,7 +131,7 @@ const P = ({ produto }:{ produto: ProductCart }) => {
                 <span className="text-right">{preco.toFixed(2)}</span>
             </div>
             <div className="col-span-4 flex justify-center items-center">
-                <span className="text-right text-violet-800">-{desc.toFixed(2)}</span>
+                <span className="text-right text-texto2">-{desc.toFixed(2)}</span>
             </div>
             <div className="col-span-4 flex justify-center items-center">
                 <span className="text-right">{promo.toFixed(2)}</span>

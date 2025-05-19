@@ -109,12 +109,14 @@ export const getProdutosPedido = async (props?: getProps ):Promise<ResultOPs> =>
     
         const orderProducts:OrderProduct[] = rows.map((row) => {
             return {
+                id: row.id || 0,
                 idProduct: row.idproduct || 0,
                 price: row.price || 0,
                 qtde: row.qtde || 0,
                 title: row.title || "",
                 discountPercentage: row.discountpercentage || 0,
                 thumbnail: row.thumbnail || "",            
+                rate: row.rate || -1,
             }
         })
     
@@ -157,23 +159,24 @@ export const putProdutoPedido = async (pedido:number, novoProduto: OrderProduct|
 }
 
 type ResultOP = {data:|OrderProduct|null, error: |string|null}
-export const updateProdutoPedido = async (pedido:number, novoProduto: OrderProduct):Promise<ResultOP> => {
+export const updateProdutoPedido = async (novoProduto: OrderProduct):Promise<ResultOP> => {
     try {
         if(!novoProduto.idProduct || novoProduto.idProduct === 0){
             throw new Error('id não informado')
         }
-        if(!pedido || pedido === 0){
-            throw new Error('pedido não informado')
+
+        if(!novoProduto.id || novoProduto.id === 0){
+            throw new Error('id não informado')
         }
 
-        await query(`update order_product set 
+        await query(`update order_products set 
             qtde=${novoProduto.qtde.toString() || 0}, title='${novoProduto.title}', 
             thumbnail='${novoProduto.thumbnail || ''}', price=${novoProduto.price?.toString() || 0 }, 
             discountPercentage=${novoProduto.discountPercentage?.toString() || 0 }
-            where idOrder = ${pedido} and idproduct = ${novoProduto.idProduct.toString() || 0 }`)
+            where id = ${novoProduto.id.toString()}`)
 
-        const res = await query(`select * from order_product 
-            where idOrder = ${pedido.toString()} and idproduct = ${pedido.toString()}`)
+        const res = await query(`select * from order_products 
+            where id = ${novoProduto.id.toString()}`)
 
         const row = res.rows[0]
 

@@ -1,6 +1,7 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server"
 import { jwtDecode } from 'jwt-decode'
 import { AuthTokenPayload } from './types/types'
+import path from "path"
 
 
 
@@ -16,6 +17,7 @@ const rotasPublicas = [
     { path: '/sobre', quandoAutenticado: 'next' },    
     { path: '/sacola', quandoAutenticado: 'next' },
     { path: '/produto', quandoAutenticado: 'next' },
+    { path: '/recuperar-senha', quandoAutenticado: 'next' },
 ]
 
 const REDIRECIONAR_QUANDO_NAO_AUTENTICADO = '/login'
@@ -31,8 +33,8 @@ export function middleware(request: NextRequest){
     }
 
     const path = request.nextUrl.pathname
-    const rotaPublica = rotasPublicas.find((rota) => rota.path === path.slice(0,rota.path.length))
-    const rotaAdmin = rotasAdmin.find((rota) => rota.path === path.slice(0,rota.path.length))
+    const rotaPublica = rotasPublicas.find((rota) => raizDaRota(path) === rota.path)
+    const rotaAdmin = rotasAdmin.find((rota) => raizDaRota(path) === rota.path)
     const authToken = request.cookies.get('SIGIFTBOX_AUTH_TOKEN')
 
     //se o usuario tentar acessar uma rota de admin sem estar logado
@@ -110,3 +112,7 @@ export const config: MiddlewareConfig = {
       ],
 }
 
+const raizDaRota = (path: string) => {
+    const raiz = path.split('/')[1]
+    return '/' + raiz
+}

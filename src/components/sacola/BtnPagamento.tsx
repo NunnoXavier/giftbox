@@ -8,8 +8,8 @@ const BtnPagamento = ({ enabled }: { enabled?: boolean }) => {
                 enabled ?
                     <a href={`/checkout`}
                         className="flex rounded-lg gap-2 justify-center
-                    bg-violet-600 text-white text-lg w-full py-2
-                    hover:bg-violet-400"
+                    bg-texto2 text-white text-lg w-full py-2
+                    hover:bg-borda2"
                     >
                         <CheckCheck />
                         Confirmar Pedido
@@ -17,8 +17,8 @@ const BtnPagamento = ({ enabled }: { enabled?: boolean }) => {
                     :
                     <button
                         className="flex rounded-lg gap-2 justify-center
-                    bg-gray-400 text-white text-lg w-full py-2
-                    hover:bg-gray-300"
+                    bgtexto-label text-white text-lg w-full py-2
+                    hover:bg-borda0"
                     >
                         <CheckCheck />
                         Confirmar Pedido

@@ -9,7 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-       <body className="bg-gray-100">
+       <body className="bg-background text-texto font-sans">
        <QueryProviderStore>
         {children}
         <Rodape></Rodape>

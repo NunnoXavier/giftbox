@@ -22,10 +22,10 @@ const config: PoolConfig ={
 const pool = new Pool(config)
 
 
-const query = async( command: string ) => {
+const query = async( command: string, values?:any[] ) => {  
     const str = command.replaceAll(`"`,`'`)
     try {
-        const result:QueryResult<any> = await pool.query(str)
+        const result:QueryResult<any> = await pool.query(str, values? values : undefined)
         return result
         
     } catch (error:any) {

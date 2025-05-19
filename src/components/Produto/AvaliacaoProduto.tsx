@@ -22,7 +22,7 @@ function contarEstrelas(rating: number){
 const AvaliacaoProduto = ({ className, rating }:AvaliacaoProdutoProps) => {
     return (
         <div className="bg-white flex flex-col place-items-center">
-            <div className="flex space-x-2 text-gray-500">
+            <div className="flex space-x-2 text-texto-label">
                 {
                     contarEstrelas(rating||0).map((estrela) => estrela)
                 }

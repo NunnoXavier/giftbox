@@ -1,12 +1,13 @@
 import { Order } from "@/types/types"
 
-export const createStorePedido = () => {  
+export const createStorePedido = ():Order|null => {  
     try {
-        const storage = localStorage.getItem('pedido')
-        const pedido = storage? JSON.parse(storage) : null
+        const storage = sessionStorage.getItem('pedido')
+        const pedido = storage? JSON.parse(storage) as Order : null
         return pedido        
     } catch (error:any) {
         console.log(error.message)
+        return null
     }
 }
 
@@ -31,7 +32,7 @@ export const updatePedido = async(novoPedido:Order):Promise<Order> => {
             throw new Error(error)        
         }
     
-        localStorage.setItem('pedido', JSON.stringify(pedido))
+        sessionStorage.setItem('pedido', JSON.stringify(pedido))
         return pedido
     } catch (error:any) {
         throw new Error(error.message)
@@ -56,7 +57,7 @@ export const inserirPedido = async(novoPedido:Order):Promise<Order> => {
             throw new Error(error)        
         }
         
-        localStorage.setItem('pedido', JSON.stringify(pedido))
+        sessionStorage.setItem('pedido', JSON.stringify(pedido))
         return pedido                
     } catch (error:any) {
         throw new Error(error.message)

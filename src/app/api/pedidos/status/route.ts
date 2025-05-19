@@ -1,7 +1,8 @@
-import { updatePedido, updateStatusPedido } from "@/db/pedidos"
+import { updateStatusPedido } from "@/db/pedidos"
 import { getUsuarios } from "@/db/usuarios"
 import { AuthTokenPayload, ChStatus } from "@/types/types"
 import { jwtDecode } from "jwt-decode"
+import { revalidateTag } from "next/cache"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (request:NextRequest) => { 
@@ -32,6 +33,8 @@ export const POST = async (request:NextRequest) => {
         if(!pedido.id){
             return NextResponse.json({ data: null, error: 'pedido não encontrado' })
         }
+
+        revalidateTag(`pedidos-${id}`)
       
         return NextResponse.json({ data: pedido, error: null })
     } catch (error:any) {

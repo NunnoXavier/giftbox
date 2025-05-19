@@ -97,11 +97,11 @@ const CamposProduto = ({ className, produtos, categorias }:{ className?:string, 
     return (
         <div className="flex flex-col gap-y-2">
             <div className={`${className} bg-white flex gap-2`}>
-                <label className="w-30 text-right text-gray-500">ID:</label>
+                <label className="w-30 text-right text-texto-label">ID:</label>
                 <input 
                     name="id"
                     type="number"
-                    className="border border-gray-200 rounded px-2 w-10"
+                    className="border border-borda rounded px-2 w-10"
                     step={1}
                     value={id}
                     readOnly
@@ -137,7 +137,7 @@ const CamposProduto = ({ className, produtos, categorias }:{ className?:string, 
                     value={idCategoria}
                     onChange={(e) => setIdCategoria( e.currentTarget.value)}
                 />
-                <div className="flex-1 text-center text-blue-500 bg-gray-200">
+                <div className="flex-1 text-center text-texto-link bg-background">
                     {produto.category?.description}
                 </div>
             </div>

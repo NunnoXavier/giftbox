@@ -22,7 +22,7 @@ const Endereco = async () => {
     }
 
     return (
-        <div className="bg-white flex flex-col border border-gray-200 w-full rounded-md p-4">            
+        <div className="bg-white flex flex-col border border-borda w-full rounded-md p-4 shadow-md">            
             <h1 className="font-bold">{`Entrega para ${usuario.firstName?.toLocaleUpperCase()} ${usuario.lastName?.toLocaleUpperCase()}`}</h1>
             <span className="flex-wrap">
                 {`
@@ -33,7 +33,7 @@ const Endereco = async () => {
                  ${ usuario.obs? ' (' + usuario.obs + ') ' : ''}`}
             </span>
             <div className="flex gap-2 items-end">
-                <a href="/checkout?addEnd=open" className="pt-4 text-sm text-blue-700">Inserir/Alterar Endereço</a>
+                <a href="/checkout?addEnd=open" className="pt-4 text-sm text-texto-link">Inserir/Alterar Endereço</a>
                 <ModalAddEndereco/>
             </div>
         </div>

@@ -41,36 +41,38 @@ const RecuperarSenha = () => {
     }
 
     return(
-    <div className="bg-white border border-gray-200 rounded-lg p-2 place-center m-auto max-w-96 ">
-        <h1 className="text-xl text-center font-bold text-gray-700 m-4">Recuperar Senha</h1>
-        <div className={`grid grid-cols-12 gap-4 m-2 p-2 max-w-96 mx-auto`}>
-            <div className="col-span-12">
-                <input
-                    placeholder="email. ex: joaodasilva@giftbox.com"
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div className="col-span-12">
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md w-full"
-                    onClick={recuperarSenha}
-                    disabled={loading}
-                >
-                    {loading ? "Enviando..." : "Enviar"}
-                </button>
-                <div className="text-center mt-2">
-                    <Link href="/login"  className="text-blue-500 hover:underline">
-                        Voltar para o login
-                    </Link>
+        <div className="h-screen flex flex-col justify-center items-center">
+            <div className="bg-white border border-borda rounded-lg p-2 place-center m-auto  w-md md:w-lg shadow-md">
+                <h1 className="text-xl text-center font-bold text-texto m-4">Recuperar Senha</h1>
+                <div className={`grid grid-cols-12 gap-4 m-2 p-2 max-w-96 mx-auto`}>
+                    <div className="col-span-12">
+                        <input
+                            placeholder="email. ex: joaodasilva@giftbox.com"
+                            className="border border-borda rounded-md p-2 w-full"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <button
+                            className="bg-texto2 hover:bg-borda2 text-white font-bold py-2 px-4 rounded-md w-full"
+                            onClick={recuperarSenha}
+                            disabled={loading}
+                        >
+                            {loading ? "Enviando..." : "Enviar"}
+                        </button>
+                        <div className="text-center mt-2">
+                            <Link href="/login"  className="text-texto-link hover:underline">
+                                Voltar para o login
+                            </Link>
+                        </div>
+                    </div>
+                <div className="col-span-12">
+                    {mensagem && <div className="text-texto-alerta">{mensagem}</div>}
+                    </div>
                 </div>
             </div>
-        <div className="col-span-12">
-            {mensagem && <div className="text-red-500">{mensagem}</div>}
-            </div>
         </div>
-    </div>
     
     )
 }

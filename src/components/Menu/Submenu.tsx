@@ -1,6 +1,6 @@
 const Submenu = () => {
     return (
-        <ul className='flex gap-24 justify-center items-center text-sm text-gray-600'>
+        <ul className='flex gap-24 justify-center items-center text-sm text-texto'>
           <li className='group'>        
             <a href="#" className=' hover:text-zinc-200'>OCASIÕES</a>
             <ul className=' p-2 bg-neutral-100 bg-opacity-50 invisible absolute group-hover:visible hover:visible'>
@@ -36,10 +36,10 @@ const Submenu = () => {
             </ul>              
           </li>
           <li>
-            <a href="#" className='  hover:text-zinc-200'>SOBRE</a>
+            <a href="/sobre" className='  hover:text-zinc-200'>SOBRE</a>
           </li>
           <li>
-            <a href="#" className='  hover:text-zinc-200'>FALE CONOSCO</a>
+            <a href="/contato" className='  hover:text-zinc-200'>FALE CONOSCO</a>
           </li>
         </ul>        
     )

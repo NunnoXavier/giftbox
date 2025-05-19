@@ -51,10 +51,10 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                 {/* dados do produto */}
                 <div 
                 className="bg-white col-start-1 md:col-start-8 col-span-1 md:col-span-4  
-                flex  flex-col justify-center space-y-5 border border-gray-200 rounded-lg p-4"
+                flex  flex-col justify-center space-y-5 border border-borda rounded-lg p-4 shadow-md"
                 >
                     <h1 className="text-2xl text-center">{produto.title}</h1>
-                    <div className="flex justify-evenly text-sm text-gray-500">
+                    <div className="flex justify-evenly text-sm text-texto-label">
                         <span>ID: {produto.id}</span> 
                         <span>REF.: {produto.sku}</span>                                          
                     </div>
@@ -64,13 +64,13 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                     </div>
                     <div className="text-center">
                         <h1 
-                            className={`${promo < preco? 'text-gray-500': 'text-transparent'} 
+                            className={`${promo < preco? 'text-texto-label': 'text-transparent'} 
                             text-sm `} 
                         >
                             <s>R$ {preco.toFixed(2)}</s>
                         </h1>
                         <h1 
-                            className={`${promo < preco? 'text-red-500': 'text-gray-800'} 
+                            className={`${promo < preco? 'text-texto-alerta': 'text-texto'} 
                             text-3xl`} 
                         >
                             R$ {promo.toFixed(2)}
@@ -135,6 +135,9 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
             </div>
 
         </div>
+
+
+
     )
 }
 

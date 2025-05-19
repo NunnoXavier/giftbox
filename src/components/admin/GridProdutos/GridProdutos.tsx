@@ -28,9 +28,9 @@ const GridProdutos = ({produtos}:{produtos:Product[]}) => {
                 const linha = linhas.current.children[index]
                 if(linha === linhaSelecionada){
                     linha.classList.add('bg-cyan-200')
-                    linha.classList.remove('odd:bg-gray-100')
+                    linha.classList.remove('odd:bg-background')
                 }else{
-                    linha.classList.add('odd:bg-gray-100')
+                    linha.classList.add('odd:bg-background')
                     linha.classList.remove('bg-cyan-200')
                 }                
             }
@@ -50,17 +50,17 @@ const GridProdutos = ({produtos}:{produtos:Product[]}) => {
 
 
     return(
-        <div className=" bg-white flex flex-col justify-between w-96 h-96 border border-gray-200 rounded-md">
+        <div className=" bg-white flex flex-col justify-between w-96 h-96 border border-borda rounded-md">
             <div>
-                <div className="flex flex-row font-bold text-gray-200 bg-cyan-700 pt-1 px-2 rounded-t-md">
+                <div className="flex flex-row font-bold text-background bg-cyan-700 pt-1 px-2 rounded-t-md">
                     <div className="w-1/10">ID</div>
                     <div className="w-5/10">Titulo</div>
                     <div className="w-4/10">Seção</div>
                 </div>
-                <div ref={linhas} className="w-95.5 h-max overflow-scroll text-gray-600">
+                <div ref={linhas} className="w-95.5 h-max overflow-scroll text-texto">
                     {
                         produtos.map((produto) => (
-                            <div key={produto.id} className="flex flex-row odd:bg-gray-100 px-2" 
+                            <div key={produto.id} className="flex flex-row odd:bg-background px-2" 
                             onClick={(e) => selecionar(e.currentTarget,produto)}>
                                 <div className="w-1/10">{produto.id}</div>
                                 <div className="w-5/10">{produto.title}</div>
@@ -72,7 +72,7 @@ const GridProdutos = ({produtos}:{produtos:Product[]}) => {
             </div>
             <div className="flex justify-end mb-2 mx-2">
                 <button 
-                    className="border border-gray-200 bg-gray-600 text-gray-200 rounded-xl px-2"
+                    className="border border-borda bg-texto text-background rounded-xl px-2"
                     onClick={irParaNovoProduto}
                 >
                     Novo Produto

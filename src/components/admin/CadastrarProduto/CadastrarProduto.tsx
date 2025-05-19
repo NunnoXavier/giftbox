@@ -84,15 +84,15 @@ const CadastrarProduto = async () => {
 
     return(
         <form 
-        className="bg-white w-96 border border-gray-200 rounded-lg p-4"
+        className="bg-white w-96 border border-borda rounded-lg p-4"
         action={salvar}
         >
-            <h1 className="text-center font-bold text-lg text-gray-500">Cadastrar Produto</h1>
+            <h1 className="text-center font-bold text-lg text-texto-label">Cadastrar Produto</h1>
             <CamposProduto produtos={ produtos } categorias={ categorias }/>
 
             <div className='flex justify-center mt-4'>
                 <input 
-                    className="inline bg-violet-500 text-white w-30 px-2 rounded-xl relative"
+                    className="inline bg-texto2 text-white w-30 px-2 rounded-xl relative"
                     type="submit"
                     value="salvar"
                     />

@@ -28,14 +28,14 @@ const Campo = ({
 }:CampoProps) => {
  return (
     <div className={`${className} bg-white flex gap-2`}>
-        <label className="w-30 text-right text-gray-500">{label}</label>
+        <label className="w-30 text-right text-texto-label">{label}</label>
         {
             inputType === "input"?
             (
                 <input 
                     name={name}
                     type={type}
-                    className={`${classWidth} border border-gray-200 rounded px-2`}
+                    className={`${classWidth} border border-borda rounded px-2`}
                     readOnly={readOnly}
                     step={step}
                     value={value}
@@ -45,7 +45,7 @@ const Campo = ({
                 (
                     <textarea rows={4}
                     name={name}
-                    className="flex-1 border border-gray-200 rounded px-2"
+                    className="flex-1 border border-borda rounded px-2"
                     readOnly={readOnly}
                     value={value}
                     onChange={onChange}

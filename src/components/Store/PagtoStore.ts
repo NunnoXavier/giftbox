@@ -1,9 +1,10 @@
+
 import { OrderPayment } from "@/types/types"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 
 export const createQueryPagto = () => {
     const fetchPagto = async():Promise<OrderPayment> => {
-        const storage = localStorage.getItem('pagto')
+        const storage = sessionStorage.getItem('pagto')
 
         const pagto = storage? JSON.parse(storage) : {}
         return pagto
@@ -18,9 +19,9 @@ export const createQueryPagto = () => {
 }
 
 export const fetchAddDadosPagto = async(dadosPagto:OrderPayment):Promise<OrderPayment> => {
-    const storage = localStorage.getItem('pagto')
+    const storage = sessionStorage.getItem('pagto')
     const dadosAntigos = storage? JSON.parse(storage) : {}
-    localStorage.setItem('pagto', JSON.stringify({ 
+    sessionStorage.setItem('pagto', JSON.stringify({ 
         ...dadosAntigos, 
         cardCvv: dadosPagto.cardCvv,
         cardExpire: dadosPagto.cardExpire,

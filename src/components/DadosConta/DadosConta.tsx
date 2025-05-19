@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { dateBrToISO, toDateBr } from "@/services/utils"
 import { User } from "@/types/types"
-import { Loader2 } from "lucide-react"
+import { Loader2, UserIcon, AtSignIcon, MapPin, CreditCard } from "lucide-react"
 
 type UserDTO = {
     firstName: string
@@ -118,166 +118,155 @@ const DadosConta = ({usuario, fnSalvarDados}:DadosContaProps) => {
     }
 
     return (
-        <div className={ loading ? 'cursor-progress' : 'cursor-default' }>
-            <div className="my-5 place-items-center">
-                <h1 className="text-gray-600 font-bold">Dados Pessoais</h1>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Nome:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={nome} 
-                            className="w-full px-2"
-                            onChange={(e) => setNome(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Sobrenome:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={sobrenome} 
-                            className="w-full px-2"
-                            onChange={(e) => setSobrenome(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Nascimento:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="date" value={nascimento} 
-                            className="w-full px-2"
-                            onChange={(e) => setNascimento(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Fone:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="tel" value={fone} 
-                            className="w-full px-2"
-                            onChange={(e) => setFone(e.target.value)}  
-                        />
-                    </div>
-                </div>
+        <div className={`bg-white ${loading ? 'cursor-progress' : 'cursor-default'} 
+        p-8 max-w-4xl mx-auto rounded-lg shadow-md`}>
+          {/* SEÇÃO: Dados Pessoais */}
+          <section className="mb-10">
+            <h2 className="text-lg font-bold text-texto border-b pb-2 mb-6"> 
+                <UserIcon className="w-5 h-5 inline-block mr-2" />
+                Dados Pessoais
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="text-sm text-texto">Nome</label>
+                <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">Sobrenome</label>
+                <input type="text" value={sobrenome} onChange={(e) => setSobrenome(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">Nascimento</label>
+                <input type="date" value={nascimento} onChange={(e) => setNascimento(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">Telefone</label>
+                <input type="tel" value={fone} onChange={(e) => setFone(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                />
+              </div>
             </div>
-
-            <div className="my-5 place-items-center">
-                <h1 className="text-gray-600 font-bold">Dados da Conta</h1>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Email:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="email" value={email} 
-                            className="w-full px-2"
-                            onChange={(e) => setEmail(e.target.value)}  
-                        />
-                    </div>
-                </div>
+          </section>
+      
+          {/* SEÇÃO: Conta */}
+          <section className="mb-10">
+            <h2 className="text-lg font-bold text-texto border-b pb-2 mb-6">
+                <AtSignIcon className="w-5 h-5 inline-block mr-2" />
+                Conta
+            </h2>
+            <div className="grid grid-cols-1 gap-6">
+              <div>
+                <label className="text-sm text-texto">Email</label>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                />
+              </div>
             </div>
-
-            <div className="my-5 place-items-center">
-                <h1 className="text-gray-600 font-bold">Dados para Entrega</h1>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">CEP:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={cep} 
-                            className="w-full px-2"
-                            onChange={(e) => setCep(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end w-full">
-                    <span className="text-blue-600 text-xs cursor-zoom-in" onClick={() => buscarEndereco()}>Buscar Endereço</span>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Endereço:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={endereco} 
-                            className="w-full px-2"
-                            onChange={(e) => setEndereco(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Cidade:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={cidade} 
-                            className="w-full px-2"
-                            onChange={(e) => setCidade(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">UF:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={uf} 
-                            className="w-full px-2"
-                            onChange={(e) => setUf(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">OBS/Compl:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={obs} 
-                            className="w-full px-2"
-                            onChange={(e) => setObs(e.target.value)}  
-                        />
-                    </div>
-                </div>
+          </section>
+      
+          {/* SEÇÃO: Endereço */}
+          <section className="mb-10">
+            <h2 className="text-lg font-bold text-texto border-b pb-2 mb-6">
+                <MapPin className="w-5 h-5 inline-block mr-2" />
+                Endereço de Entrega
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="text-sm text-texto">CEP</label>
+                <input type="text" value={cep} onChange={(e) => setCep(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+                <span
+                  className="text-texto-link text-xs cursor-pointer hover:underline mt-1 inline-block"
+                  onClick={() => buscarEndereco()}
+                >
+                  Buscar Endereço
+                </span>
+              </div>
+              <div>
+                <label className="text-sm text-texto">Endereço</label>
+                <input type="text" value={endereco} onChange={(e) => setEndereco(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">Cidade</label>
+                <input type="text" value={cidade} onChange={(e) => setCidade(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">UF</label>
+                <input type="text" value={uf} onChange={(e) => setUf(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="text-sm text-texto">Complemento / Observações</label>
+                <input type="text" value={obs} onChange={(e) => setObs(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
             </div>
-
-            <div className="my-5 place-items-center">
-                <h1 className="text-gray-600 font-bold">Dados de Pagamento</h1>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Nro Cartão:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={cartao} 
-                            className="w-full px-2"
-                            onChange={(e) => setCartao(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Nome (igual no cartão):</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={nomeCartao} 
-                            className="w-full px-2"
-                            onChange={(e) => setNomeCartao(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">CPF/CNPJ:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={cpfCnpj} 
-                            className="w-full px-2"
-                            onChange={(e) => setCpfCnpj(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">Vencimento:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={vencimento} 
-                            className="w-full px-2"
-                            onChange={(e) => setVencimento(e.target.value)}  
-                        />
-                    </div>
-                </div>
-                <div className="flex gap-2 justify-end mt-4 w-full">
-                    <span className="text-gray-600">CVV:</span>
-                    <div className="border border-gray-400 rounded-md">
-                        <input type="text" value={cvv} 
-                            className="w-full px-2"
-                            onChange={(e) => setCvv(e.target.value)}  
-                        />
-                    </div>
-                </div>
-            
-                < div className="flex gap-2 justify-center mt-4 w-full">
-                    <button className="bg-blue-600 text-white font-bold px-4 py-2 rounded-md" onClick={() => salvar()}>Salvar</button>
-                </div>            
+          </section>
+      
+          {/* SEÇÃO: Pagamento */}
+          <section className="mb-10">
+            <h2 className="text-lg font-bold text-texto border-b pb-2 mb-6">
+                <CreditCard className="w-5 h-5 inline-block mr-2" />
+                Dados de Pagamento
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="text-sm text-texto">Número do Cartão</label>
+                <input type="text" value={cartao} onChange={(e) => setCartao(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">Nome no Cartão</label>
+                <input type="text" value={nomeCartao} onChange={(e) => setNomeCartao(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">CPF/CNPJ</label>
+                <input type="text" value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">Vencimento</label>
+                <input type="text" value={vencimento} onChange={(e) => setVencimento(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-texto">CVV</label>
+                <input type="text" value={cvv} onChange={(e) => setCvv(e.target.value)} 
+                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                />
+              </div>
             </div>
+          </section>
+      
+          <div className="flex justify-center">
+            <button
+              className="bg-texto2 hover:bg-borda2 text-white font-bold px-6 py-3 rounded-lg transition"
+              onClick={salvar}
+            >
+              {loading ? <Loader2 className="animate-spin" /> : "Salvar"}
+            </button>
+          </div>
         </div>
-    )
+      )
+      
 }
 
 /*

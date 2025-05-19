@@ -24,7 +24,7 @@ const BtnAddSacola = ({ produto, className }:BtnAddSacolaProps) => {
    
     return (
         <button 
-            className={`${className} text-xs w-40 flex place-content-center bg-violet-400 text-white px-2 py-1 rounded-xl`}
+            className={`${className} text-xs w-40 flex place-content-center bg-borda2 text-white px-2 py-1 rounded-xl`}
             onClick={() => addSacola({ 
                 id: 0,
                 title: produto?.title || "", 

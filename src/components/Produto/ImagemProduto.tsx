@@ -4,6 +4,7 @@ import { Image } from "@/types/types"
 import { useEffect, useState } from "react"
 import imagemproduto from '../../../public/images/img_3975-xfqzgt5sa1.jpeg'
 import Placeholder from "./Placeholder"
+import Imagem from "next/image"
 
 type ImagemProdutoProps = {
     className?: string,
@@ -29,12 +30,13 @@ const ImagemProduto = ({ className, imagens }:ImagemProdutoProps) => {
         <div className={`${className}`}>
             <div 
                 className=" bg-white h-96 md:h-[620px] overflow-hidden border 
-                border-gray-200 rounded-lg relative"
+                border-borda rounded-lg relative shadow-md"
             >
-                <img 
+                <Imagem
                     className="max-h-[420px] md:max-h-[640px] absolute top-1/2 -translate-y-1/2 
                     left-1/2 -translate-x-1/2" 
                     src={imagemSelecionada} alt={'imagem'} 
+                    width={1000} height={1000}
                 />
             </div>
             
@@ -44,12 +46,13 @@ const ImagemProduto = ({ className, imagens }:ImagemProdutoProps) => {
                         return(
                             <button 
                                 key={index} 
-                                className="bg-white hover:bg-gray-200 cursor-pointer border border-gray-200 rounded-lg"
+                                className="bg-white hover:bg-background cursor-pointer border border-borda rounded-lg shadow-md"
                                 onClick={() => setImagemSelecionada(imagem) }
                             >
-                                <img 
+                                <Imagem
                                     className="md:h-20 h-[60px] rounded-lg"
-                                    src={imagem} alt="miniatura" 
+                                    src={imagem} alt="miniatura"
+                                    width={100} height={100}
                                 />
                             </button>
                         )

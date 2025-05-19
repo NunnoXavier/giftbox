@@ -3,8 +3,8 @@ import { Undo2 } from "lucide-react"
 const FalhaPagto = () => {
     return (
         <div className="w-md md:w-lg m-auto">
-            <div className="bg-white w-md md:w-lg rounded-lg m-auto p-4">
-                <h1 className="font-semibold text-xl text-gray-700 text-center mb-2">Transação Rejeitada</h1>
+            <div className="bg-white w-md md:w-lg rounded-lg m-auto p-4 shadow-md">
+                <h1 className="font-semibold text-xl text-texto text-center mb-2">Transação Rejeitada</h1>
                 <h2 className="text-md">Houve uma falha no pagamento.</h2>
                 <p>
                     Tente novamente ou entre em contato com o suporte.
@@ -13,7 +13,7 @@ const FalhaPagto = () => {
             <div className="w-md md:w-lg rounded-lg m-auto p-4">
                 <a href="/checkout" className="flex gap-2 justify-center items-center">
                     <span>Voltar para checkout</span>
-                    <Undo2 className="text-blue-600" />
+                    <Undo2 className="text-texto-link" />
                 </a>
 
             </div>

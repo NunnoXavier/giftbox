@@ -16,7 +16,7 @@ const BtnEsvaziarSaola = () => {
 
     return (
         <div className="flex">
-            <button className="w-40 bg-red-500 text-white text-sm rounded-full ml-2"
+            <button className="w-40 bg-texto-alerta text-white text-sm rounded-full ml-2"
                 onClick={() => mutateEsvaziarSacola()}>
                 esvaziar sacola
             </button>

@@ -69,13 +69,13 @@ const ModalAddEndereco = () => {
     return (
             <div className="flex justify-end text-sm gap-3">
                 <button 
-                    className="border border-gray-300 rounded-full px-3 py-1"
+                    className="border border-borda rounded-full px-3 py-1"
                     onClick={fechar}
                 >
                         Fechar
                     </button>
                 <button 
-                    className="border border-gray-300 rounded-full bg-violet-600 text-white px-3 py-1"
+                    className="border border-borda rounded-full bg-texto2 text-white px-3 py-1"
                     onClick={salvar}
                 >
                     Salvar instruções
@@ -107,7 +107,7 @@ const ModalAddEndereco = () => {
                     <span>Endereço de entrega</span>
                     <input 
                         type="text" 
-                        className="border border-gray-200 rounded-md w-full px-2"
+                        className="border border-borda rounded-md w-full px-2"
                         placeholder="Ex: Rua Oscar Freire, 2000"
                         value={usuario?.address || ""}
                         onChange={(e) => setUsuario({ ...usuario, address: e.currentTarget?.value })}
@@ -118,14 +118,14 @@ const ModalAddEndereco = () => {
                     <div className="flex gap-2">
                         <input 
                             type="text" 
-                            className="border border-gray-200 rounded-md w-5/6 px-2"
+                            className="border border-borda rounded-md w-5/6 px-2"
                             placeholder="Ex: São Paulo"
                             value={usuario?.city || ""}
                             onChange={(e) => setUsuario({ ...usuario, city: e.currentTarget?.value })}
                             />
                         <input 
                             type="text" 
-                            className="border border-gray-200 rounded-md w-1/6 px-2"
+                            className="border border-borda rounded-md w-1/6 px-2"
                             placeholder="Ex: SP"
                             value={usuario?.state || ""}
                             onChange={(e) => setUsuario({ ...usuario, state: e.currentTarget?.value })}
@@ -137,14 +137,14 @@ const ModalAddEndereco = () => {
                     <div className="flex gap-2">
                         <input 
                             type="text" 
-                            className="border border-gray-200 rounded-md w-2/6 px-2"
+                            className="border border-borda rounded-md w-2/6 px-2"
                             placeholder="Ex: 05037001"
                             value={usuario?.postalCode || ""}
                             onChange={(e) => setUsuario({ ...usuario, postalCode: e.currentTarget?.value })}
                             />
                         <input 
                             type="text" 
-                            className="border border-gray-200 rounded-md w-4/6 px-2"
+                            className="border border-borda rounded-md w-4/6 px-2"
                             placeholder='Ex: "Apto 120" ou "terreo/fundos"'
                             value={usuario?.obs || ""}
                             onChange={(e) => setUsuario({ ...usuario, obs: e.currentTarget?.value })}

@@ -22,7 +22,7 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
     const { data:sacola, error, isLoading } = createQuerySacola()
     const { data:pagto, error:errorPagto, isLoading:isLoadingPagto } = createQueryPagto()
     const { data:usuario, error:errorUsuario, isLoading:isLoadingUsuario } = createQueryUsuario() 
-    const pedido:Order = createStorePedido()
+    const pedido = createStorePedido()
     
     const router = useRouter()
     
@@ -60,6 +60,11 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
         return 
     }
     
+
+    if(pedido && pedido.idUser !== usuario.id){
+        console.log('pedido diferente do usuario')
+        //sessionStorage.removeItem('pedido')
+    }
 
     const produtosAlterados = sacola.filter((item) => {
         const precoCadastro = precos.find((p) => p.id === item.idProduct) || { id: item.idProduct, price: item.price, discountpercentage: item.discountPercentage }
@@ -155,7 +160,7 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
     }
 
     return (
-        <div className="flex flex-col gap-4 bg-white border border-gray-200 w-full p-4 rounded-lg">
+        <div className="flex flex-col gap-4 bg-white border border-borda w-full p-4 rounded-lg shadow-md">
                 {
                     produtosAlterados.length > 0?
                     (
@@ -195,7 +200,7 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
                 <span className="whitespace-nowrap">Frete:</span>  
                 <span className="whitespace-nowrap">R$ { (0).toFixed(2) }</span>
             </h2>
-            <h2 className="flex justify-between text-sm text-violet-500">
+            <h2 className="flex justify-between text-sm text-texto2">
                 <span className="whitespace-nowrap">Desconto:</span>  
                 <span className="whitespace-nowrap">R$ -{ totalDesc.toFixed(2) }</span>
             </h2>

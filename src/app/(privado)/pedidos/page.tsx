@@ -21,9 +21,9 @@ const Pedidos = async ({ params }:{ params: Promise<{ id:string }> }) => {
 
 
     return (
-        <div>
-            <h1 className="font-bold text-2xl text-gray-700 text-center">Seus Pedidos</h1>
-            <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col items-center">
+            <h1 className="font-bold text-2xl text-texto text-center">Seus Pedidos</h1>
+            <div className="flex flex-col items-center w-md md:w-5xl">
                 {
                     data.length === 0 ? 
                     (

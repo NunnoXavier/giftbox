@@ -101,6 +101,9 @@ export interface Meta {
 }
 
 export interface Review {
+    id:          number;
+    idProduct: number;
+    idOrder:   number;
     rating:        number;
     comment:       string;
     date?:          Date;
@@ -176,6 +179,7 @@ export interface OrderDTO {
 }
 
 export interface OrderProduct {
+    id?: number;
     idProduct: number;
     qtde: number;
     title: string;
@@ -391,4 +395,13 @@ export interface CepProps {
 export interface CoordProps {
     lat: number;
     lon: number;
+}
+
+export interface Message {
+    id?: number,
+    createdAt: Date,
+    name: string,
+    email: string,
+    subject: string,
+    message: string,    
 }

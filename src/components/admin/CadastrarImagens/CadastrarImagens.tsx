@@ -75,8 +75,8 @@ const CadastrarImagens = async () => {
     }
 
     return (
-        <form action={salvarUrl} className="flex flex-col w-96 max-h-150 justify-between border border-gray-200 bg-white rounded-lg p-4">
-            <h1 className="font-semibold text-lg text-gray-500 text-center">Imagens</h1>
+        <form action={salvarUrl} className="flex flex-col w-96 max-h-150 justify-between border border-borda bg-white rounded-lg p-4">
+            <h1 className="font-semibold text-lg text-texto-label text-center">Imagens</h1>
             <DadosProduto produtos={ produtos } apagar={apagar}/> 
         </form>        
     )

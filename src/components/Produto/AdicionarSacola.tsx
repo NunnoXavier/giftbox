@@ -43,13 +43,13 @@ const AdicionarSacola = ({itemSacola}:{itemSacola:ProductCart}) => {
     return (
         <div className="bg-white flex gap-2">
             <input 
-                className=" bg-gray-100 outline-0 px-2 text-center appearance-none caret-violet-400 text-violet-400 focus:border focus:border-violet-400 w-14 h-14 rounded-lg" 
+                className=" bg-background outline-0 px-2 text-center appearance-none caret-borda2 text-texto2 focus:border focus:border-borda2 w-14 h-14 rounded-lg" 
                 type="number"
                 value={qtde}
                 onChange={(e) => setQtde(e.currentTarget.value) }
             />
             <button  
-                className="flex-1 flex gap-2 justify-center place-items-center bg-violet-400 text-white px-5 rounded-xl"
+                className="flex-1 flex gap-2 justify-center place-items-center bg-texto2 hover:bg-borda2 text-white px-5 rounded-xl"
                 onClick={adicionarSacola}
                 
             >

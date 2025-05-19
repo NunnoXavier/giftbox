@@ -47,7 +47,7 @@ const Conta = async () => {
 
     return (
         <div className="place-items-center">
-            <h1 className="text-xl text-gray-600 font-bold">Conta</h1>
+            <h1 className="text-3xl text-texto font-bold">Perfil</h1>
             <DadosConta fnSalvarDados={salvarDados} usuario={usuario}/>
         </div>
     )

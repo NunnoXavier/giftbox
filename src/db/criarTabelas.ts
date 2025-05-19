@@ -77,17 +77,19 @@ const criarTabelas = async () => {
                 )
             `)
 
-                await query(`
-            CREATE TABLE if not EXISTS reviews(
+            await query(`
+                CREATE TABLE if not EXISTS reviews(
                 id SERIAL,
+                idorder INT default 0,
                 idproduct INT default 0,
                 rating NUMERIC(1) default 0,
                 comment text,
                 date Date,
                 reviewername varchar(100),
-                reviewernmail varchar(100),
+                revieweremail varchar(100),
                 PRIMARY KEY (id),
                 FOREIGN KEY(idproduct) REFERENCES products(id) ON DELETE CASCADE
+
             )
         `)
     
@@ -164,10 +166,24 @@ const criarTabelas = async () => {
                 PRIMARY KEY (id),
                 FOREIGN KEY(idorder) REFERENCES orders(id) ON DELETE CASCADE
             )
-        `)        
+        `)  
+        await query(`
+            CREATE TABLE if not EXISTS messages(
+                id BIGSERIAL,
+                createdat DATE,
+                name varchar(100),
+                email varchar(100),
+                subject varchar(100),
+                message text,
+                PRIMARY KEY (id)
+            )
+        `)  
+        
+        
         
         //criando indices
         await query('CREATE UNIQUE INDEX IF NOT EXISTS idx_email ON users (email);')
+        await query('CREATE UNIQUE INDEX IF NOT EXISTS idx_review_order ON reviews (idorder,idproduct);')
         await query('CREATE INDEX IF NOT EXISTS idx_users_birthday ON users (birthday);')
         await query('CREATE UNIQUE INDEX IF NOT EXISTS idx_descr ON categories (description);')
         await query('CREATE UNIQUE INDEX IF NOT EXISTS idx_title ON products (title);')

@@ -1,5 +1,5 @@
-import { getEntregaPedido, getPagtoPedido, getPedidos, getProdutosPedido } from "@/db/pedidos"
-import { AuthTokenPayload, Convert, Order, OrderDTO } from "@/types/types"
+import { getPedidos } from "@/db/pedidos"
+import { AuthTokenPayload, Order } from "@/types/types"
 import { jwtDecode } from "jwt-decode"
 import { NextRequest, NextResponse } from "next/server"
 

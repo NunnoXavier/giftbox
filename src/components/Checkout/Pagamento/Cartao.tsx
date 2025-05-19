@@ -130,7 +130,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
 
     
     return (
-        <div className={`${salvando? 'text-gray-200' : ''}`}>
+        <div className={`${salvando? 'text-background' : ''}`}>
             <h1 className="font-semibold  mb-2">Cartão selecionado</h1>
             <div className="flex flex-col gap-2">
                 <div className="flex gap-2">
@@ -138,7 +138,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
                         <span className="text-sm">CPF/CNPJ do Titular</span>
                         <input 
                             type="text" 
-                            className="border border-gray-200 rounded-md px-2"
+                            className="border border-borda rounded-md px-2"
                             value={usuario?.cardHolderDoc || ""}
                             onChange={(e) => setUsuario({ ...usuario, cardHolderDoc: cpfCnpj(e.currentTarget.value.slice(0,18))}) }
                             />
@@ -147,7 +147,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
                         <span className="text-sm">Nome Completo do Titular</span>
                         <input 
                             type="text" 
-                            className="border border-gray-200 rounded-md px-2"
+                            className="border border-borda rounded-md px-2"
                             value={usuario?.cardHolderName || ""}
                             onChange={(e) => setUsuario({ ...usuario, cardHolderName: e.currentTarget.value.toUpperCase().slice(0,99) }) }
                             />
@@ -158,7 +158,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
                         <span className="text-sm">Número do Cartão</span>
                         <input 
                             type="text" 
-                            className="border border-gray-200 rounded-md px-2"
+                            className="border border-borda rounded-md px-2"
                             value={usuario?.cardNumber || ""}
                             onChange={(e) => {
                                 const novoValor = cartao(e.currentTarget.value.slice(0,19))
@@ -173,7 +173,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
                         <span className="text-sm">Validade</span>
                         <input 
                             type="text" 
-                            className="border border-gray-200 rounded-md px-2"
+                            className="border border-borda rounded-md px-2"
                             placeholder="dd/aa"
                             value={validadeCartao(usuario?.cardExpire || "")}
                             onChange={(e) => setUsuario({ ...usuario, cardExpire: e.currentTarget.value.slice(0,5) }) }
@@ -183,7 +183,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
                         <span className="text-sm">CVV</span>
                         <input 
                             type="number" 
-                            className="border border-gray-200 rounded-md px-2"
+                            className="border border-borda rounded-md px-2"
                             value={usuario?.cardCvv?.toString() || ""}
                             onChange={(e) => setUsuario({ ...usuario, cardCvv: Number(e.currentTarget.value.slice(0,3)) }) }
                         />
@@ -192,7 +192,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
                         <span className="text-sm">Qtd. Parc.</span>
                         <input 
                             type="number" 
-                            className="border border-gray-200 rounded-md px-2"
+                            className="border border-borda rounded-md px-2"
                             value={ parc.toString() }
                             min={1} max={6}
                             onChange={(e) => setParc( Number(e.currentTarget.value) ) }
@@ -202,7 +202,7 @@ const Cartao = ({ fnAlterarDados }:{ fnAlterarDados:(o:OrderPayment) => Promise<
             </div>
             <div className="flex justify-end py-2">
                 <button 
-                    className={`${salvo? 'bg-white text-gray-200':'bg-violet-500 text-white'} border  text-sm   py-1 px-4 rounded-full`}
+                    className={`${salvo? 'bg-white text-texto-label':'bg-texto2 text-white'} border  text-sm   py-1 px-4 rounded-full `}
                     onClick={salvar}
                 >
                     Salvar dados do Cartão

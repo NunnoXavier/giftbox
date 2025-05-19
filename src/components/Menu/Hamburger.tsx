@@ -4,6 +4,7 @@ import { Menu, ChevronDown, ChevronUp, UserRoundPlus, ChevronLeft, LogIn } from 
 import { useEffect, useRef, useState } from 'react'
 import AlertaSacola from './AlertaSacola'
 import { User } from '@/types/types'
+import Image from 'next/image'
 
 const Hamburger = ({className, usuario}:{className?:string, usuario?:User}) => {
     const [open, setOpen] = useState(false)
@@ -40,16 +41,18 @@ const Hamburger = ({className, usuario}:{className?:string, usuario?:User}) => {
                 <AlertaSacola className="left-2.5 -top-1.5"/>
                 <Menu className="z-1"/>
             </div>
-            <aside ref={menuRef} className={`${open? 'w-96' : 'w-0'} fixed left-0 top-0 h-[100vh] bg-white transition-all duration-300 overflow-hidden z-20`}>
+            <aside ref={menuRef} className={`${open? 'w-96' : 'w-0'} fixed left-0 top-0 h-[100vh] bg-white transition-all duration-300 overflow-hidden z-20 shadow-md`}>
                 <ChevronLeft 
-                    className='absolute right-0 top-1 text-gray-500'
+                    className='absolute right-0 top-1 text-texto-label'
                     onClick={()=> setOpen(false)}
                 />
-                <div className='border-b border-gray-300 my-4'>
-                    <img 
+                <div className='border-b border-borda my-4'>
+                    <Image 
                         className='w-36'
                         src="/texto-sigiftbox.svg"
                         alt="Logo"
+                        width={100}
+                        height={100}
                     />
                 {
                     usuario? 
@@ -66,11 +69,11 @@ const Hamburger = ({className, usuario}:{className?:string, usuario?:User}) => {
                     )
                     :(
                         <div className="flex gap-2 mt-4 mb-2 mx-2 justify-evenly">
-                            <a href="/login" className='flex flex-1 justify-center items-center gap-2 border border-gray-500 rounded-lg px-2 py-1'>
+                            <a href="/login" className='flex flex-1 justify-center items-center gap-2 border bordertexto-label rounded-lg px-2 py-1'>
                                 login
                                 <LogIn size={20}/>
                             </a>                    
-                            <a href="/cadastrar" className='flex flex-1 justify-center items-center gap-2 border border-gray-500 rounded-lg px-2 py-1'>
+                            <a href="/cadastrar" className='flex flex-1 justify-center items-center gap-2 border bordertexto-label rounded-lg px-2 py-1'>
                                 criar conta
                                 <UserRoundPlus size={20}/>
                             </a>                    
@@ -79,27 +82,27 @@ const Hamburger = ({className, usuario}:{className?:string, usuario?:User}) => {
                 }
 
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 pl-4'>
+                <div className='border-b border-borda my-4 pb-3 pl-4'>
                     <a href="/conta" className='flex align-bottom justify-between'>
-                        <h1 className='text-xl text-gray-800'>Perfil</h1>
+                        <h1 className='text-xl text-texto'>Perfil</h1>
                     </a>
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 pl-4'>
+                <div className='border-b border-borda my-4 pb-3 pl-4'>
                     <a href="/pedidos" className='flex align-bottom justify-between'>
-                        <h1 className='text-xl text-gray-800'>Pedidos</h1>
+                        <h1 className='text-xl text-texto'>Pedidos</h1>
                     </a>
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 pl-4'>                    
+                <div className='border-b border-borda my-4 pb-3 pl-4'>                    
                     <a href="/sacola" className='flex align-bottom justify-between relative'>                        
                         <AlertaSacola className="translate-x-12"/>
-                        <h1 className='text-xl text-gray-800 relative'>Sacola</h1>
+                        <h1 className='text-xl text-texto relative'>Sacola</h1>
                     </a>
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 px-4 overflow-hidden'>
+                <div className='border-b border-borda my-4 pb-3 px-4 overflow-hidden'>
                     <a className='flex align-bottom justify-between'
                         onClick={() => setMenuOcasioesOpen(!menuOcasioesOpen) }
                     >
-                        <h1 className='text-xl text-gray-800'>Ocasiões</h1>
+                        <h1 className='text-xl text-texto'>Ocasiões</h1>
                         {
                             menuOcasioesOpen? (<ChevronUp strokeWidth={1} size={30} />) : 
                                               (<ChevronDown strokeWidth={1} size={30} />)
@@ -117,11 +120,11 @@ const Hamburger = ({className, usuario}:{className?:string, usuario?:User}) => {
                         </div>                        
                     </div>
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 px-4 overflow-hidden'>
+                <div className='border-b border-borda my-4 pb-3 px-4 overflow-hidden'>
                     <a className='flex align-bottom justify-between'
                         onClick={() => setMenuDatasOpen(!menuDatasOpen) }
                     >
-                        <h1 className='text-xl text-gray-800'>Datas Comemorativas</h1>
+                        <h1 className='text-xl text-texto'>Datas Comemorativas</h1>
                         {
                             menuDatasOpen? (<ChevronUp strokeWidth={1} size={30} />) : 
                                               (<ChevronDown strokeWidth={1} size={30} />)
@@ -142,19 +145,19 @@ const Hamburger = ({className, usuario}:{className?:string, usuario?:User}) => {
                         </div>                        
                     </div>
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 pl-4'>
+                <div className='border-b border-borda my-4 pb-3 pl-4'>
                     <a href="/sobre" className='flex align-bottom justify-between'>
-                        <h1 className='text-xl text-gray-800'>Sobre</h1>
+                        <h1 className='text-xl text-texto'>Sobre</h1>
                     </a>
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 pl-4'>
+                <div className='border-b border-borda my-4 pb-3 pl-4'>
                     <a href="/contato" className='flex align-bottom justify-between'>
-                        <h1 className='text-xl text-gray-800'>Fale Conosco</h1>
+                        <h1 className='text-xl text-texto'>Fale Conosco</h1>
                     </a>
                 </div>
-                <div className='border-b border-gray-300 my-4 pb-3 pl-4'>
+                <div className='border-b border-borda my-4 pb-3 pl-4'>
                     <a href="/api/usuarios/logout" className='flex align-bottom justify-between'>
-                        <h1 className='text-xl text-gray-800'>Sair</h1>
+                        <h1 className='text-xl text-texto'>Sair</h1>
                     </a>
                 </div>
             </aside>

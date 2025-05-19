@@ -3,7 +3,7 @@ import { getUsuarios } from '@/db/usuarios'
 import { Order, User } from '@/types/types'
 import { jwtDecode } from 'jwt-decode'
 import { AuthTokenPayload } from '@/types/types' 
-import {  getPedidos, putEntregaPedido, putPagtoPedido, putPedido, putProdutoPedido, removeProdutoPedido, updatePagtoPedido, updatePedido } from '@/db/pedidos'
+import {  getPedidos, putEntregaPedido, putPagtoPedido, putPedido, putProdutoPedido, removeProdutoPedido, updateEntregaPedido, updatePagtoPedido, updatePedido } from '@/db/pedidos'
 
 
 export const PUT = async (request:NextRequest) => { 
@@ -121,7 +121,7 @@ export const POST = async (request:NextRequest) => {
         }
     
         if(body.shipping){
-            const { data:entrega, error:errorEntrega } = await putEntregaPedido(pedido.id, body.shipping)    
+            const { data:entrega, error:errorEntrega } = await updateEntregaPedido(pedido.id, body.shipping)    
             if(!entrega){
                 return NextResponse.json({ data: null, error: 'DB: ' + errorEntrega })
             }

@@ -3,7 +3,7 @@ import Redes from "./Redes"
 
 const Rodape = () => {
     return (
-        <footer className="z-20 flex flex-col justify-center items-center gap-4 bg-gray-800 text-white py-4 px-10">
+        <footer className="z-20 flex flex-col justify-center items-center gap-4 bg-texto text-white py-4 px-10">
             <Contato />
             <Redes />
             <div className="flex gap-2">
