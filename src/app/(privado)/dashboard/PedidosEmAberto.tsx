@@ -32,7 +32,7 @@ const statusPedido = (pedido: Order):TStatus =>{
                     .map((pedido) => (
                     <li key={pedido.id} className="border-b-2 border-borda pb-4">
                         <a
-                            href={`/pedidos/${pedido.id}`}
+                            href={`/pedido/${pedido.id}`}
                             className="text-sm text-texto"
                         >
                             Pedido #{pedido.id?.toString().padStart(7,'0')}

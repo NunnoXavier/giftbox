@@ -1,83 +1,29 @@
+import { actionPagar } from "@/actions/pedidos/actionPagar"
+import { actionStatusPedido } from "@/actions/pedidos/actionStatusPedido"
+import { fetchPedidos } from "@/cachedFetchs/fetchPedidos"
+import BtnVoltar from "@/components/genericos/ BtnVoltar"
 import BtnPagar from "@/components/Pedido/BtnPagar"
 import { maskCep } from "@/services/useMask"
-import { ChStatus, Order, User } from "@/types/types"
 import { Undo2 } from "lucide-react"
-import { cookies } from "next/headers"
 
 const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
     const id = (await params).id
-    const cookieStore = await cookies()
-    const cookieToken = cookieStore.get("SIGIFTBOX_AUTH_TOKEN")
-    const res = await fetch(`http://localhost:3000/api/pedidos/${id}`, {
-        method: "GET",
-        headers: { Cookie:`SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}` },
-    })
 
-    const { data, error }:{ data:Order, error:string } = await res.json()
+    if(!id){
+        return <h1>Id do pedido não informado na URL!</h1>
+    }
+
+    const pedidos = await fetchPedidos()
+    const data = pedidos?.find(pedido => pedido.id === Number(id))
 
     if(!data){
-        console.log(error)
         return <h1>Pedido não encontrado!</h1>
     }
 
-    if(!id){
-        return <h1>Pedido não informado!</h1>
+    const pagar = async () => {
+        'use server'
+        return await actionPagar(data)
     }
-
-    const pagar = async ():Promise<boolean> => {
-        'use server'        
-        try {            
-            const res = await fetch('http://localhost:3000/api/mock',{
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            
-            const { data:result, error:errorResult} = await res.json()
-            
-            if(!result){
-                console.log(errorResult)
-                return false
-            }else{
-                const chPedido:ChStatus = {
-                    idPedido: Number(id),
-                    novoStatus: "paid"
-                }
-
-                const res = await fetch('http://localhost:3000/api/pedidos/status',{                    
-                    method: 'POST',
-                    headers: { Cookie:`SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}` },
-                    body: JSON.stringify(chPedido)
-                })
-                const { data:resultStatus, error:errorResultStatus} = await res.json()
-                            
-                if(!resultStatus){
-                    console.log(errorResultStatus)
-                    return false
-                }else{
-                    const usuario = await fetch('http://localhost:3000/api/usuarios',{
-                        method: 'GET',
-                        headers: { Cookie:`SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}` },
-                    })
-                    const { data:usuarioData, error:usuarioError}:{ data:User, error:string } = await usuario.json()
-                    if(!usuarioData){
-                        console.log(usuarioError)
-                        return false
-                    }
-                    await fetch('http://localhost:3000/api/email',{
-                        method: 'POST',
-                        body: JSON.stringify({ 
-                            to: usuarioData.email, 
-                            subject: 'Pedido Confirmado', 
-                            html: `<p>Olá ${usuarioData.firstName}, seu pedido foi confirmado!</p>` })
-                    })
-                    
-                    return true
-                }
-            }
-        } catch (error) {
-            return false            
-        }
-    }    
 
     const valorParc = (data.payment?.value || 0) - ( data.payment?.discountPercentage || 0 ) / (data.payment?.parc || 1)
 
@@ -137,8 +83,8 @@ const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
 
             </div>
             <div className="flex p-4  justify-between items-center w-md md:w-lg">
-                <div className="w-1/3 overflow-hidden">
-                    <a href="/checkout" className="text-texto-link"><Undo2 /></a>                
+                <div className="w-1/3 overflow-hidden">                    
+                    <BtnVoltar><Undo2 /></BtnVoltar>
                 </div>
                 {
                     data.status === "canceled"
