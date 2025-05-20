@@ -1,7 +1,6 @@
 import BtnAvaliar from '@/components/BtnAvaliar/BtnAvaliar'
 import { fetchProdutosAvaliar } from '@/cachedFetchs/fetchProdutosAvaliar'
 import Image from "next/image"
-import Interruptor from '@/components/genericos/Interruptor'
 
 const AvaliarProdutoss = async () => {
 
@@ -13,8 +12,12 @@ const AvaliarProdutoss = async () => {
         )
     }
 
+    if(itens.length === 0){
+        return 
+    }
+
     return (
-        <section className="col-span-1 lg:col-span-2 bg-white shadow-md rounded-lg p-6 space-y-4">
+        <section className="w-md md:w-xl bg-white shadow-md rounded-lg p-6 space-y-4">
             <h2 className="text-2xl font-semibold text-texto">Avaliar Produtos Comprados</h2>
             <div className="space-y-6 max-h-96 overflow-y-auto pr-2">
                 {

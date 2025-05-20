@@ -22,7 +22,7 @@ const Dashboard = async () => {
                 <p className="text-texto-label">Acompanhe seus pedidos, avaliações e recomendações.</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="flex flex-col md:flex-row gap-8">
                 <AvaliarProdutos />
                 <PedidosEmAberto />
             </div>

@@ -1,3 +1,5 @@
+import { actionInserirPedido } from "@/actions/pedidos/actionInserirPedido"
+import { actionUpdatePedido } from "@/actions/pedidos/actionUpdatePedido"
 import { Order } from "@/types/types"
 
 export const createStorePedido = ():Order|null => {  
@@ -16,23 +18,11 @@ export const updatePedido = async(novoPedido:Order):Promise<Order> => {
         if(!novoPedido.id || novoPedido.id === 0){
             throw new Error('id do pedido não informado')
         }
-        const res = await fetch(`http://localhost:3000/api/pedidos`,{
-            method: 'POST',
-            credentials: "include",
-            body: JSON.stringify(novoPedido)
-        })
-    
-        if(res.status !== 200){
-            throw new Error('erro ao atualizar pedido')
-        }
         
-        const {data:pedido, error}: {data:Order, error:string} = await res.json()
-        
-        if(!pedido){
-            throw new Error(error)        
-        }
-    
+        const pedido = await actionUpdatePedido(novoPedido)       
+   
         sessionStorage.setItem('pedido', JSON.stringify(pedido))
+
         return pedido
     } catch (error:any) {
         throw new Error(error.message)
@@ -41,21 +31,7 @@ export const updatePedido = async(novoPedido:Order):Promise<Order> => {
 
 export const inserirPedido = async(novoPedido:Order):Promise<Order> => {
     try {
-        const res = await fetch(`http://localhost:3000/api/pedidos`,{
-            method: 'PUT',
-            credentials: "include",
-            body: JSON.stringify(novoPedido)
-        })
-    
-        if(res.status !== 200){
-            throw new Error('erro ao atualizar pedido')
-        }
-        
-        const {data:pedido, error}: {data:Order, error:string} = await res.json()
-        
-        if(!pedido){
-            throw new Error(error)        
-        }
+        const pedido = await actionInserirPedido(novoPedido)
         
         sessionStorage.setItem('pedido', JSON.stringify(pedido))
         return pedido                

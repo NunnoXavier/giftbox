@@ -4,13 +4,14 @@ import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
 import { ChStatus } from "@/types/types"
 import { actionEnviarEmail } from "../usuarios/actionEnviarEmail"
 import { actionObterToken } from "../cookies/actionObterToken"
+import { revalidateTag } from "next/cache"
 
 export const actionStatusPedido = async (novoStatus: ChStatus) => {
     try {
-
+        const token = await actionObterToken()
         const res = await fetch('http://localhost:3000/api/pedidos/status',{                    
             method: 'POST',
-            headers: await actionObterToken(),
+            headers: token.header,
             body: JSON.stringify(novoStatus)
         })
 
@@ -20,6 +21,8 @@ export const actionStatusPedido = async (novoStatus: ChStatus) => {
             console.log(errorResultStatus)
             return false
         }
+
+        revalidateTag(`pedidos-${token.idUser}`)
 
         const usuario = await fetchUsuario()
         if(!usuario){

@@ -2,6 +2,7 @@ import { fetchPedidos } from './fetchPedidos'
 import { AuthTokenPayload, Order, OrderProduct, Review } from '../types/types'
 import { cookies } from 'next/headers'
 import { jwtDecode } from 'jwt-decode'
+import { actionObterToken } from '@/actions/cookies/actionObterToken'
 
 type TProdutosAvaliar = {
     order: Order,
@@ -10,19 +11,15 @@ type TProdutosAvaliar = {
 }
 
 export const fetchProdutosAvaliar = async () => {
-    const cookieStore = await cookies()
-    const cookieToken = cookieStore.get("SIGIFTBOX_AUTH_TOKEN") 
-    if(!cookieToken){
-        console.log("fetchPedidos: Não tem token")
-        return null
-    } 
+    const token = await actionObterToken()
 
-    const { id } = jwtDecode(cookieToken.value) as AuthTokenPayload    
     const res = await fetch('http://localhost:3000/api/pedidos/avaliar',{
         method: 'GET',
-        headers: { Cookie:`SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}` },
-
-        cache: 'no-store'
+        headers: token.header,
+        cache: "force-cache",
+        next: {
+            tags: [`avaliar-${token.idUser}`]
+        }
     })
 
     const { data: itens, error }:{ data: TProdutosAvaliar[], error:string } = await res.json()
