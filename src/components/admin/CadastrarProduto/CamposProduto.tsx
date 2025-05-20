@@ -33,7 +33,7 @@ const initProduto: Product = {
     rating: 0,
     returnPolicy: "",
     shippingInformation: "",
-    warrantyInformation: "",        
+    warrantyInformation: "", 
 }
 
 
@@ -283,6 +283,14 @@ const CamposProduto = ({ className, produtos, categorias }:{ className?:string, 
                 value={produto.dimensions?.depth?.toString() || ""}
                 onChange={(e) => setProduto({ ...produto, dimensions:{ ...produto.dimensions, depth: Number(e.currentTarget.value) } })}
                 />            
+            <Campo
+                name="tags"
+                classWidth='flex-1'
+                label='Tags:'
+                inputType='textarea'
+                value={produto.tags || ""}
+                onChange={(e) => setProduto({ ...produto, tags: e.currentTarget.value })}
+                />
 
         </div>
     )

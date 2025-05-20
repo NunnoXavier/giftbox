@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { dateBrToISO, toDateBr } from "@/services/utils"
+import { dateBrToISO } from "@/services/utils"
 import { User } from "@/types/types"
 import { Loader2, UserIcon, AtSignIcon, MapPin, CreditCard } from "lucide-react"
 
@@ -24,7 +24,7 @@ type UserDTO = {
 
 type DadosContaProps = {
     usuario: User,
-    fnSalvarDados: (user:UserDTO) => Promise<boolean>
+    fnSalvarDados: (dados: any) => Promise<boolean>
 }
 
 const DadosConta = ({usuario, fnSalvarDados}:DadosContaProps) => {
@@ -52,7 +52,7 @@ const DadosConta = ({usuario, fnSalvarDados}:DadosContaProps) => {
     useEffect(() => {
         setNome(usuario.firstName || "")
         setSobrenome(usuario.lastName || "")
-        setNascimento(toDateBr(usuario.birthday) || "")
+        setNascimento(usuario.birthday?.toString().slice(0,10) || "")
         setFone(usuario.phone || "")
         setEmail(usuario.email || "")
         setCep(usuario.postalCode || "")

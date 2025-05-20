@@ -3,7 +3,6 @@ import { Product, ProductDTO } from "@/types/types"
 import { getCategorias } from "./secoes"
 import { getReviews } from "./reviews"
 import { getImages } from "./images"
-import { getTags } from "./tags"
 
 type getProductProps = {campo?:string, valor?:any}
 
@@ -45,7 +44,8 @@ export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
                 reviews: [],
                 sku: row.sku,
                 stock: row.stock,
-                tags: [],
+                tags: row.tags || "",
+
                 title: row.title,
                 warrantyInformation: row.warrantyinformation,
                 weight: row.weight,
@@ -56,6 +56,7 @@ export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
             }
         })
 
+        
         for(const produto of products) {
             const category = await getCategorias({campo: "id", valor: produto.category?.id})
             produto.category = {
@@ -68,9 +69,6 @@ export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
             
             const images = await getImages({campo: "idproduct", valor: produto.id})
             produto.images = images.data || []
-            
-            const tags = await getTags({campo: "idproduct", valor: produto.id})
-            produto.tags = tags.data || []
         }
     
         return { data: products, error: null }        
@@ -104,7 +102,7 @@ export const putProduto = async (novoProduto: Product):Promise<ResultId> => {
         const res = await query(`insert into products ( title, description, idcategory, price, discountPercentage,
                                  rating, stock, brand, sku, weight, width, height, depth, warrantyInformation,
                                  shippingInformation, availabilityStatus, returnPolicy, minimumOrderQuantity,
-                                 createdAt, updatedAt, barcode, qrCode, thumbnail )
+                                 createdAt, updatedAt, barcode, qrCode, thumbnail, tags )
             values('${novoProduto.title || ""}', '${novoProduto.description ||""}', ${novoProduto.category?.id.toString()||9999}, 
                     ${novoProduto.price?.toString() || 0}, ${novoProduto.discountPercentage?.toString() || 0},
                     ${novoProduto.rating?.toString() || 0}, ${novoProduto.stock?.toString() || 0}, 
@@ -116,7 +114,8 @@ export const putProduto = async (novoProduto: Product):Promise<ResultId> => {
                    ${novoProduto.minimumOrderQuantity?.toString() || 0}, 
                    '${novoProduto.meta?.createdAt?.toString()?.slice(0,10) || '1900-01-01'}', 
                    '${novoProduto.meta?.updatedAt?.toString()?.slice(0,10) || '1900-01-01'}', '${novoProduto.meta?.barcode || ''}', 
-                   '${novoProduto.meta?.qrCode || ''}', '${novoProduto.thumbnail || ''}') RETURNING id
+                   '${novoProduto.meta?.qrCode || ''}', '${novoProduto.thumbnail || ''}',
+                   '${novoProduto.tags || ''}') RETURNING id
         `)
         
         const id = res.rows[0].id
@@ -148,7 +147,7 @@ export const updateProduto = async (novoProduto: Product):Promise<ResultProduct>
             createdAt='${novoProduto.meta?.createdAt?.toString()?.slice(0,10) || '1900-01-01'}', 
             updatedAt='${novoProduto.meta?.updatedAt?.toString()?.slice(0,10) || '1900-01-01'}', 
             barcode='${novoProduto.meta?.barcode || ''}', qrCode='${novoProduto.meta?.qrCode || ''}', 
-            thumbnail='${novoProduto.thumbnail || ''}'
+            thumbnail='${novoProduto.thumbnail || ''}', tags='${novoProduto.tags || ''}'
             where id = ${novoProduto.id?.toString()}`)
 
         const { data:res, error:errorRes } = await getProdutos({campo:'id', valor:novoProduto.id})

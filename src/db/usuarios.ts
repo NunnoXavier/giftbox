@@ -12,7 +12,7 @@ export const getUsuarios = async (props?: getUsuariosProps ):Promise<ResultUser>
         const res = await query(sql)
         const rows = res.rows
     
-        const users:User[] = rows.map((row) => {
+        const users:User[] = rows.map((row):User => {
             return {
                 id: row.id,
                 firstName: row.firstname,

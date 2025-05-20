@@ -44,7 +44,7 @@ export interface Product {
     discountPercentage?:   number;
     rating?:               number;
     stock?:                number;
-    tags?:                 Tag[];
+    tags?:                 string;
     brand?:                string;
     sku?:                  string;
     weight?:               number;
@@ -118,17 +118,6 @@ export interface ReviewDTO{
     date?:          Date;
     reviewername?:  string;
     revieweremail?: string;    
-}
-
-export interface Tag {
-    id:          number;
-    description: string;
-}
-
-export interface TagDTO {
-    idproduct: number;
-    id:          number;
-    description: string;    
 }
 
 export interface Image {
@@ -308,7 +297,7 @@ export const Convert = {
             shippingInformation: productDTO.shippinginformation || "",
             sku: productDTO.sku || "",
             stock: productDTO.stock || 0,
-            tags: [],
+            tags: "",
             thumbnail: productDTO.thumbnail || "",
             title: productDTO.title || "",
             warrantyInformation: productDTO.warrantyinformation || "",

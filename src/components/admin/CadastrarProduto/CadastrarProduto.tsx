@@ -61,6 +61,7 @@ const CadastrarProduto = async () => {
             returnPolicy: String(objeto.returnpolicy),
             shippingInformation: String(objeto.shippinginformation),
             warrantyInformation: String(objeto.warrantyinformation),
+            tags: String(objeto.tags),
         }
 
       

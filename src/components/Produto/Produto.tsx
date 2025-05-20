@@ -86,6 +86,12 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                 >
                     <h1 className="text-2xl text-center">DESCRIÇÃO</h1>
                     <p className="text-justify whitespace-break-spaces">{produto.description}</p>
+                    
+                        <div className="flex gap-2">
+                            <b className="w-40">Tags:</b> 
+                            <span className="flex-1">{produto.tags || ""} </span>
+                        </div>
+                    
                     <h1 className="text-2xl text-center">ESPECIFICAÇÕES</h1>
                     <ul className="list-image-none list-inside">
                         <li className="flex gap-2">

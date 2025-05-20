@@ -4,6 +4,7 @@ import { PlusCircle, MinusCircle, Trash } from 'lucide-react'
 import { createQuerySacola, fetchAddQtdeItem, fetchRemoveItem, fetchSubQtdeItem } from '../Store/SacolaStore'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Image from 'next/image'
+import BtnEsvaziarSacola from './BtnEsvaziarSacola'
 
 export type QtdSacolaProps = {
     className?: string
@@ -13,7 +14,6 @@ const ProdutoSacola = ({ className }:QtdSacolaProps) => {
     
     const {data:itensSacola, error, isError, isLoading} = createQuerySacola()
     
-    if (isLoading) return <div>Carregando Sacola...</div>
     if (isError) return <div>Erro: {error.message}</div>
   
     if(!itensSacola){
@@ -22,8 +22,7 @@ const ProdutoSacola = ({ className }:QtdSacolaProps) => {
 
    
     return (
-
-        <div className={`${className} bg-white flex flex-col gap-2 text-sm w-lg md:w-2xl h-150`}>
+        <div className="col-span-1 md:col-span-12 border-borda rounded-md shadow-md bg-white">
             <div className="grid grid-cols-24 gap-2 p-2 font-bold">
                 <span className="col-span-7 text-center">Produto</span>
                 <span className="col-span-4 text-center">Qtde</span>
@@ -31,24 +30,30 @@ const ProdutoSacola = ({ className }:QtdSacolaProps) => {
                 <span className="col-span-4 text-center">Desct(und)</span>
                 <span className="col-span-4 text-center">Total</span>
             </div>                        
+            <div className={`flex flex-col gap-2 overflow-scroll text-sm 
+            w-lg md:w-2xl h-150 `}>
 
-            {
-                itensSacola.length === 0?
-                (
-                    <div className="flex justify-center items-center h-full">
-                        <span className='text-lg'>Sua sacola está vazia 🥲</span>
-                    
-                    </div>
-                )
-                :
-                (
-                    itensSacola.map((produto) => (
-                        <P key={produto.id} produto={produto}/>
-                    ))
-                )
-            }
+                {
+                    itensSacola.length === 0?
+                    (
+                        <div className="flex justify-center items-center h-full">
+                            <span className='text-lg'>Sua sacola está vazia 🥲</span>
+                        
+                        </div>
+                    )
+                    :
+                    (
+                        itensSacola.map((produto) => (
+                            <P key={produto.id} produto={produto}/>
+                        ))
+                    )
+                }
 
-        </div>
+            </div>
+            <div className="flex justify-end items-center gap-2 p-2">
+                <BtnEsvaziarSacola />
+            </div>
+        </div>                    
     )
 }
 

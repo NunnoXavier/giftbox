@@ -9,12 +9,9 @@ const SacolaCollection = async () => {
             <h1 className="text-2xl font-bold text-center text-texto mb-4">Sacola</h1>
             <div className="">
                 <div className="grid grid-cols-1 md:grid-cols-20 gap-8 p-2 ">
-                    <div className="bg-white col-span-1 md:col-span-12 border border-borda overflow-scroll rounded-md shadow-md">
-                        <ProdutoSacola />
-                    </div>            
+                    <ProdutoSacola />
                     <TotalSacola/>
                 </div>
-                <BtnEsvaziarSacola />
             </div>
 
         </div>

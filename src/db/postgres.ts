@@ -8,7 +8,8 @@ pg.types.setTypeParser(20, (val:string) => parseInt(val, 10)); // 20 é o OID pa
 pg.types.setTypeParser(21, (val:string) => parseInt(val, 10)); // 21 é o OID para SMALLINT
 pg.types.setTypeParser(23, (val:string) => parseInt(val, 10)); // 23 é o OID para INTEGER
 
-// Aqui você configura o parser antes de usar qualquer conexão
+
+// Converte os datas do Postgres para Date no Node.js
 pg.types.setTypeParser(1082, str => new Date(str)); // 1082 = DATE
 
 const config: PoolConfig ={

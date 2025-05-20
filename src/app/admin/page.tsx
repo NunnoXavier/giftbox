@@ -4,10 +4,18 @@ import FormCadastrarProduto from "@/components/admin/CadastrarProduto/CadastrarP
 import GridProdutos from "@/components/admin/GridProdutos/GridProdutos"
 import { Loader2 } from "lucide-react"
 import { Suspense } from "react"
+import AtualizarProdutos from "./AtualizarProdutos"
 
 const Admin = async () => {
     const res = await fetchProdutos()
     const { data:produtos, error } = await res.json()
+    if(error){
+        console.log(error)        
+        return <div className="w-full h-dvh flex flex-col items-center justify-center gap-5">
+                <h1>Erro ao carregar produtos</h1>
+                <AtualizarProdutos />
+            </div>
+    } 
     
     return(
         <Suspense fallback={<Loader2 className="animate-spin"/>}>

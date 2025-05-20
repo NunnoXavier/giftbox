@@ -62,6 +62,7 @@ const criarTabelas = async () => {
                 barcode varchar(20),
                 qrCode varchar(200),            
                 thumbnail varchar(999),
+                tags text,
                 PRIMARY KEY (id),
                 FOREIGN KEY(idcategory) REFERENCES categories(id) ON DELETE CASCADE
                 )

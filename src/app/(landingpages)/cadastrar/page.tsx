@@ -1,5 +1,6 @@
 'use client'
 
+import { verificarEmailAction } from '@/actions/usuarios/verificarEmailAction'
 import { User } from '@/types/types'
 import { Eye, EyeOff, LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -19,40 +20,21 @@ const Cadastrar = () => {
     const router = useRouter()
 
     const verificarEmail = async () => {
-        function validarEmail(email:string) {
-            const padraoEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-            return padraoEmail.test(email)
-        }        
-
+        setLoading(true)
         try {
-            setLoading(true)
-            setMensagem("")
-            if(!validarEmail(email)){
-                throw new Error('Email inválido')
-            }
-
-            if(senha.length < 6){
-                throw new Error('A senha deve conter ao menos 6 caracteres, entre letras, números e símbolos!')
-            }
-
-            const res = await fetch(`http://localhost:3000/api/usuarios/verificar-email/${email}`)
-            const { data, error }:{ data:boolean, error:string } = await res.json()
-            if(error){
-                throw new Error(error)
-            }
-
-            if(data){
+            setMensagem('')
+            const verificou = await verificarEmailAction(email, senha)
+            if(verificou){
                 setVerificado(true)
-            }else{
-                setVerificado(false)
-                setMensagem('Email já cadastrado!')
+            } else {
+                setMensagem('Email já cadastrado')
             }
-        } catch (error:any) {
-            setMensagem(error.message)
-            setVerificado(false)
-        }finally{
+        } catch(error:any) {
+            setMensagem('ocorreu um erro na validação do email')         
+            setMensagem(error.message)         
+        } finally {
             setLoading(false)
-        }
+        }    
     }
 
     const cadastrar = async () => {
@@ -64,7 +46,7 @@ const Cadastrar = () => {
                 password: senha,
                 firstName: nome,
                 lastName: sobrenome,
-                birthday: new Date(sobrenome),
+                birthday: new Date(nascimento),
                 role: 'client'
             }
             

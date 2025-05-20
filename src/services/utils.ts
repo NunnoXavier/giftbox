@@ -17,3 +17,11 @@ export const dateBrToISO = (date: string): string => {
 export const filtraNumeros = (entrada: string): string => {
     return entrada.replace(/\D/g, '');
 }
+
+export const normalizarTexto = (entrada: string): string => {
+    return decodeURIComponent(entrada)
+    .normalize('NFD')                   // separa letras de acentos
+    .replaceAll(/[\u0300-\u036f]/g, '')    // remove os acentos
+    .replaceAll(/[^a-zA-Z0-9\s]/g, '')     // remove símbolos (deixa letras, números e espaços)
+    .toLowerCase();    
+}
