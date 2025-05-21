@@ -8,24 +8,16 @@ type SecoesProps = {
 }
 
 const Secoes = async ({ className }: SecoesProps) => {
-    const res = await fetchSecoes()
-    const { 
-        data:dataCategorias, 
-        error:errorCategorias 
-    }:{ 
-        data:Category[], 
-        error: string 
-    } = await res.json()
+    const dataCategorias = await fetchSecoes()
+
     if(!dataCategorias){
-        console.log(errorCategorias)
         return ( <>Erro ao carregar dados tente mais tarde</> )
     }
     
-    const listaSecoes:string[] = dataCategorias.map((s)=> s.description)
-    const res2 = await fetchProdutos()
-    const { data:dataProdutos, error:errorProdutos }:{data:Product[], error: string} = await res2.json()
+    const listaSecoes:string[] = dataCategorias.map((s) => s.description)
+    const dataProdutos = await fetchProdutos()
+    
     if(!dataProdutos){
-        console.log(errorProdutos)
         return ( <>Erro ao carregar dados tente mais tarde</> )
     }
 

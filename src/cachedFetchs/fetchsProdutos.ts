@@ -1,3 +1,5 @@
+import { Product } from "@/types/types"
+
 export const fetchProdutos = async () => {
     const res = await fetch(`http://localhost:3000/api/produtos`, {
         cache: "force-cache",
@@ -5,7 +7,11 @@ export const fetchProdutos = async () => {
             tags: ['produtos']
         }
     })
-    return res
+
+    const { data, error }:{data: Product[], error:string} = await res.json()
+    if(!data) throw new Error(error)
+
+    return data
 }
 
 export const fetchPrecoProdutos = async () => {

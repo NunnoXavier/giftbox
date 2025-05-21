@@ -18,7 +18,8 @@ export const filtraNumeros = (entrada: string): string => {
     return entrada.replace(/\D/g, '');
 }
 
-export const normalizarTexto = (entrada: string): string => {
+export const normalizarTexto = (entrada?: string): string => {
+    if(!entrada) return ''
     return decodeURIComponent(entrada)
     .normalize('NFD')                   // separa letras de acentos
     .replaceAll(/[\u0300-\u036f]/g, '')    // remove os acentos

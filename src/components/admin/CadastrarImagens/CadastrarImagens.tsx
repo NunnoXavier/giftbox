@@ -5,11 +5,7 @@ import DadosProduto from "./DadosProduto"
 
 const CadastrarImagens = async () => {
 
-    const res = await fetchProdutos()
-    const { data:produtos, error} = await res.json()
-    if(!produtos){
-        console.log(error)
-    }    
+    const produtos = await fetchProdutos()
 
     const salvarUrl = async(data: FormData) => {
         'use server'

@@ -1,38 +1,25 @@
+import { actionProcurarProdutos } from "@/actions/produtos/actionProcurarPorTag"
 import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
 import ProdutoSecao from "@/components/Secoes/ProdutoSecao"
 import { normalizarTexto } from "@/services/utils"
 import { Product } from "@/types/types"
-import Fuse from "fuse.js"
+import Fuse, { FuseResult } from "fuse.js"
+
+interface MyResult extends FuseResult<Product> {
+    item: Product,
+    score: number    
+}
 
 const Produtos = async ({ params }:{ params: Promise<{ termo: string }> }) => {
     const { termo } = await params
 
     const texto = normalizarTexto(termo)
 
-    if(!texto){
-        return <></>
-    }
+    if (!texto || texto.length < 2) {
+        return <div className="p-4">Digite pelo menos 2 caracteres para buscar</div>
+    }    
 
-    const res = await fetchProdutos()
-
-    const { data:produtos, error }:{ data:Product[], error:string } = await res.json()
-    if(!produtos){
-        console.log(error)
-        return <></>
-    }
-
-    const fuse = new Fuse<Product>(produtos, {
-        keys: ['title', 'tags'],
-        threshold: 0.4,
-        distance: 100,
-        ignoreLocation: true,
-        includeScore: true,        
-    });
-
-    const resultado = fuse.search(texto)
-    const produtosFiltrados = resultado.map((result) => result.item)
-    console.log(resultado)
-
+    const produtosFiltrados = await actionProcurarProdutos(texto)
 
     return (
         <div>

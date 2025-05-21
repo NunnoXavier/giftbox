@@ -6,19 +6,9 @@ import { fetchSecoes } from '@/cachedFetchs/fetchsSecoes'
 
 const CadastrarProduto = async () => {
 
-    const res = await fetchProdutos()
-    const { data:produtos, error } = await res.json()
-    if(error){
-        console.log(error)
-        return 
-    }
+    const produtos = await fetchProdutos()
     
-    const res2 = await fetchSecoes()
-    const { data:categorias, errorCategorias } = await res2.json()
-    if(errorCategorias){
-        console.log(errorCategorias)
-        return 
-    }
+    const categorias = await fetchSecoes()
 
     const salvar = async (data: FormData) =>{
         'use server'

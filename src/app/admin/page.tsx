@@ -7,10 +7,9 @@ import { Suspense } from "react"
 import AtualizarProdutos from "./AtualizarProdutos"
 
 const Admin = async () => {
-    const res = await fetchProdutos()
-    const { data:produtos, error } = await res.json()
-    if(error){
-        console.log(error)        
+    const produtos = await fetchProdutos()
+
+    if(!produtos){
         return <div className="w-full h-dvh flex flex-col items-center justify-center gap-5">
                 <h1>Erro ao carregar produtos</h1>
                 <AtualizarProdutos />

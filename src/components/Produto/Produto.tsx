@@ -12,12 +12,8 @@ type ProdutoProps = {
 }
 
 const Produto = async ( { className, id }: ProdutoProps ) => {
-    const res = await fetchProdutos()
-    const { data:produtos, error  }:{data:Product[], error:string } = await res.json()
-    if(!produtos){
-        console.log(error)
-        return <>Erro ao obter dados do produto</>
-    }
+    const produtos = await fetchProdutos()
+
     const produto = produtos.find((p) => p.id === Number(id))
 
     if(!produto){

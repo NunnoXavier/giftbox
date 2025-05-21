@@ -1,18 +1,25 @@
 import { fetchPedidos } from './fetchPedidos'
 import { Order } from '../types/types'
 
-export const fetchProdutosComprados = async () => {
+export const fetchProdutosComprados = async (todos:boolean = false) => {
     const pedidos:Order[] = await fetchPedidos() || []
     if (!pedidos) {
-        return null
+        throw new Error('Não foi possível obter os pedidos')
     }
 
-    return pedidos.filter((pedido) => (
-        pedido.status === 'received' &&
-        pedido.products 
-        && pedido.products.length > 0
+    const pedidosRecebidos = pedidos.filter((pedido) => (
+        pedido.products &&
+        pedido.products.length > 0 &&
+        !todos? pedido.status === 'received' : true
     ))
-    .map((pedido) => pedido.products)
-    .flat()    
+
+    const produtosRecebidos = pedidosRecebidos
+    .map((pedido) =>  (pedido.products))
+    .flat()
+
+    const produtosSanitizados = produtosRecebidos
+    .filter((produto) => !produto? false : true)
+
+    return produtosSanitizados
 }
 
