@@ -7,6 +7,8 @@ import { fetchPedidosAdmin } from "@/cachedFetchs/fetchPedidosAdmin"
 import { fetchUsuariosAdmin } from "@/cachedFetchs/fetchUsuariosAdmin"
 import CardPedido from "./CardPedido"
 import SkeletonPedido from "./SkeletonPedido"
+import ModalEnviar from "./ModalEnviar"
+import { useSearchParams, useRouter, usePathname } from "next/navigation" 
 
 type StatusFilter = "pending" | "paid" | "sent" | "received" | "canceled" | "all"
 
@@ -16,6 +18,10 @@ const PedidosFiltrados = () => {
     const [pedidos, setPedidos] = useState<Order[]>([])
     const [usuarios, setUsuarios] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
+
+    const searchParams = useSearchParams()
+    const  router = useRouter()
+    const pathname = usePathname()
 
     const handleSelect = (value: string) => {
         const status = value as StatusFilter
@@ -37,15 +43,17 @@ const PedidosFiltrados = () => {
 
     }, [])
 
-    const handleEnviarPedido = (idPedido: number) => {
-        const pedido = pedidos.find((pedido) => pedido.id === idPedido)
-        if (pedido) {
-            pedido.status = "sent"
-            setPedidos([...pedidos])
-        }
+    const handleEnviarPedido = async (idPedido: number) => {
+        const params = new URLSearchParams(searchParams.toString())
+        params.set("enviar", "open")
+        params.set("id", idPedido.toString())
+        router.push(`${pathname}?${params.toString()}`)
+
+
+
     }
 
-    const handleCancelarPedido = (idPedido: number) => {
+    const handleCancelarPedido = async (idPedido: number) => {
         const pedido = pedidos.find((pedido) => pedido.id === idPedido)
         if (pedido) {
             pedido.status = "canceled"
@@ -53,7 +61,7 @@ const PedidosFiltrados = () => {
         }
     }
 
-    const handleReceberPedido = (idPedido: number) => {
+    const handleReceberPedido = async (idPedido: number) => {
         const pedido = pedidos.find((pedido) => pedido.id === idPedido)
         if (pedido) {
             pedido.status = "received"
@@ -69,7 +77,8 @@ const PedidosFiltrados = () => {
     })
 
     return (
-        <div>
+        <div className="relative">
+            <ModalEnviar pedidos={pedidos} />
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                     <label htmlFor="status" className="text-texto-label">Status:</label>
@@ -90,18 +99,20 @@ const PedidosFiltrados = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {   
                 loading ? <SkeletonPedido /> 
-                    :(                        
-                        pedidosFiltrados
-                        .sort((a, b) => new Date(a.date!).getTime() - new Date(b.date!).getTime())
-                        .map((pedido) => {
-                            const usuario = usuarios.find((u) => u.id === pedido.idUser)
-                            return <CardPedido key={pedido.id} 
-                                pedido={pedido} 
-                                usuario={usuario!} 
-                                fnEnviarPedido={handleEnviarPedido}
-                                fnCancelarPedido={handleCancelarPedido}
-                                fnReceberPedido={handleReceberPedido}
-                            />
+                :(                        
+                    pedidosFiltrados
+                    .sort((a, b) => new Date(a.date!).getTime() - new Date(b.date!).getTime())
+                    .map((pedido) => {
+                        const usuario = usuarios.find((u) => u.id === pedido.idUser)
+                        return (                         
+                                <CardPedido key={pedido.id} 
+                                    pedido={pedido} 
+                                    usuario={usuario!} 
+                                    fnEnviarPedido={handleEnviarPedido}
+                                    fnCancelarPedido={handleCancelarPedido}
+                                    fnReceberPedido={handleReceberPedido}
+                                />                                
+                            )
                         })
                     ) 
                     }

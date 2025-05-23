@@ -24,15 +24,7 @@ export const actionStatusPedido = async (novoStatus: ChStatus) => {
 
         revalidateTag(`pedidos-${token.idUser}`)
 
-        const usuario = await fetchUsuario()
-        if(!usuario){
-            console.log('actionStatusPedido: usuario não encontrado')
-            return false
-        }
-
-        return await actionEnviarEmail('Pedido Confirmado', `Seu pedido de número ${novoStatus.idPedido.toString()} foi confirmado!
-        Você pode acompanhar o status do seu pedido em: <a href="http://localhost:3000/pedidos">http://localhost:3000/pedidos</a>`)
-
+        return true
     } catch (error) {
         console.log(error)
         return false        

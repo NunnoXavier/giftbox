@@ -3,7 +3,7 @@ import ImagemProduto from "./ImagemProduto"
 import AvaliacaoProduto from "./AvaliacaoProduto" 
 import AdicionarSacola from "./AdicionarSacola"
 import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
-import { toDateBr } from "@/services/utils"
+import { toCurrencyBr, toDateBr } from "@/services/utils"
 import CalcFrete from "./CalcFrete"
 
 type ProdutoProps = {
@@ -63,13 +63,13 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                             className={`${promo < preco? 'text-texto-label': 'text-transparent'} 
                             text-sm `} 
                         >
-                            <s>R$ {preco.toFixed(2)}</s>
+                            <s>{toCurrencyBr(preco)}</s>
                         </h1>
                         <h1 
                             className={`${promo < preco? 'text-texto-alerta': 'text-texto'} 
                             text-3xl`} 
                         >
-                            R$ {promo.toFixed(2)}
+                            {toCurrencyBr(promo)}
                         </h1>
                     </div>
                     <AdicionarSacola itemSacola={ itemSacola } />

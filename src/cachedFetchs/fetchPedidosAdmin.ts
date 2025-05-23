@@ -3,15 +3,15 @@
 import { actionObterToken } from "@/actions/cookies/actionObterToken"
 import { Order } from "@/types/types"
 
-export const fetchPedidos = async () => {
+export const fetchPedidosAdmin = async () => {
     const token = await actionObterToken()
     const id = token.idUser
-    const res = await fetch(`http://localhost:3000/api/pedidos`, {
+    const res = await fetch(`http://localhost:3000/api/protegido/pedidos`, {
         method: "GET",
         headers: token.header,
         cache: "force-cache",
         next: {            
-            tags: [`pedidos-${id}`]
+            tags: [`pedidos`]
         }
     })
 

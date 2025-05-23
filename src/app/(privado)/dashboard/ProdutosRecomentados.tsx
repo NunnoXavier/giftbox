@@ -1,6 +1,7 @@
 import { actionProcurarProdutos } from "@/actions/produtos/actionProcurarPorTag"
 import { fetchProdutosComprados } from "@/cachedFetchs/fetchProdutosComprados"
 import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { toCurrencyBr } from "@/services/utils"
 import Image from "next/image"
 
 const ProdutosRecomendados = async () => {
@@ -41,7 +42,7 @@ const ProdutosRecomendados = async () => {
                     />
                     <h3 className="text-sm font-medium text-text">{produto.title}</h3>
                     <p className="text-xs text-texto-label">{produto.category?.description}</p>
-                    <p className="text-sm font-bold text-texto2 mt-1">R$ {produto.price?.toFixed(2)}</p>
+                    <p className="text-sm font-bold text-texto2 mt-1">{toCurrencyBr(produto.price)}</p>
                 </div>
                 ))}
             </div>

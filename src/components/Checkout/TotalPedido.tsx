@@ -9,6 +9,7 @@ import BtnConfirmarPedido from "./BtnConfirmarPedido"
 import Alerta from "../Alerta/Alerta"
 import { Order, OrderProduct } from "@/types/types"
 import { createStorePedido, inserirPedido, updatePedido } from "../Store/PedidoStore"
+import { toCurrencyBr } from "@/services/utils"
 
 type TotalPedidosProps = {
     precos: {
@@ -194,19 +195,19 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
                 }
             <h2 className="flex justify-between text-sm">
                 <span className="whitespace-nowrap">Valor dos Produtos:</span>  
-                <span className="whitespace-nowrap">R$ { totalItens.toFixed(2) }</span>
+                <span className="whitespace-nowrap">{ toCurrencyBr(totalItens) }</span>
             </h2>
             <h2 className="flex justify-between text-sm">
                 <span className="whitespace-nowrap">Frete:</span>  
-                <span className="whitespace-nowrap">R$ { (0).toFixed(2) }</span>
+                <span className="whitespace-nowrap">R$ { toCurrencyBr(0) }</span>
             </h2>
             <h2 className="flex justify-between text-sm text-texto2">
                 <span className="whitespace-nowrap">Desconto:</span>  
-                <span className="whitespace-nowrap">R$ -{ totalDesc.toFixed(2) }</span>
+                <span className="whitespace-nowrap">-{ toCurrencyBr(totalDesc) }</span>
             </h2>
             <h1 className="flex justify-between text-lg font-bold">
                 <span className="whitespace-nowrap">Total do Pedido:</span>  
-                <span className="whitespace-nowrap">R$ { (totalItens - totalDesc).toFixed(2) }</span>
+                <span className="whitespace-nowrap">{ toCurrencyBr(totalItens - totalDesc) }</span>
             </h1>
             <BtnConfirmarPedido acao={confirmar}/>
         </div>

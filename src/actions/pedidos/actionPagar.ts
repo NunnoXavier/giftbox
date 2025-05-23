@@ -2,6 +2,8 @@
 
 import { Order } from "@/types/types"
 import { actionStatusPedido } from "./actionStatusPedido"
+import { actionEnviarEmail } from "../usuarios/actionEnviarEmail"
+import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
 
 export const actionPagar = async (pedido: Order) => {
     try {
@@ -15,9 +17,25 @@ export const actionPagar = async (pedido: Order) => {
         if(!result){
             console.log(errorResult)
             return false
-        }else{
-            return await actionStatusPedido({ idPedido: Number(pedido.id), novoStatus: "paid" })
         }
+
+        const usuario = await fetchUsuario()
+        if(!usuario){
+            console.log('actionStatusPedido: usuario não encontrado')
+            return false
+        }
+
+
+        const res2 = await actionStatusPedido({ idPedido: Number(pedido.id), novoStatus: "paid" })
+        if (!res2) {
+            console.log('actionStatusPedido: erro ao atualizar status do pedido')
+            return false
+        }
+
+        await actionEnviarEmail('Pedido Confirmado', `Seu pedido de número ${pedido.id?.toString()} foi confirmado!
+        Você pode acompanhar o status do seu pedido em: <a href="http://localhost:3000/pedidos">http://localhost:3000/pedidos</a>`)
+
+        return true
 
     } catch (error:any) {
         console.log(error.message)

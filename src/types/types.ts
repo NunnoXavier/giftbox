@@ -223,6 +223,7 @@ export interface OrderShipping {
     postalCode?: string;
     receivedBy?: string;
     receivedAt?: Date;
+    trackingCode?: string;
 }
 export interface OrderShippingDTO {
     date?: Date;
@@ -235,6 +236,7 @@ export interface OrderShippingDTO {
     postalcode?: string;
     receivedby?: string;
     receivedat?: Date;
+    trackingcode?: string;
 }
 
 export const Convert = {

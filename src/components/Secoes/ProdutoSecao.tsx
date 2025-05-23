@@ -2,6 +2,7 @@ import { Product } from "@/types/types"
 import BtnAddSacola from "../BtnAddSacola/BtnAddSacola"
 import FlagPromo from "./FlagPromo"
 import Image from "next/image"
+import { toCurrencyBr } from "@/services/utils"
 
 type ProdutoSecaoProps = {
     className?: string,
@@ -68,8 +69,8 @@ const ProdutoSecao = ({ className, produto }: ProdutoSecaoProps) => {
                 </div>
                 
                 <p className="text-sm md:text-lg text-texto">{produto?.title}</p>
-                <p className={`${promo < preco? 'text-texto-label': 'text-transparent'} text-sm `} ><s>R$ {preco.toFixed(2)}</s></p>
-                <p className={`${promo < preco? 'text-texto-alerta': 'text-texto'} text-lg`} >R$ {promo.toFixed(2)}</p>
+                <p className={`${promo < preco? 'text-texto-label': 'text-transparent'} text-sm `} ><s>{toCurrencyBr(preco)}</s></p>
+                <p className={`${promo < preco? 'text-texto-alerta': 'text-texto'} text-lg`} >{toCurrencyBr(promo)}</p>
             </a>
             <BtnAddSacola produto={produto} />
         </div>

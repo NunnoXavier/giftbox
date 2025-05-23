@@ -2,7 +2,7 @@
 
 import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
 
-export const actionEnviarEmail = async (assunto: string, mensagem: string) => {
+export const actionEnviarEmail = async (assunto: string, mensagem: string, email?: string) => {
     try {
         const usuario = await fetchUsuario()
         if(!usuario){
@@ -13,7 +13,7 @@ export const actionEnviarEmail = async (assunto: string, mensagem: string) => {
         await fetch('http://localhost:3000/api/email',{
             method: 'POST',
             body: JSON.stringify({ 
-                to: usuario.email, 
+                to: email || usuario.email, 
                 subject: assunto, 
                 html: `<p>Olá ${usuario.firstName},<br> ${mensagem}</p>` })
         })        

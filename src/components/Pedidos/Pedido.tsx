@@ -1,4 +1,4 @@
-import { toDateBr } from "@/services/utils"
+import { toCurrencyBr, toDateBr } from "@/services/utils"
 import { Order } from "@/types/types"
 import ItemPedido from "./ItemPedido"
 
@@ -26,7 +26,7 @@ const Pedido = ({ pedido }:{ pedido: Order }) => {
         >
             <div className="flex flex-col md:flex-row gap-2 md:justify-between">
                 <span className="text-texto text-sm">{`Realizado no dia ${toDateBr(pedido.date)}`}</span>
-                <span className="text-texto text-sm">{`Total: ${pedido.payment?.value?.toFixed(2)}`}</span>
+                <span className="text-texto text-sm">{`Total: ${toCurrencyBr(pedido.payment?.value)}`}</span>
                 <span className="text-texto text-sm">{`Pedido Nº F025-C22EG-${pedido.id?.toString().padStart(9,'0')}`}</span>
             </div>
             <div className="flex gap-2">

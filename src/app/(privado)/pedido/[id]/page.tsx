@@ -1,9 +1,9 @@
 import { actionPagar } from "@/actions/pedidos/actionPagar"
-import { actionStatusPedido } from "@/actions/pedidos/actionStatusPedido"
 import { fetchPedidos } from "@/cachedFetchs/fetchPedidos"
 import BtnVoltar from "@/components/genericos/ BtnVoltar"
 import BtnPagar from "@/components/Pedido/BtnPagar"
 import { maskCep } from "@/services/useMask"
+import { toCurrencyBr } from "@/services/utils"
 import { Undo2 } from "lucide-react"
 
 const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
@@ -35,18 +35,18 @@ const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
                 <h1 className="font-bold text-lg text-texto">Valor do Pedido</h1>
                 <div className="flex justify-between">
                     <h2 className="">Produto(s): </h2>
-                    <h2 className="">R$ { data.payment?.value?.toFixed(2) }</h2>
+                    <h2 className="">{ toCurrencyBr(data.payment?.value) }</h2>
                 </div>
                 <div className="flex justify-between text-texto2">
                     <h2 className="">Desconto: </h2>
-                    <h2 className="">-R$ { data.payment?.discountPercentage?.toFixed(2) }</h2>
+                    <h2 className="">-{ toCurrencyBr(data.payment?.discountPercentage) }</h2>
                 </div>
                 <div className="flex justify-between font-semibold">
                     <h2 className="">Total Pagamento: </h2>
-                    <h2 className="">R$ { (
+                    <h2 className=""> { toCurrencyBr(
                             (data.payment?.value || 0) 
                             - (data.payment?.discountPercentage || 0)
-                        ).toFixed(2) }
+                        ) }
                     </h2>
                 </div>
             </div>
@@ -63,7 +63,7 @@ const Pedido = async({ params }: { params: Promise<{id: string }> }) => {
                         <h2 className="">{ data.payment?.cardNumber }</h2>
                     </div>
                     <div className="flex justify-between text-sm">
-                        <h2 className="">{`${data.payment?.parc} parcela${(data.payment?.parc || 0) > 1? 's':''} de R$ ${valorParc.toFixed(2)}`}</h2>
+                        <h2 className="">{`${data.payment?.parc} parcela${(data.payment?.parc || 0) > 1? 's':''} de ${toCurrencyBr(valorParc)}`}</h2>
                     </div>
                 </div>
             </div>

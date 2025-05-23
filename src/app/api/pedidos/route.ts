@@ -60,8 +60,7 @@ export const PUT = async (request:NextRequest) => {
 }
 
 export const GET = async (request:NextRequest) => {    
-    try {
-        
+    try {        
         const cookieStore = request.cookies
     
         const rawCookie = cookieStore.get("SIGIFTBOX_AUTH_TOKEN")?.value || ""
@@ -81,7 +80,6 @@ export const GET = async (request:NextRequest) => {
         return NextResponse.json({ data:null , error: error.message })
         
     }
-
 }
 
 export const POST = async (request:NextRequest) => { 

@@ -1,4 +1,5 @@
 'use client'
+import { toCurrencyBr } from "@/services/utils"
 import { createQuerySacola } from "../Store/SacolaStore"
 import BtnPagamento from "./BtnPagamento"
 
@@ -32,19 +33,19 @@ const TotalSacola = () => {
             <h1 className="font-bold text-lg text-texto">Resumo dos Valores</h1>
             <div className="flex gap-2 border-b  justify-end border-borda p-2">
                 <h1>Valor Produtos:</h1>
-                <span>{total.toFixed(2)}</span>
+                <span>{toCurrencyBr(total)}</span>
             </div>
             <div className="flex gap-2 border-b  justify-end border-borda p-2">
                 <h1>Valor Entrega:</h1>
-                <span>{custoEntrega.toFixed(2)}</span>
+                <span>{toCurrencyBr(custoEntrega)}</span>
             </div>
             <div className="flex gap-2 border-b  justify-end border-borda p-2 text-texto2">
                 <h1>Desconto:</h1>
-                <span>-{desc.toFixed(2)}</span>
+                <span>-{toCurrencyBr(desc)}</span>
             </div>
             <div className="flex gap-2 font-bold justify-end  p-2">
                 <h1>Total:</h1>
-                <span>{(total - desc).toFixed(2)}</span>
+                <span>{toCurrencyBr(total - desc)}</span>
             </div>
 
             <BtnPagamento enabled={itens.length > 0}/>

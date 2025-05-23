@@ -5,6 +5,7 @@ import { createQuerySacola, fetchAddQtdeItem, fetchRemoveItem, fetchSubQtdeItem 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Image from 'next/image'
 import BtnEsvaziarSacola from './BtnEsvaziarSacola'
+import { toCurrencyBr } from '@/services/utils'
 
 export type QtdSacolaProps = {
     className?: string
@@ -133,13 +134,13 @@ const P = ({ produto }:{ produto: ProductCart }) => {
             </div>
 
             <div className="col-span-4 flex justify-center items-center">
-                <span className="text-right">{preco.toFixed(2)}</span>
+                <span className="text-right">{toCurrencyBr(preco)}</span>
             </div>
             <div className="col-span-4 flex justify-center items-center">
-                <span className="text-right text-texto2">-{desc.toFixed(2)}</span>
+                <span className="text-right text-texto2">-{toCurrencyBr(desc)}</span>
             </div>
             <div className="col-span-4 flex justify-center items-center">
-                <span className="text-right">{promo.toFixed(2)}</span>
+                <span className="text-right">{toCurrencyBr(promo)}</span>
             </div>
         </div>        
     )

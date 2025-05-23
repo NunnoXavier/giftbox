@@ -23,7 +23,8 @@ export const getPedidos = async (props?: getProps ):Promise<Result> => {
                 payment: undefined,
                 products: [],
                 shipping: undefined,
-                status: row.status || 'pending'
+                status: row.status || 'pending',
+
             }
         })
     
@@ -70,9 +71,10 @@ export const updatePedido = async (novoPedido: Order):Promise<ResultOrder> => {
 
         await query(`update orders set 
             date='${novoPedido.date?.toString()?.slice(0,10) || "1900-01-01"}',
-            dtprev='${novoPedido.dtprev?.toString()?.slice(0,10) || "1900-01-01"}'
+            dtprev='${novoPedido.dtprev?.toString()?.slice(0,10) || "1900-01-01"}',
+            status='${novoPedido.status || 'pending'}'
             where id = ${novoPedido.id.toString()}`)
-    
+        
         const { data:pedidos, error:errorPedidos } = await getPedidos({campo: 'id', valor: novoPedido.id.toString()})
         
         if(!pedidos){
@@ -316,6 +318,7 @@ export const getEntregaPedido = async (props?: getProps ):Promise<ResultOSs> => 
                 receivedBy: row.receivedby,
                 state: row.state,
                 value: row.value,
+                trackingCode: row.trackingcode ?? ''
             }
         })
     
@@ -357,7 +360,8 @@ export const updateEntregaPedido = async (pedido:number, novaEntrega: OrderShipp
                 address='${novaEntrega.address || ""}', obs='${novaEntrega.obs || "" }',                
                 city='${novaEntrega.city || "" }', state='${novaEntrega.state || "" }', 
                 postalCode='${novaEntrega.postalCode || "" }', receivedby='${novaEntrega.receivedBy || "" }', 
-                receivedAt='${novaEntrega.receivedAt?.toString()?.slice(0,10) || '1900-01-01' }'
+                receivedAt='${novaEntrega.receivedAt?.toString()?.slice(0,10) || '1900-01-01' }',
+                trackingcode='${novaEntrega.trackingCode || "" }'
                 where idorder=${pedido}`)
         
 
@@ -374,6 +378,7 @@ export const updateEntregaPedido = async (pedido:number, novaEntrega: OrderShipp
             receivedBy: row.receivedby,
             state: row.state,
             value: row.value,
+            trackingCode: row.trackingcode ?? ''
         }
 
         return { data:result, error:null }        
@@ -389,6 +394,28 @@ export const updateStatusPedido = async ({ idPedido, novoStatus}:ChStatus):Promi
         }
 
         await query(`update orders set status = '${novoStatus}' where id = ${idPedido}`)
+    
+        const { data:pedidos, error:errorPedidos } = await getPedidos({campo: 'id', valor: idPedido.toString()})
+        
+        if(!pedidos){
+            throw new Error(errorPedidos || "erro inexperado ao obter pedido")
+        }
+
+        const result = pedidos[0]
+
+        return { data:result, error:null }        
+    } catch (error:any) {
+        return { data:null, error:error.message }
+    }
+}
+
+export const updateRastreioPedido = async (idPedido: number, novoCodRastreio:string):Promise<ResultOrder> => {
+    try {
+        if(!idPedido || idPedido ===0){
+            throw new Error('id não informado')
+        }
+
+        await query(`update orders set trackingcode = '${novoCodRastreio}' where id = ${idPedido}`)
     
         const { data:pedidos, error:errorPedidos } = await getPedidos({campo: 'id', valor: idPedido.toString()})
         

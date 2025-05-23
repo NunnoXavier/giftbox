@@ -164,6 +164,7 @@ const criarTabelas = async () => {
                 postalCode varchar(9),
                 receivedby varchar(50),
                 receivedAt DATE,
+                trackingcode text,
                 PRIMARY KEY (id),
                 FOREIGN KEY(idorder) REFERENCES orders(id) ON DELETE CASCADE
             )

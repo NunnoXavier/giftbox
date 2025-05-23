@@ -2,7 +2,7 @@
 import { Loader2, Truck } from "lucide-react"
 import { useState } from "react"
 import { maskCep } from "@/services/useMask"
-import { filtraNumeros } from "@/services/utils"
+import { filtraNumeros, toCurrencyBr } from "@/services/utils"
 import { calcularFrete } from "@/services/calcularFrete"
 import { dadosCep } from "@/services/consultaCep"
 
@@ -36,7 +36,7 @@ const CalcFrete =() => {
             }            
             const valorFrete = await calcularFrete(numCep)    
             setTextoEndereco(`${infoCep.logradouro}, ${infoCep.localidade} - ${infoCep.uf}`)
-            setTextoFrete(`Frete: R$ ${valorFrete.toFixed(2)}`)
+            setTextoFrete(`Frete: ${toCurrencyBr(valorFrete)}`)
             
         } catch (error:any) {
             console.log(error.message)
