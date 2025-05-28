@@ -8,6 +8,7 @@ const traduzirStatus = (status: string): string => {
         case "sent": return "Enviado"
         case "received": return "Recebido"
         case "canceled": return "Cancelado"
+        case "expired": return "Exprado"
         default: return status
     }
 }
@@ -21,6 +22,11 @@ type CardPedidoProps = {
 }
 
 const CardPedido = ({ pedido, usuario, fnEnviarPedido, fnCancelarPedido, fnReceberPedido }: CardPedidoProps) => {
+
+    const canSend = pedido.status === "paid"
+    const canCancel = ["pending","paid"].includes(pedido.status || "")
+    const canReceive = pedido.status === "sent"
+
     return (
         <div key={pedido.id} className="bg-white flex flex-col  shadow-lg rounded-xl p-6 space-y-4 border border-borda">
             
@@ -98,19 +104,25 @@ const CardPedido = ({ pedido, usuario, fnEnviarPedido, fnCancelarPedido, fnReceb
             <div className="flex justify-end gap-3 pt-4 border-t mt-auto">
                 <button
                     onClick={() => fnEnviarPedido(pedido.id ?? 0)}
-                    className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                    disabled={!canSend}
+                    className={`${canSend? 'bg-blue-700 hover:bg-blue-600':'bg-gray-200'} 
+                     text-white px-4 py-2 rounded  transition`}
                 >
                     Enviar
                 </button>
                 <button
                     onClick={() => fnReceberPedido(pedido.id ?? 0)}
-                    className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+                    disabled={!canReceive}
+                    className={`${canReceive? 'bg-green-700 hover:bg-green-600':'bg-gray-200'}
+                      text-white px-4 py-2 rounded  transition`}
                 >
                     Receber
                 </button>
                 <button
                     onClick={() => fnCancelarPedido(pedido.id ?? 0)}
-                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500 transition"
+                    disabled={!canCancel}
+                    className={`${canCancel? 'bg-red-600 hover:bg-red-500':'bg-gray-200'} 
+                     text-white px-4 py-2 rounded  transition`}
                 >
                     Cancelar
                 </button>

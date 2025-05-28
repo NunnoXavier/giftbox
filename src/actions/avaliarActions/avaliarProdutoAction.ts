@@ -16,6 +16,9 @@ export const actionAvaliarProduto = async (item: Review) => {
     })
 
     revalidateTag(`avaliar-${id}`)
+    revalidateTag(`produtos`)
+    revalidateTag(`reviews-${item.idProduct}`)
+    revalidateTag(`reviews`)
 
     const { data, error } = await res.json()
     if(!data){

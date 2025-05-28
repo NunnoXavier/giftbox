@@ -6,22 +6,37 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Image from 'next/image'
 import BtnEsvaziarSacola from './BtnEsvaziarSacola'
 import { toCurrencyBr } from '@/services/utils'
+import { useEffect, useState } from 'react'
+import { fetchPrecoProdutos } from '@/cachedFetchs/fetchsProdutos'
 
-export type QtdSacolaProps = {
-    className?: string
+type Precos = {
+    id: number,
+    price: number,
+    discountPercentage: number,
 }
 
-const ProdutoSacola = ({ className }:QtdSacolaProps) => {
+const ProdutoSacola = () => {
     
-    const {data:itensSacola, error, isError, isLoading} = createQuerySacola()
-    
+    const {data:itensSacola, error, isError} = createQuerySacola()
+    const [ precos, setPrecos] = useState<Precos[]>([])
+
+    useEffect(() => {
+        fetchPrecoProdutos()
+        .then((data) => {
+            setPrecos(data)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+
+    }, [])
+      
     if (isError) return <div>Erro: {error.message}</div>
   
     if(!itensSacola){
         return
     }
 
-   
     return (
         <div className="col-span-1 md:col-span-12 border-borda rounded-md shadow-md bg-white">
             <div className="grid grid-cols-24 gap-2 p-2 font-bold">
@@ -44,9 +59,12 @@ const ProdutoSacola = ({ className }:QtdSacolaProps) => {
                     )
                     :
                     (
-                        itensSacola.map((produto) => (
-                            <P key={produto.id} produto={produto}/>
-                        ))
+                        itensSacola.map((produto) => {
+                            const valores = precos.find((p) => p.id === produto.idProduct)
+                            return (
+                                <P key={produto.id} produto={produto} valores={valores} />
+                            )
+                        })
                     )
                 }
 
@@ -58,14 +76,14 @@ const ProdutoSacola = ({ className }:QtdSacolaProps) => {
     )
 }
 
-const P = ({ produto }:{ produto: ProductCart }) => {
+const P = ({ produto, valores }:{ produto: ProductCart, valores?: Precos }) => {
 
     const queryClient = useQueryClient()
 
     const { mutateAsync:addQtde } = useMutation({
         mutationFn: fetchAddQtdeItem,
         mutationKey: ['add-qtd-sacola'],
-        onSuccess: (_, variables, context) => {
+        onSuccess: (_, variables) => {
             queryClient.setQueryData<ProductCart[]>(['sacola'], data => {
                 return data? data.map((p) => p.id === variables.id? { ...variables }: p) :[]
             })
@@ -75,7 +93,7 @@ const P = ({ produto }:{ produto: ProductCart }) => {
     const { mutateAsync:subQtde } = useMutation({
         mutationFn: fetchSubQtdeItem,
         mutationKey: ['sub-qtd-sacola'],
-        onSuccess: (_, variables, context) => {
+        onSuccess: (_, variables) => {
             queryClient.setQueryData<ProductCart[]>(['sacola'], data => {
                 return data? data.map((p) => p.id === variables.id? { ...variables }: p) :[]
             })
@@ -92,8 +110,10 @@ const P = ({ produto }:{ produto: ProductCart }) => {
         }
     })
 
-    const preco = produto?.price? produto.price : 0
-    const perc = produto?.discountPercentage? produto.discountPercentage : 0
+    const preco = valores?.price? valores.price 
+        : produto.price? produto.price : 0
+    const perc = valores?.discountPercentage? valores.discountPercentage 
+        : produto.discountPercentage? produto.discountPercentage : 0
     const desc = (preco * (perc / 100))
     const promo = (preco - desc) * produto.qtde 
 

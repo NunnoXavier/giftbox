@@ -1,10 +1,11 @@
-import { Product, ProductCart } from "@/types/types"
+import { ProductCart } from "@/types/types"
 import ImagemProduto from "./ImagemProduto"
 import AvaliacaoProduto from "./AvaliacaoProduto" 
 import AdicionarSacola from "./AdicionarSacola"
-import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { fetchEstoqueProdutos, fetchPrecoProdutos, fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
 import { toCurrencyBr, toDateBr } from "@/services/utils"
 import CalcFrete from "./CalcFrete"
+import Reviews from "./Reviews"
 
 type ProdutoProps = {
     className?: string,
@@ -13,10 +14,17 @@ type ProdutoProps = {
 
 const Produto = async ( { className, id }: ProdutoProps ) => {
     const produtos = await fetchProdutos()
+    const estoques = await fetchEstoqueProdutos()
+    const precos = await fetchPrecoProdutos()
 
     const produto = produtos.find((p) => p.id === Number(id))
+    const estoque = estoques.find((e) => e.id === Number(id))?.stock || 0
+    const valores = precos.find((e) => e.id === Number(id))
 
     if(!produto){
+        return
+    }
+    if(!valores){
         return
     }
 
@@ -32,8 +40,8 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
         thumbnail: produto.thumbnail
     }
 
-    const preco = produto.price? produto.price : 0
-    const perc = produto.discountPercentage? produto.discountPercentage : 0
+    const preco = valores.price? valores.price : 0
+    const perc = valores.discountPercentage? valores.discountPercentage : 0
     const desc = (preco * (perc / 100))
     const promo = preco - desc 
 
@@ -54,9 +62,9 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                         <span>ID: {produto.id}</span> 
                         <span>REF.: {produto.sku}</span>                                          
                     </div>
-                    <AvaliacaoProduto rating={produto.rating}/>
+                    <AvaliacaoProduto className="place-items-center" rating={produto.rating}/>
                     <div className="text-center" >
-                        <span>{produto.stock} unidade em estoque</span>
+                        <span>{`${estoque} unidade${estoque !== 1? 's':''} em estoque`}</span>
                     </div>
                     <div className="text-center">
                         <h1 
@@ -75,6 +83,8 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                     <AdicionarSacola itemSacola={ itemSacola } />
                     <CalcFrete />
                 </div>
+
+            </div>
                 {/* descricao */}
                 <div 
                     className="flex flex-col gap-8 col-start-1 md:col-start-2 col-span-1 
@@ -134,12 +144,12 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                     <p className="text-justify">{produto.shippingInformation || ""}</p>
                 </div>
 
-            </div>
+                <div className="flex flex-col gap-8 col-start-1 md:col-start-2 col-span-1 md:col-span-12 p-4 mt-20">
+                    <h1 className="text-2xl text-center">AVALIAÇÕES</h1>
+                    <Reviews idProduto={produto.id}/>
+                </div>
 
         </div>
-
-
-
     )
 }
 

@@ -1,10 +1,11 @@
 'use server'
 
 import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
+import { fetchUsuariosAdmin } from "@/cachedFetchs/fetchUsuariosAdmin"
 
 export const actionEnviarEmail = async (assunto: string, mensagem: string, email?: string) => {
-    try {
-        const usuario = await fetchUsuario()
+    try {        
+        const usuario = email? await userByEmail(email) : await fetchUsuario()
         if(!usuario){
             console.log('actionEnviarEmail: usuario não encontrado')
             return false
@@ -13,7 +14,7 @@ export const actionEnviarEmail = async (assunto: string, mensagem: string, email
         await fetch('http://localhost:3000/api/email',{
             method: 'POST',
             body: JSON.stringify({ 
-                to: email || usuario.email, 
+                to: usuario.email, 
                 subject: assunto, 
                 html: `<p>Olá ${usuario.firstName},<br> ${mensagem}</p>` })
         })        
@@ -24,4 +25,9 @@ export const actionEnviarEmail = async (assunto: string, mensagem: string, email
         return false        
     }
 
+}
+
+const userByEmail = async (email:string) => {
+    const users = await fetchUsuariosAdmin()
+    return users.find((user) => user.email === email)
 }

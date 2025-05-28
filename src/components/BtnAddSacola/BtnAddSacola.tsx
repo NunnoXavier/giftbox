@@ -1,5 +1,5 @@
 'use client'
-import { ShoppingBag, Variable } from "lucide-react"
+import { ShoppingBag } from "lucide-react"
 import { fetchAddItem } from "@/components/Store/SacolaStore"
 import { Product, ProductCart } from "@/types/types"
 import { useMutation, useQueryClient } from "@tanstack/react-query"

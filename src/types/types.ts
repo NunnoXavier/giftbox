@@ -152,7 +152,7 @@ export interface Order {
     status?: OrderStatus;
 }
 
-export type OrderStatus = |'pending'|'paid'|'sent'|'received'|'canceled'; 
+export type OrderStatus = |'pending'|'paid'|'sent'|'received'|'canceled'|'expired'; 
 
 export type ChStatus = {
     novoStatus: OrderStatus,
@@ -164,7 +164,7 @@ export interface OrderDTO {
     iduser?: number;
     date?: Date;
     dtprev?: Date;
-    status?: |'pending'|'paid'|'sent'|'received'|'canceled'; 
+    status?: OrderStatus;
 }
 
 export interface OrderProduct {

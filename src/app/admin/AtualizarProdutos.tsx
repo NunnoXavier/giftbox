@@ -1,6 +1,8 @@
 'use client'
 
-import { atualizarProdutosAction } from "@/actions/produtos/atualizarProdutosAction"
+import { actionRevalidarEstoque } from "@/actions/produtos/actionRevalidarEstoque"
+import { actionRevalidarPreco } from "@/actions/produtos/actionRevalidarPreco"
+import { actionRevalidarProdutos } from "@/actions/produtos/actionRevalidarProdutos"
 import { Loader2 } from "lucide-react"
 import { useState } from "react"
 
@@ -10,7 +12,9 @@ const AtualizarProdutos = () => {
     const handleClick = async () => {
         try {
             setIsLoading(true)
-            atualizarProdutosAction()
+            actionRevalidarProdutos()
+            actionRevalidarEstoque()
+            actionRevalidarPreco()            
             
         } catch (error) {
             

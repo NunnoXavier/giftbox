@@ -2,6 +2,6 @@
 
 import { revalidateTag } from "next/cache"
 
-export const atualizarProdutosAction = async () => {
+export const actionRevalidarProdutos = async () => {
     revalidateTag('produtos')
 }

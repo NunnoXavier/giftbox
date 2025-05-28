@@ -9,8 +9,11 @@ import CardPedido from "./CardPedido"
 import SkeletonPedido from "./SkeletonPedido"
 import ModalEnviar from "./ModalEnviar"
 import { useSearchParams, useRouter, usePathname } from "next/navigation" 
+import ModalReceber from "./ModalReceber"
+import { actionCancelar } from "@/actions/pedidos/actionCancelar"
+import { actionStatusPedido } from "@/actions/pedidos/actionStatusPedido"
 
-type StatusFilter = "pending" | "paid" | "sent" | "received" | "canceled" | "all"
+type StatusFilter = "pending" | "paid" | "sent" | "received" | "canceled" |"expired" | "all"
 
 const PedidosFiltrados = () => {    
 
@@ -52,22 +55,41 @@ const PedidosFiltrados = () => {
 
 
     }
+    
+    const handleReceberPedido = async (idPedido: number) => {
+        const params = new URLSearchParams(searchParams.toString())
+        params.set("receber", "open")
+        params.set("id", idPedido.toString())
+        router.push(`${pathname}?${params.toString()}`)
+    }
 
     const handleCancelarPedido = async (idPedido: number) => {
-        const pedido = pedidos.find((pedido) => pedido.id === idPedido)
-        if (pedido) {
+        try {            
+            if (!confirm(`Tem certeza que deseja cancelar o pedido ${idPedido}?`)) {
+                return
+            }
+
+            setLoading(true)
+
+            const pedido = pedidos.find((pedido) => pedido.id === idPedido)
+            if (!pedido) {
+                alert("Pedido não encontrado")
+                return
+            }
+            
+            await actionCancelar(pedido)
             pedido.status = "canceled"
-            setPedidos([...pedidos])
+            actionStatusPedido({idPedido,novoStatus: "canceled"})
+            alert(`Pedido ${idPedido} cancelado com sucesso`)
+            
+        } catch (error:any) {
+            alert('erro ao cancelar pedido')
+            console.log(error.message)            
+        }finally {
+            setLoading(false)
         }
     }
 
-    const handleReceberPedido = async (idPedido: number) => {
-        const pedido = pedidos.find((pedido) => pedido.id === idPedido)
-        if (pedido) {
-            pedido.status = "received"
-            setPedidos([...pedidos])
-        }
-    }
 
     const pedidosFiltrados = pedidos.filter((pedido) => {
         if (status === "all") {
@@ -79,6 +101,7 @@ const PedidosFiltrados = () => {
     return (
         <div className="relative">
             <ModalEnviar pedidos={pedidos} />
+            <ModalReceber pedidos={pedidos} />
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                     <label htmlFor="status" className="text-texto-label">Status:</label>
@@ -92,6 +115,7 @@ const PedidosFiltrados = () => {
                         <option value="sent">Enviado</option>
                         <option value="received">Recebido</option>
                         <option value="canceled">Cancelado</option>
+                        <option value="expired">Expirado</option>
                         <option value="all">Todos</option>
                     </select>
                 </div>

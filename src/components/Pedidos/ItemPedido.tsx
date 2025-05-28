@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const ItemPedido = ({ item }:{ item:OrderProduct }) => {
     return (
-        <div className="flex gap-4">
+        <div className="flex gap-4 my-2">
             {
                 item.thumbnail? (
                     <Image  

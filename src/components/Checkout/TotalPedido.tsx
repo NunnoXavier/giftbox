@@ -1,6 +1,6 @@
 'use client'
 
-import { compararPrecos, createQuerySacola, Precos } from "../Store/SacolaStore"
+import { compararPrecos, createQuerySacola } from "../Store/SacolaStore"
 import { Loader } from "lucide-react"
 import { createQueryPagto } from "../Store/PagtoStore"
 import { useRouter } from "next/navigation"
@@ -10,23 +10,33 @@ import Alerta from "../Alerta/Alerta"
 import { Order, OrderProduct } from "@/types/types"
 import { createStorePedido, inserirPedido, updatePedido } from "../Store/PedidoStore"
 import { toCurrencyBr } from "@/services/utils"
+import { useEffect, useState } from "react"
+import { fetchPrecoProdutos } from "@/cachedFetchs/fetchsProdutos"
 
-type TotalPedidosProps = {
-    precos: {
-        id: number,
-        price: number,
-        discountpercentage: number,
-    }[]
+type Precos = {
+    id: number,
+    price: number,
+    discountPercentage: number
 }
 
-const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
+const TotalPedidos = () => {
     const { data:sacola, error, isLoading } = createQuerySacola()
     const { data:pagto, error:errorPagto, isLoading:isLoadingPagto } = createQueryPagto()
     const { data:usuario, error:errorUsuario, isLoading:isLoadingUsuario } = createQueryUsuario() 
+    const [ precos, setPrecos ] = useState<Precos[]>([])
+
     const pedido = createStorePedido()
     
     const router = useRouter()
-    
+
+    useEffect(() => {
+        fetchPrecoProdutos()
+        .then(data => {
+                setPrecos(data)
+            })
+            .catch(error => console.log(error))
+    },[])
+
     if(!precos){
         return (<><Loader className="animate-spin m-auto" /></>) 
     }
@@ -68,7 +78,7 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
     }
 
     const produtosAlterados = sacola.filter((item) => {
-        const precoCadastro = precos.find((p) => p.id === item.idProduct) || { id: item.idProduct, price: item.price, discountpercentage: item.discountPercentage }
+        const precoCadastro = precos.find((p) => p.id === item.idProduct) || { id: item.idProduct, price: item.price, discountPercentage: item.discountPercentage }
         return !compararPrecos(item, precoCadastro as Precos)
     })
 
@@ -85,7 +95,7 @@ const TotalPedidos = ( { precos }:TotalPedidosProps ) => {
 
     const totalDesc = sacola.reduce((prev, item) => {
         const price = precos.find((p) => p.id === item.idProduct)?.price || item.price
-        const discountPercentage = precos.find((p) => p.id === item.idProduct)?.discountpercentage || item.discountPercentage
+        const discountPercentage = precos.find((p) => p.id === item.idProduct)?.discountPercentage || item.discountPercentage
         const preco = ( price || 0) * item.qtde
 
         const perc = discountPercentage || 0

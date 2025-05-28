@@ -1,44 +1,25 @@
 'use server'
 
 import { Order } from "@/types/types"
-import { actionStatusPedido } from "./actionStatusPedido"
-import { actionEnviarEmail } from "../usuarios/actionEnviarEmail"
-import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
 
-export const actionPagar = async (pedido: Order) => {
+export const actionPagar = async (pedido: Order):Promise<{ data:boolean|null, error:string|null }> => {
     try {
         const res = await fetch('http://localhost:3000/api/mock',{
             method: 'POST',
-            body: JSON.stringify(pedido)
+            body: JSON.stringify(true)
         })
         
         const { data:result, error:errorResult} = await res.json()
         
-        if(!result){
+        if(errorResult){
             console.log(errorResult)
-            return false
+            return { data:null, error:errorResult}
         }
 
-        const usuario = await fetchUsuario()
-        if(!usuario){
-            console.log('actionStatusPedido: usuario não encontrado')
-            return false
-        }
-
-
-        const res2 = await actionStatusPedido({ idPedido: Number(pedido.id), novoStatus: "paid" })
-        if (!res2) {
-            console.log('actionStatusPedido: erro ao atualizar status do pedido')
-            return false
-        }
-
-        await actionEnviarEmail('Pedido Confirmado', `Seu pedido de número ${pedido.id?.toString()} foi confirmado!
-        Você pode acompanhar o status do seu pedido em: <a href="http://localhost:3000/pedidos">http://localhost:3000/pedidos</a>`)
-
-        return true
+        return { data:result, error:null}
 
     } catch (error:any) {
         console.log(error.message)
-        return false
+        return { data:null, error:error.message}
     }
 }

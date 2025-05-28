@@ -67,6 +67,8 @@ const CadastrarProduto = async () => {
         }
 
         revalidateTag('produtos')
+        revalidateTag('preco-produtos')
+        revalidateTag('estoque-produtos')
     }
 
     if(!produtos){

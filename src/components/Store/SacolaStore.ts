@@ -4,11 +4,11 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query"
 export type Precos = {
     id: number,
     price: number,
-    discountpercentage: number,
+    discountPercentage: number,
 }
 
 export const compararPrecos = (itemSacola:ProductCart, precoCadastro: Precos):boolean => {
-    return ( itemSacola.price === precoCadastro.price && itemSacola.discountPercentage === precoCadastro.discountpercentage )
+    return ( itemSacola.price === precoCadastro.price && itemSacola.discountPercentage === precoCadastro.discountPercentage )
 }
 
 export const createQuerySacola = () => {    

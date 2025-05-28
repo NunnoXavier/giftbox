@@ -3,9 +3,10 @@
 import { actionObterToken } from "@/actions/cookies/actionObterToken"
 import { Order } from "@/types/types"
 import { actionEnviarEmail } from "@/actions/usuarios/actionEnviarEmail"
+import { revalidateTag } from "next/cache"
 import { actionRevalidarPedidos } from "@/actions/pedidos/actionRevalidarPedidos"
 
-export const actionEnviarPedido = async (pedido: Order) => {
+export const actionReceberPedido = async (pedido: Order) => {
     try {
         const token = await actionObterToken()
 
@@ -20,12 +21,13 @@ export const actionEnviarPedido = async (pedido: Order) => {
             throw new Error(error)
         }
 
-        actionRevalidarPedidos(token.idUser)
+        actionRevalidarPedidos(pedido.idUser!)
 
         await actionEnviarEmail(
             'SI GiftBox', 
-            `Seu pedido de número ${pedido.id?.toString()} foi postado!
-            Você pode acompanhar o status do seu pedido em: <a href="http://localhost:3000/pedidos">http://localhost:3000/pedidos</a>`
+            `Seu pedido de número ${pedido.id?.toString()} foi recebido!
+            Você tem 7 dias para efetuar a devolução do seu pedido, contando a partir da data de recebimento deste email.   
+            Basta acessar <a href="http://localhost:3000/pedidos">http://localhost:3000/pedidos</a> e clicar em "Devolver".`
         )
         
         return pedidoAlterado

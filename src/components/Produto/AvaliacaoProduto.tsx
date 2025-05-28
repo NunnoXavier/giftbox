@@ -10,9 +10,9 @@ function contarEstrelas(rating: number){
     const estrelas = []
     for(let i=0; i < 5; i++){
         if(rating - i > 0){
-            estrelas.push((<Star key={i} size={20} fill='gold'  strokeWidth={1}/>))
+            estrelas.push((<i key={i} className="text-yellow-400">★</i>))
         }else{
-            estrelas.push((<Star key={i} size={20} strokeWidth={1} />))
+            estrelas.push((<i key={i} className="text-texto-label">★</i>))
         }    
     }
 
@@ -21,13 +21,12 @@ function contarEstrelas(rating: number){
 
 const AvaliacaoProduto = ({ className, rating }:AvaliacaoProdutoProps) => {
     return (
-        <div className="bg-white flex flex-col place-items-center">
+        <div className={`${className} bg-white flex flex-col`}>
             <div className="flex space-x-2 text-texto-label">
                 {
                     contarEstrelas(rating||0).map((estrela) => estrela)
                 }
             </div>
-            <span className='text-xs'>avaliar</span>
         </div>
     )
 }

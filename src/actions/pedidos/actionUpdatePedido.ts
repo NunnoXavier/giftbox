@@ -3,6 +3,7 @@
 import { Order } from "@/types/types"
 import { actionObterToken } from "../cookies/actionObterToken"
 import { revalidateTag } from "next/cache"
+import { actionRevalidarPedidos } from "./actionRevalidarPedidos"
 
 export const actionUpdatePedido = async (pedido:Order) => {
     try {
@@ -24,7 +25,7 @@ export const actionUpdatePedido = async (pedido:Order) => {
             throw new Error(error)
         }
 
-        revalidateTag(`pedidos-${token.idUser}`)
+        actionRevalidarPedidos(token.idUser)
 
         return data
     } catch (error:any) {

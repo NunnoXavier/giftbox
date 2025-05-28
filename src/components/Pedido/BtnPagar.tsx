@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 type BtnPagarProps = {
-    fnPagar: () => Promise<boolean> 
+    fnPagar: () => Promise<{ data: boolean | null, error:string|null }|undefined> 
 }
 
 const BtnPagar = ({ fnPagar }: BtnPagarProps) => {
@@ -14,9 +14,18 @@ const BtnPagar = ({ fnPagar }: BtnPagarProps) => {
 
     const handlePagar = async () => {
         setPagando(true)
-        const result = await fnPagar()
+        const res = await fnPagar()
+        if(!res){
+            setPagando(false)
+            return
+        }
+        const { data:pagtoOk, error } = res
         setPagando(false)
-        if(result) {
+        if(error){
+            console.log({ data: pagtoOk, error })
+            //router.push('/error-001')            
+        }
+        if(pagtoOk === true) {
             sessionStorage.clear() // apaga o cache do pedido e pagamento
             localStorage.removeItem('sacola')
             router.push('/confirmacao-pagto')

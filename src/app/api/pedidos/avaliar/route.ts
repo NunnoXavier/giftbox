@@ -1,5 +1,6 @@
 import { getJoinOrderReviews } from "@/db/joins/orders_reviews"
 import { insertOrUpdateReview } from "@/db/reviews"
+import { updateRate } from "@/db/rotinas/atualizarRate"
 import { getUsuarios } from "@/db/usuarios"
 import { AuthTokenPayload, Review, User } from "@/types/types"
 import { jwtDecode } from "jwt-decode"
@@ -31,6 +32,8 @@ export const POST = async (request: NextRequest) => {
         if(!reviewData){
             return NextResponse.json({ data: null, error: reviewError })
         }
+
+        await updateRate(review.idProduct)
 
         return NextResponse.json({ data: reviewData, error: null })
         

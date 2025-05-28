@@ -5,8 +5,8 @@ export const toDateBr = ( date?: Date|string ):string => {
 
     if(dt <= new Date(0)) return ""
 
-    const day = dt.getDate().toString().padStart(2,'0')
-    const month = dt.getMonth().toString().padStart(2,'0')
+    const day = (dt.getDate() +1).toString().padStart(2,'0')
+    const month = (dt.getMonth() +1).toString().padStart(2,'0')
     const year = dt.getFullYear().toString().padStart(4,'0')
     return `${day}/${month}/${year}`
 }
@@ -29,6 +29,29 @@ export const somarData = ( date?: Date|string, qtdDias?:number ):string => {
 export const dateBrToISO = (date: string): string => {
     const [dia, mes, ano] = date.split('/')
     return `${ano}-${mes}-${dia}`
+}
+
+export const dateToISO = (date: Date|string): string => {
+    if(!date) return ""
+
+    const dt = typeof date === 'string'? new Date(date.slice(0,10)) : date
+
+    if(dt <= new Date(0)) return ""
+
+    const day = (dt.getDate() +1).toString().padStart(2,'0')
+    const month = (dt.getMonth() +1).toString().padStart(2,'0')
+    const year = dt.getFullYear().toString().padStart(4,'0')
+    return `${year}-${month}-${day}`
+}
+
+export const diferencaEntreDatas = (data1: Date|string, data2: Date|string): number => {
+    if(!data1 || !data2) return 0
+
+    const dt1 = typeof data1 === 'string'? new Date(data1.slice(0,10)) : data1
+    const dt2 = typeof data2 === 'string'? new Date(data2.slice(0,10)) : data2    
+    const diferencaEmDias = Math.abs(dt2.getDate() - dt1.getDate());
+    console.log(dt1, dt2, diferencaEmDias)
+    return diferencaEmDias;
 }
 
 export const filtraNumeros = (entrada: string): string => {

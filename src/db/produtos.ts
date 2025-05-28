@@ -77,7 +77,7 @@ export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
     }
 }
 
-export const getCamposProdutos = async ( {campos}:{campos:string[]} ):Promise<Result> => {
+export const getCamposProdutos = async ( {campos}:{campos:string[]} ):Promise<{data:ProductDTO[]|null, error: |string|null}> => {
     try {
         const sql = `select ${ campos.join(',') } from products`
         
@@ -153,6 +153,65 @@ export const updateProduto = async (novoProduto: Product):Promise<ResultProduct>
         const { data:res, error:errorRes } = await getProdutos({campo:'id', valor:novoProduto.id})
         if(!res){
             throw new Error(errorRes || 'erro inexperado ao obter produto')
+        }
+
+        const result = res[0]
+        
+        return { data:result, error:null }        
+    } catch (error:any) {
+        return { data:null, error:error.message }
+    }
+}
+
+export const updatePrecoProduto = async ({ id, price, discountPercentage }: { id:number, price?:number, discountPercentage?:number }):Promise<ResultProduct> => {
+    try {
+        if(!id || id === 0){
+            throw new Error('id não informado')
+        }
+
+        if(!price && !discountPercentage){
+            throw new Error('nenhum valor informado para atualização')
+        }
+
+        let campos = []
+        if(price !== undefined){
+            campos.push(`price=${price}`)
+        }
+        if(discountPercentage !== undefined){
+            campos.push(`discountPercentage=${discountPercentage}`)
+        }
+        const sql = `update products set ${campos.join(', ')} where id = ${id}`
+        await query(sql)
+
+        const { data:res, error:errorRes } = await getProdutos({campo:'id', valor:id})
+        if(!res){
+            throw new Error(errorRes || 'erro inexperado ao obter produto')
+        }
+
+        const result = res[0]
+        
+        return { data:result, error:null }        
+    } catch (error:any) {
+        return { data:null, error:error.message }
+    }
+}
+
+export const updateEstoqueProduto = async ({ id, qtde }: { id:number, qtde:number }):Promise<ResultProduct> => {
+    try {
+        if(!id || id === 0){
+            return { data:null, error:'id não encontrado' }
+        }
+
+        const sql = `update products set stock=stock-(${qtde?.toString()}) where id = ${id}`
+        await query(sql)
+
+        const { data:res, error:errorRes } = await getProdutos({campo:'id', valor:id})
+        if(!res){
+            return { data:null, error:errorRes }
+        }
+
+        if(res.length === 0){
+            return { data:null, error:'produto não encontrado' }
         }
 
         const result = res[0]

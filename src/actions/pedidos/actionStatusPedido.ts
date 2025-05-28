@@ -1,10 +1,8 @@
 'use server'
 
-import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
 import { ChStatus } from "@/types/types"
-import { actionEnviarEmail } from "../usuarios/actionEnviarEmail"
 import { actionObterToken } from "../cookies/actionObterToken"
-import { revalidateTag } from "next/cache"
+import { actionRevalidarPedidos } from "./actionRevalidarPedidos"
 
 export const actionStatusPedido = async (novoStatus: ChStatus) => {
     try {
@@ -22,7 +20,7 @@ export const actionStatusPedido = async (novoStatus: ChStatus) => {
             return false
         }
 
-        revalidateTag(`pedidos-${token.idUser}`)
+        actionRevalidarPedidos(token.idUser)
 
         return true
     } catch (error) {
