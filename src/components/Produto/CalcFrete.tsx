@@ -5,8 +5,9 @@ import { maskCep } from "@/services/useMask"
 import { filtraNumeros, toCurrencyBr } from "@/services/utils"
 import { calcularFrete } from "@/services/calcularFrete"
 import { dadosCep } from "@/services/consultaCep"
+import { Dimensions } from "@/types/types"
 
-const CalcFrete =() => {
+const CalcFrete =({dimensoes, peso}: { dimensoes: Dimensions, peso: number }) => {
     const [ cep, setCep ] = useState("")
     const [ textoFrete, setTextoFrete ] = useState("")
     const [ textoEndereco, setTextoEndereco ] = useState("")
@@ -26,6 +27,15 @@ const CalcFrete =() => {
                 return
             }
     
+            if(!dimensoes){
+                console.log("Dimensões não informadas")
+                return
+            }
+            if(!peso){
+                console.log("Peso não informado")
+                return
+            }
+
             const { data:infoCep, error:erroinfoCep } = await dadosCep(numCep)
     
             if(!infoCep){
@@ -34,7 +44,7 @@ const CalcFrete =() => {
                 setTextoEndereco(erroinfoCep || "")
                 return
             }            
-            const valorFrete = await calcularFrete(numCep)    
+            const valorFrete = await calcularFrete(numCep, peso, dimensoes)    
             setTextoEndereco(`${infoCep.logradouro}, ${infoCep.localidade} - ${infoCep.uf}`)
             setTextoFrete(`Frete: ${toCurrencyBr(valorFrete)}`)
             
@@ -46,6 +56,11 @@ const CalcFrete =() => {
             setCarregando(false)
         }
     }
+
+            if(!dimensoes || !peso){
+                console.log("Dimensões não informadas")
+                return
+            }
 
     return (
         <div className="flex flex-col items-center justify-center space-y-2">

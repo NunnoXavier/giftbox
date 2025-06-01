@@ -81,7 +81,7 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                         </h1>
                     </div>
                     <AdicionarSacola itemSacola={ itemSacola } />
-                    <CalcFrete />
+                    <CalcFrete dimensoes={produto.dimensions!} peso={produto.weight!} />
                 </div>
 
             </div>

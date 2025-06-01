@@ -1,10 +1,29 @@
+import { Dimensions } from "@/types/types"
 import { calcDistancia } from "./calcDistancia"
 import { coordenadasCep } from "./consultaCep"
 
+const calcularArea = (dimensoes:Dimensions):number => {
+    const { height:h, width:w, depth:d } = dimensoes
+    
+    const altura = h || 0
+    const largura = w || 0
+    const profundidade = d || 0
 
-export const calcularFrete = async (cep: string):Promise<number> => {        
+    return altura * largura * profundidade
+}
+
+export const calcularFrete = async (cep: string, peso?:number,dimensoes?: Dimensions):Promise<number> => {        
     const VLR_FRETE_KM = 3.25
+    const VLR_FRETE_PESO = 0.50
+    const VLR_MIN_FRETE = 24.90
+    const VLR_FRETE_AREA = 0.005
     const meuCep = '05065110'
+    const pesoPadraoGr = peso || 1
+    const areaPadrao = dimensoes? calcularArea(dimensoes) : 100
+
+    if(!cep){
+        return  0
+    }
 
     const { data:dadosCep1, error: errorCep1 } = await coordenadasCep(meuCep)    
     if (!dadosCep1) {
@@ -24,7 +43,14 @@ export const calcularFrete = async (cep: string):Promise<number> => {
         dadosCep2.lon
     )
 
-    const frete = distancia * VLR_FRETE_KM <= 25 ? 24.90 : distancia * VLR_FRETE_KM
+    const valorPeso = pesoPadraoGr * VLR_FRETE_PESO
+    const valorArea = areaPadrao * VLR_FRETE_AREA /100
+    const valorDistancia = distancia * VLR_FRETE_KM
+
+    const somaValores = valorPeso + valorArea + valorDistancia
+
+    const frete = somaValores <= VLR_MIN_FRETE ? VLR_MIN_FRETE 
+    : somaValores
     
     return frete
 }

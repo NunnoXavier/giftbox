@@ -9,6 +9,7 @@ export const fetchReviews = async (idProduto?: number) => {
             cache: "force-cache",
             next: {
                 tags: [`reviews-${idProduto}`],
+                revalidate: 60
             }
         })
         
