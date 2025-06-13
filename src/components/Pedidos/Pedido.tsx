@@ -30,10 +30,10 @@ const Pedido = ({ pedido }:{ pedido: Order }) => {
                 <span className="text-texto text-sm">{`Total: ${toCurrencyBr(pedido.payment?.value)}`}</span>
                 <span className="text-texto text-sm">{`Pedido Nº F025-C22EG-${pedido.id?.toString().padStart(9,'0')}`}</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2">
                 <span className={`${ status.color } font-semibold text-xl`}>{status.title}</span>
                 <span>{recebidoPor? recebidoPor : ""}</span>
-                <span className="text-texto text-sm">{pedido.status === "received"? `Entregue em ${toDateBr(pedido.shipping?.receivedAt)}` : ""}</span>
+                {/* <span className="text-texto text-sm">{pedido.status === "received"? `Entregue em ${toDateBr(pedido.shipping?.receivedAt)}` : ""}</span> */}
             </div>
             <div className="flex flex-col gap-2">
                 {

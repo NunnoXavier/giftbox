@@ -77,9 +77,11 @@ export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
     }
 }
 
-export const getCamposProdutos = async ( {campos}:{campos:string[]} ):Promise<{data:ProductDTO[]|null, error: |string|null}> => {
+export const getCamposProdutos = async ( {campos, where}:{campos:string[], where?:getProductProps} ):Promise<{data:ProductDTO[]|null, error: |string|null}> => {
     try {
-        const sql = `select ${ campos.join(',') } from products`
+        const sql = `select ${ campos.join(',') } from products
+        ${where ? `where ${where?.campo} = '${where?.valor}'` : ''}
+        `
         
         const res = await query(sql)
         const rows = res.rows

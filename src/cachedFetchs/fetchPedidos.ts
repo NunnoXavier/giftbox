@@ -1,6 +1,6 @@
 'use server'
 
-import { actionObterToken } from "@/actions/cookies/actionObterToken"
+import { actionObterToken } from "@/actions/usuarios/actionObterToken"
 import { Order } from "@/types/types"
 
 export const fetchPedidos = async () => {

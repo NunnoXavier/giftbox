@@ -1,9 +1,6 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server"
 import { jwtDecode } from 'jwt-decode'
 import { AuthTokenPayload } from './types/types'
-import path from "path"
-
-
 
 const rotasAdmin = [
     { path: '/admin', quandoAutenticado: 'next' },
@@ -17,6 +14,8 @@ const rotasPublicas = [
     { path: '/sobre', quandoAutenticado: 'next' },    
     { path: '/sacola', quandoAutenticado: 'next' },
     { path: '/produto', quandoAutenticado: 'next' },
+    { path: '/produtos', quandoAutenticado: 'next' },
+    { path: '/contato', quandoAutenticado: 'next' },
     { path: '/recuperar-senha', quandoAutenticado: 'next' },
 ]
 
@@ -65,14 +64,16 @@ export function middleware(request: NextRequest){
     if(!rotaPublica && !authToken){
         const redirecionarUrl = request.nextUrl.clone()
         redirecionarUrl.pathname = REDIRECIONAR_QUANDO_NAO_AUTENTICADO
-        console.log('middleware: usuario nao autenticado tentando acessar rota privada')
+        console.log(`middleware: usuario nao autenticado tentando acessar rota privada. 
+            Rota: ${path}`)
         
         return NextResponse.redirect(redirecionarUrl)
     }
     
     //se o usuario tentar acessar uma rota publica e estiver logado
     if(rotaPublica && authToken && rotaPublica.quandoAutenticado === 'redirecionar'){
-        console.log('middleware: usuario autenticado tentando acessar rota de autenticacao')
+        console.log(`middleware: usuario autenticado tentando acessar rota de autenticacao
+        Rota: ${path}`)
         const redirecionarUrl = request.nextUrl.clone()
         redirecionarUrl.pathname = '/'
         

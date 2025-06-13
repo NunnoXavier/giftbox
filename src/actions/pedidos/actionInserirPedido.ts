@@ -1,7 +1,7 @@
 'use server'
 
 import { Order } from "@/types/types"
-import { actionObterToken } from "../cookies/actionObterToken"
+import { actionObterToken } from "../usuarios/actionObterToken"
 import { revalidateTag } from "next/cache"
 import { actionRevalidarPedidos } from "./actionRevalidarPedidos"
 

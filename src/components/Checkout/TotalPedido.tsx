@@ -1,14 +1,14 @@
 'use client'
 
-import { compararPrecos, createQuerySacola } from "../Store/SacolaStore"
+import { compararPrecos, createQuerySacola } from "../../../Store/SacolaStore"
 import { Loader } from "lucide-react"
-import { createQueryPagto } from "../Store/PagtoStore"
+import { createQueryPagto } from "../../../Store/PagtoStore"
 import { useRouter } from "next/navigation"
-import { createQueryUsuario } from "../Store/UsuarioStore"
+import { createQueryUsuario } from "../../../Store/UsuarioStore"
 import BtnConfirmarPedido from "./BtnConfirmarPedido"
 import Alerta from "../Alerta/Alerta"
 import { Order, OrderProduct } from "@/types/types"
-import { createStorePedido, inserirPedido, updatePedido } from "../Store/PedidoStore"
+import { createStorePedido, inserirPedido, updatePedido } from "../../../Store/PedidoStore"
 import { toCurrencyBr } from "@/services/utils"
 import { useEffect, useState } from "react"
 import { fetchPrecoProdutos } from "@/cachedFetchs/fetchsProdutos"

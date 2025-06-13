@@ -1,7 +1,7 @@
 'use server'
 
 import { ChStatus } from "@/types/types"
-import { actionObterToken } from "../cookies/actionObterToken"
+import { actionObterToken } from "../usuarios/actionObterToken"
 import { actionRevalidarPedidos } from "./actionRevalidarPedidos"
 
 export const actionStatusPedido = async (novoStatus: ChStatus) => {

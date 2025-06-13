@@ -396,3 +396,12 @@ export interface Message {
     subject: string,
     message: string,    
 }
+
+export interface Promocao {
+    id?: number,
+    title: string,
+    banner: string,
+    createdAt: Date,
+    finalDate: Date,
+    products?: Product[],
+}

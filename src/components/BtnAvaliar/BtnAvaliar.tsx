@@ -1,7 +1,7 @@
 'use client'
 
 import { Order, OrderProduct, Review } from "@/types/types"
-import { actionAvaliarProduto } from "@/actions/avaliarActions/avaliarProdutoAction"
+import { actionAvaliarProduto } from "@/actions/produtos/actionAvaliarProduto"
 import { useEffect, useState } from "react"
 
 type TProdutosAvaliar = {

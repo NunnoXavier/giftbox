@@ -111,7 +111,7 @@ const Login = () => {
               <Link href="/recuperar-senha" className="hover:underline">
                 Esqueci minha senha
               </Link>
-              <Link href="/cadastrar" className="hover:underline">
+              <Link href="/cadastrar/verificar-email" className="hover:underline">
                 Ainda não tenho cadastro
               </Link>
             </div>

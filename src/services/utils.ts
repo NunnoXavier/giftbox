@@ -5,9 +5,12 @@ export const toDateBr = ( date?: Date|string ):string => {
 
     if(dt <= new Date(0)) return ""
 
-    const day = (dt.getDate() +1).toString().padStart(2,'0')
-    const month = (dt.getMonth() +1).toString().padStart(2,'0')
-    const year = dt.getFullYear().toString().padStart(4,'0')
+    const dtString = dt.toISOString().slice(0,10)
+
+    const day = dtString.slice(8,10)
+    const month = dtString.slice(5,7)
+    const year = dtString.slice(0,4)
+
     return `${day}/${month}/${year}`
 }
 
@@ -20,9 +23,12 @@ export const somarData = ( date?: Date|string, qtdDias?:number ):string => {
 
     const dtNova = new Date(dt.getTime() + (qtdDias ?? 0) * 24 * 60 * 60 * 1000)
 
-    const day = dtNova.getDate().toString().padStart(2,'0')
-    const month = dtNova.getMonth().toString().padStart(2,'0')
-    const year = dtNova.getFullYear().toString().padStart(4,'0')
+    const dtString = dtNova.toISOString().slice(0,10)
+
+    const day = dtString.slice(8,10)
+    const month = dtString.slice(5,7)
+    const year = dtString.slice(0,4)
+
     return `${day}/${month}/${year}`
 }
 
@@ -38,10 +44,13 @@ export const dateToISO = (date: Date|string): string => {
 
     if(dt <= new Date(0)) return ""
 
-    const day = (dt.getDate() +1).toString().padStart(2,'0')
-    const month = (dt.getMonth() +1).toString().padStart(2,'0')
-    const year = dt.getFullYear().toString().padStart(4,'0')
-    return `${year}-${month}-${day}`
+    const dtString = dt.toISOString().slice(0,10)
+
+    const day = dtString.slice(8,10)
+    const month = dtString.slice(5,7)
+    const year = dtString.slice(0,4)
+
+    return `${year}/${month}/${day}`
 }
 
 export const diferencaEntreDatas = (data1: Date|string, data2: Date|string): number => {
@@ -50,7 +59,7 @@ export const diferencaEntreDatas = (data1: Date|string, data2: Date|string): num
     const dt1 = typeof data1 === 'string'? new Date(data1.slice(0,10)) : data1
     const dt2 = typeof data2 === 'string'? new Date(data2.slice(0,10)) : data2    
     const diferencaEmDias = Math.abs(dt2.getDate() - dt1.getDate());
-    console.log(dt1, dt2, diferencaEmDias)
+
     return diferencaEmDias;
 }
 

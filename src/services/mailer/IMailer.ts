@@ -1,4 +1,3 @@
-import { secureHeapUsed } from 'crypto';
 import { TransportOptions } from 'nodemailer'
 
 export interface IMailerOptions {

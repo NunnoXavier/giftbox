@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { fetchRemoveAllItems } from "../Store/SacolaStore"
+import { fetchRemoveAllItems } from "../../../Store/SacolaStore"
 
 const BtnEsvaziarSaola = () => {
     const queryClient = useQueryClient()

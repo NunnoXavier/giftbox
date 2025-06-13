@@ -3,10 +3,10 @@
 import { ProductCart } from "@/types/types"
 import { ShoppingBag } from "lucide-react"
 import { useState } from "react"
-import { fetchAddItem } from "../Store/SacolaStore"
+import { fetchAddItem } from "../../../Store/SacolaStore"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-const AdicionarSacola = ({itemSacola}:{itemSacola:ProductCart}) => {
+const AdicionarSacola = ({itemSacola, className}:{itemSacola:ProductCart, className?:string}) => {
     const [qtde, setQtde] = useState("1")
     const queryClient = useQueryClient()
 
@@ -41,7 +41,7 @@ const AdicionarSacola = ({itemSacola}:{itemSacola:ProductCart}) => {
     }
 
     return (
-        <div className="bg-white flex gap-2">
+        <div className={`${className} bg-white flex gap-2`}>
             <input 
                 className=" bg-background outline-0 px-2 text-center appearance-none caret-borda2 text-texto2 focus:border focus:border-borda2 w-14 h-14 rounded-lg" 
                 type="number"

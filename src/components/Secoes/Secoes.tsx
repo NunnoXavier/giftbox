@@ -1,7 +1,7 @@
-import { Category, Product } from "@/types/types"
 import Secao from "./Secao"
-import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { fetchEstoqueProdutos, fetchPrecoProdutos, fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
 import { fetchSecoes } from "@/cachedFetchs/fetchsSecoes"
+import Banner from "../Banner/Banner"
 
 type SecoesProps = {
     className?: string,
@@ -16,8 +16,10 @@ const Secoes = async ({ className }: SecoesProps) => {
     
     const listaSecoes:string[] = dataCategorias.map((s) => s.description)
     const dataProdutos = await fetchProdutos()
+    const dataPrecos = await fetchPrecoProdutos()
+    const dataEstoque = await fetchEstoqueProdutos()
     
-    if(!dataProdutos){
+    if(!dataProdutos || !dataPrecos || !dataEstoque){
         return ( <>Erro ao carregar dados tente mais tarde</> )
     }
 
@@ -39,3 +41,4 @@ const Secoes = async ({ className }: SecoesProps) => {
 }
 
 export default Secoes
+

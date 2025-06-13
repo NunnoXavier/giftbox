@@ -1,6 +1,6 @@
 'use server'
 
-import { actionObterToken } from "@/actions/cookies/actionObterToken"
+import { actionObterToken } from "@/actions/usuarios/actionObterToken"
 import { Order } from "@/types/types"
 import { actionEnviarEmail } from "@/actions/usuarios/actionEnviarEmail"
 import { actionRevalidarPedidos } from "@/actions/pedidos/actionRevalidarPedidos"

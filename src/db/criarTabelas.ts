@@ -180,8 +180,28 @@ const criarTabelas = async () => {
                 PRIMARY KEY (id)
             )
         `)  
-        
-        
+
+        await query(`
+            CREATE TABLE if not EXISTS promocoes(
+                id BIGSERIAL,
+                createdat DATE,
+                finaldate DATE,
+                title varchar(100),
+                banner varchar(999),
+                PRIMARY KEY (id)
+            )
+        `)
+
+        await query(`
+            CREATE TABLE if not EXISTS promocoes_products(
+                id BIGSERIAL,
+                idpromo BIGINT default 0,
+                idproduct INT default 0,
+                discountpercentage NUMERIC(12,2) default 0,
+                PRIMARY KEY (id),
+                FOREIGN KEY(idpromo) REFERENCES promocoes(id) ON DELETE CASCADE
+            )`
+        )
         
         //criando indices
         await query('CREATE UNIQUE INDEX IF NOT EXISTS idx_email ON users (email);')

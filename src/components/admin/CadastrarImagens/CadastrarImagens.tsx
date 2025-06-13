@@ -2,6 +2,7 @@ import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
 import { ImageDTO } from "@/types/types"
 import { revalidateTag } from "next/cache"
 import DadosProduto from "./DadosProduto"
+import { actionUploadImagem } from "@/actions/formActions/actionUploadImagem"
 
 const CadastrarImagens = async () => {
 
@@ -17,17 +18,12 @@ const CadastrarImagens = async () => {
                 return
             }
   
-            const res = await fetch(`http://localhost:3000/api/protegido/imagens/upload`,{
-                method: 'POST',
-                body: data
-            })
-           
-            const { data: caminhoArquivo, error } = await res.json()
-    
-            if(error){
-                console.log(error)
+            const caminhoArquivo = await actionUploadImagem(data)
+
+            if(!caminhoArquivo){
+                console.log('erro ao salvar imagem')
                 return
-            }
+            }   
 
             const novaImagem:ImageDTO = {
                 id: 0,

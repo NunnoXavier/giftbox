@@ -1,17 +1,12 @@
 import { actionProcurarProdutos } from "@/actions/produtos/actionProcurarPorTag"
-import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
 import ProdutoSecao from "@/components/Secoes/ProdutoSecao"
 import { normalizarTexto } from "@/services/utils"
-import { Product } from "@/types/types"
-import Fuse, { FuseResult } from "fuse.js"
 
-interface MyResult extends FuseResult<Product> {
-    item: Product,
-    score: number    
-}
 
 const Produtos = async ({ params }:{ params: Promise<{ termo: string }> }) => {
-    const { termo } = await params
+    const param = await params
+
+    const termo = param?.termo || ""
 
     const texto = normalizarTexto(termo)
 

@@ -1,7 +1,7 @@
 'use client'
 import Modal from "@/components/Modal/Modal"
 import { useSearchParams, useRouter } from "next/navigation"
-import { createQueryUsuario, updateUsuario } from "@/components/Store/UsuarioStore"
+import { createQueryUsuario, updateUsuario } from "../../../../Store/UsuarioStore"
 import { User } from "@/types/types"
 import { useEffect, useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"

@@ -9,6 +9,7 @@
   --color-texto-alerta: var(--texto-alerta);
   --color-texto-label: var(--texto-label);
   --color-texto-link: var(--texto-link);
+  --color-texto-link-claro: var(--texto-link-claro);
   --color-borda: var(--borda);
   --color-borda2: var(--borda2);
   --color-borda-alerta: var(--borda-alerta);
@@ -28,8 +29,27 @@
   }
 }
 
-/* OU para dark mode via classe */
+/* OU para ligth mode via classe */
 .dark {
+  @theme {
+    --font-geist-sans: Inter, sans-serif;
+    --font-geist-mono: monospace;
+    --background: #000000;
+    --foreground: #364153;
+    --texto: #364153;
+    --texto2: #7f22fe;
+    --texto-alerta: #fb2c36;
+    --texto-label: #6a7282;
+    --texto-link: oklch(54.6% 0.245 262.881);
+    --texto-link-claro: oklch(62.3% 0.214 259.815);
+    --borda: #e5e7eb;
+    --borda2: oklch(70.2% 0.183 293.541);
+    --borda-alerta: oklch(88.5% 0.062 18.334);
+  }
+}
+
+/* OU para dark mode via classe */
+.light {
   @theme {
     --font-geist-sans: Inter, sans-serif;
     --font-geist-mono: monospace;
@@ -39,7 +59,8 @@
     --texto2: #7f22fe;
     --texto-alerta: #fb2c36;
     --texto-label: #6a7282;
-    --texto-link: oklch(62.3% 0.214 259.815);
+    --texto-link: oklch(54.6% 0.245 262.881);
+    --texto-link-claro: oklch(62.3% 0.214 259.815);
     --borda: #e5e7eb;
     --borda2: oklch(70.2% 0.183 293.541);
     --borda-alerta: oklch(88.5% 0.062 18.334);

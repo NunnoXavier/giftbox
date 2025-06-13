@@ -5,6 +5,7 @@ export const POST = async (req: NextRequest) => {
     try {
         const { to, subject, html } = await req.json()
         const { data, error } = await mailer.sendMail({ to, subject, html })
+        console.log('sendmail: ', data, error)
         if (error) {
             return NextResponse.json({ data: null, error })
         }

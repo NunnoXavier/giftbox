@@ -4,7 +4,7 @@ import { OrderPayment } from "@/types/types"
 
 import { useEffect, useState } from "react"
 import Cartao from "./Cartao"
-import {  createQueryPagto, fetchAddDadosPagto } from "@/components/Store/PagtoStore"
+import {  createQueryPagto, fetchAddDadosPagto } from "../../../../Store/PagtoStore"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 const FormasDePagto = () => {

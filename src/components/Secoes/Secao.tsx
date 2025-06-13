@@ -19,7 +19,10 @@ const Secao = ({ className, nomeSecao, secao }:SecaoProps) => {
                 {
                     secao?.map((produto)=> {
                         return(
-                            <ProdutoSecao key={produto.id} produto={produto}/>
+                            <ProdutoSecao key={produto.id} 
+                                produto={produto}
+                                className="bg-white border border-borda text-texto"
+                            />
                         )
                         
                     })

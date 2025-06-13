@@ -1,6 +1,6 @@
 'use client'
 
-import { Order, User } from "@/types/types"
+import { Order, OrderStatus, User } from "@/types/types"
 
 import { useEffect, useState } from "react"
 import { fetchPedidosAdmin } from "@/cachedFetchs/fetchPedidosAdmin"
@@ -51,9 +51,6 @@ const PedidosFiltrados = () => {
         params.set("enviar", "open")
         params.set("id", idPedido.toString())
         router.push(`${pathname}?${params.toString()}`)
-
-
-
     }
     
     const handleReceberPedido = async (idPedido: number) => {
@@ -77,7 +74,9 @@ const PedidosFiltrados = () => {
                 return
             }
             
-            await actionCancelar(pedido)
+            const statusPagos:OrderStatus[] = ['paid', 'sent',"received"]
+
+            if(statusPagos.includes(pedido.status!)) await actionCancelar(pedido)
             pedido.status = "canceled"
             actionStatusPedido({idPedido,novoStatus: "canceled"})
             alert(`Pedido ${idPedido} cancelado com sucesso`)

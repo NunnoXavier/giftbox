@@ -73,7 +73,7 @@ const Hamburger = ({className, usuario}:{className?:string, usuario?:User}) => {
                                 login
                                 <LogIn size={20}/>
                             </a>                    
-                            <a href="/cadastrar" className='flex flex-1 justify-center items-center gap-2 border bordertexto-label rounded-lg px-2 py-1'>
+                            <a href="/cadastrar/verificar-email" className='flex flex-1 justify-center items-center gap-2 border bordertexto-label rounded-lg px-2 py-1'>
                                 criar conta
                                 <UserRoundPlus size={20}/>
                             </a>                    

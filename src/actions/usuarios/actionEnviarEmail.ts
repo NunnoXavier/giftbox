@@ -11,18 +11,30 @@ export const actionEnviarEmail = async (assunto: string, mensagem: string, email
             return false
         }
 
-        await fetch('http://localhost:3000/api/email',{
+        const respEmail = await fetch('http://localhost:3000/api/email',{
             method: 'POST',
             body: JSON.stringify({ 
                 to: usuario.email, 
                 subject: assunto, 
                 html: `<p>Olá ${usuario.firstName},<br> ${mensagem}</p>` })
-        })        
+        })
+
+
+        if(!respEmail.ok) {
+            console.log('actionEnviarEmail: erro ao enviar email')
+            return false
+        }
         
+        const { data, error }: { data: any, error: string } = await respEmail.json()
+        if(error) {
+            console.log('actionEnviarEmail: ', error)
+            return false
+        }
+
         return true
-    } catch (error) {
-        console.log(error)
-        return false        
+    } catch (error:any) {
+        console.log(error.message)
+        return false
     }
 
 }

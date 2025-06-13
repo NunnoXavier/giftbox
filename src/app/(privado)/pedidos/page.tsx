@@ -2,7 +2,7 @@ import { Order } from "@/types/types"
 import { cookies } from "next/headers"
 import Pedido from "../../../components/Pedidos/Pedido"
 
-const Pedidos = async ({ params }:{ params: Promise<{ id:string }> }) => {    
+const Pedidos = async () => {    
     const cookieStore = await cookies()
     const cookieToken = cookieStore.get("SIGIFTBOX_AUTH_TOKEN")    
     const res = await fetch(`http://localhost:3000/api/pedidos`, {
@@ -23,7 +23,7 @@ const Pedidos = async ({ params }:{ params: Promise<{ id:string }> }) => {
     return (
         <div className="flex flex-col items-center">
             <h1 className="font-bold text-2xl text-texto text-center">Seus Pedidos</h1>
-            <div className="flex flex-col items-center w-md md:w-5xl">
+            <div className="flex flex-col items-center w-md md:w-5xl overflow-hidden">
                 {
                     data.length === 0 ? 
                     (

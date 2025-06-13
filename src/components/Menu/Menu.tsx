@@ -63,8 +63,8 @@ export default async function Menu({ className }: { className?: string }){
               />
             </Link>
           </li>
-          <li className='flex-1'>
-            <BuscarProduto />
+          <li className='flex-1 px-4'>
+            <BuscarProduto className=''/>
           </li>
           <li className='w-max'>
             <div className='inline-flex flex-row justify-end w-full'>
@@ -95,7 +95,7 @@ export default async function Menu({ className }: { className?: string }){
                 ):
                 (
                   <>
-                    <MenuItem href="/cadastrar" label='Criar Conta'>
+                    <MenuItem href="/cadastrar/verificar-email" label='Criar Conta'>
                       <UserRoundPlus size={25}/>
                     </MenuItem>
                     <MenuItem className="relative" href="/sacola" label='sacola'>

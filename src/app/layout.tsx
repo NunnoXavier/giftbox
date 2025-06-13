@@ -1,6 +1,12 @@
 import Rodape from "@/components/Rodape.tsx/Rodape";
 import "./globals.css"
-import QueryProviderStore from "@/components/Store/QueryProviderStore";
+import QueryProviderStore from "../../Store/QueryProviderStore";
+
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'Si Giftbox',
+}
 
 export default function RootLayout({
   children,

@@ -1,12 +1,12 @@
 'use client'
 
-import { createQueryUsuario, updateUsuario } from "@/components/Store/UsuarioStore"
+import { createQueryUsuario, updateUsuario } from "../../../../Store/UsuarioStore"
 import { OrderPayment, User } from "@/types/types"
 import { LucideLoader as IconeEspera } from 'lucide-react'
 import { useEffect, useState } from "react"
 import { cpfCnpj, cartao, validadeCartao } from "@/services/useMask"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createQueryPagto } from "@/components/Store/PagtoStore"
+import { createQueryPagto } from "../../../../Store/PagtoStore"
 
 const initUser: User = {
     id: 0,

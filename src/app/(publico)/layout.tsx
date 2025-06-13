@@ -5,7 +5,7 @@ const LayoutPublico = ( { children }: { children: ReactNode } ) => {
     return (
         <div className="">
             <Menu className="mb-5"/>
-            <div className="mx-auto max-w-[1600px] min-h-dvh z-0">
+            <div className="mx-auto max-w-[1800px] min-h-dvh z-0">
                 {children}  
             </div>
         </div>

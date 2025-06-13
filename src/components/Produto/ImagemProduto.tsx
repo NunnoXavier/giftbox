@@ -2,7 +2,6 @@
 
 import { Image } from "@/types/types"
 import { useEffect, useState } from "react"
-import imagemproduto from '../../../public/images/img_3975-xfqzgt5sa1.jpeg'
 import Placeholder from "./Placeholder"
 import Imagem from "next/image"
 
@@ -13,30 +12,38 @@ type ImagemProdutoProps = {
 
 const ImagemProduto = ({ className, imagens }:ImagemProdutoProps) => {
     const [ imagemSelecionada, setImagemSelecionada ] = useState("")
+    const [ carregando, setCarregando ] = useState(true)
     
     const listaImagens = imagens?.map((i) => i.url)
     
     useEffect(() =>{
         listaImagens && setImagemSelecionada(listaImagens[0])
+        setCarregando(false)
     },[])
     
+    if(carregando){
+        return(
+            <Placeholder className="animate-pulse"/>
+        )   
+    }
+
     if(!listaImagens || !imagemSelecionada){
         return(
             <Placeholder />
         )   
     }
+
         
     return (
         <div className={`${className}`}>
             <div 
-                className=" bg-white h-96 md:h-[620px] overflow-hidden border 
-                border-borda rounded-lg relative shadow-md"
+                className="bg-white h-96 md:h-[620px] overflow-hidden 
+                relative rounded-lg shadow-md"
             >
                 <Imagem
-                    className="max-h-[420px] md:max-h-[640px] absolute top-1/2 -translate-y-1/2 
-                    left-1/2 -translate-x-1/2" 
+                    className="object-cover" 
                     src={imagemSelecionada} alt={'imagem'} 
-                    width={1000} height={1000}
+                    fill={true}                    
                 />
             </div>
             
@@ -44,17 +51,18 @@ const ImagemProduto = ({ className, imagens }:ImagemProdutoProps) => {
                 {
                     listaImagens.map((imagem, index) => {
                         return(
-                            <button 
+                            <div
                                 key={index} 
-                                className="bg-white hover:bg-background cursor-pointer border border-borda rounded-lg shadow-md"
                                 onClick={() => setImagemSelecionada(imagem) }
+                                
+                                className="md:h-20 h-[60px] relative cursor-pointer w-1/6"
                             >
                                 <Imagem
-                                    className="md:h-20 h-[60px] rounded-lg"
+                                    className="object-contain rounded-lg hover:scale-105 transition-all duration-300"
                                     src={imagem} alt="miniatura"
-                                    width={100} height={100}
+                                    fill={true}
                                 />
-                            </button>
+                            </div>
                         )
                     })
                 }

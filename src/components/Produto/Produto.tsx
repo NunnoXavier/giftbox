@@ -46,8 +46,8 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
     const promo = preco - desc 
 
     return (
-        <div className={`${className} `}>            
-            <div className="grid grid-cols-1 md:grid-cols-12">
+        <div className={`${className}`}>            
+            <div className="grid grid-cols-1 md:grid-cols-12 px-4">
                 {/* imagem */}
                 <div className=" col-start-1 md:col-start-2 col-span-1 md:col-span-5">
                     <ImagemProduto  imagens={imagens}/>
@@ -55,7 +55,8 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                 {/* dados do produto */}
                 <div 
                 className="bg-white col-start-1 md:col-start-8 col-span-1 md:col-span-4  
-                flex  flex-col justify-center space-y-5 border border-borda rounded-lg p-4 shadow-md"
+                flex  flex-col justify-center space-y-5 border border-borda 
+                rounded-lg p-4 shadow-md"
                 >
                     <h1 className="text-2xl text-center">{produto.title}</h1>
                     <div className="flex justify-evenly text-sm text-texto-label">
@@ -63,10 +64,13 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                         <span>REF.: {produto.sku}</span>                                          
                     </div>
                     <AvaliacaoProduto className="place-items-center" rating={produto.rating}/>
-                    <div className="text-center" >
+                    <div className={`${estoque > 0? 'block' : 'hidden'} text-center`}>
                         <span>{`${estoque} unidade${estoque !== 1? 's':''} em estoque`}</span>
                     </div>
-                    <div className="text-center">
+                    <div className={`${estoque > 0? 'hidden' : 'block'} text-center text-texto-alerta`}>
+                        <span>INDISPONÍVEL</span>
+                    </div>
+                    <div className={`${estoque > 0? 'block' : 'hidden'} text-center`}>
                         <h1 
                             className={`${promo < preco? 'text-texto-label': 'text-transparent'} 
                             text-sm `} 
@@ -80,7 +84,7 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                             {toCurrencyBr(promo)}
                         </h1>
                     </div>
-                    <AdicionarSacola itemSacola={ itemSacola } />
+                    <AdicionarSacola itemSacola={ itemSacola } className={`${estoque > 0? 'block' : 'hidden'}`} />
                     <CalcFrete dimensoes={produto.dimensions!} peso={produto.weight!} />
                 </div>
 
@@ -88,15 +92,15 @@ const Produto = async ( { className, id }: ProdutoProps ) => {
                 {/* descricao */}
                 <div 
                     className="flex flex-col gap-8 col-start-1 md:col-start-2 col-span-1 
-                    md:col-span-12 p-4 mt-20"
+                    md:col-span-12 p-4 mt-20 wrap-break-word"
                 >
                     <h1 className="text-2xl text-center">DESCRIÇÃO</h1>
                     <p className="text-justify whitespace-break-spaces">{produto.description}</p>
                     
-                        <div className="flex gap-2">
-                            <b className="w-40">Tags:</b> 
-                            <span className="flex-1">{produto.tags || ""} </span>
-                        </div>
+                    <div className="flex gap-2">
+                        <b className="w-40">Tags:</b> 
+                        <span className="flex-1">{produto.tags || ""} </span>
+                    </div>
                     
                     <h1 className="text-2xl text-center">ESPECIFICAÇÕES</h1>
                     <ul className="list-image-none list-inside">

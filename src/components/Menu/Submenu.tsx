@@ -16,7 +16,7 @@ const Submenu = () => {
             </ul>
           </li>
           <li>
-            <a href="/giftbox" className='  hover:text-zinc-200'>GIFT BOX</a>
+            <a href="/produtos/gift+box" className='  hover:text-zinc-200'>GIFT BOX</a>
           </li>
           <li className='group'>
             <a className='  hover:text-zinc-200'>DATAS COMEMORATIVAS</a>
