@@ -26,6 +26,8 @@ export interface User {
     cardHolderName?: string;
     cardHolderDoc?:  string;
     cardCvv?:        number;
+    cardParc?:       number;
+    paymentMethod?:  string;
     role:           |'admin' | 'client';
 }
 

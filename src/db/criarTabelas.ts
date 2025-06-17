@@ -18,11 +18,13 @@ const criarTabelas = async () => {
                 city varchar(50),
                 state varchar(3),
                 postalCode varchar(9),
+                paymentMethod varchar(1) default 'P',
                 cardExpire varchar(5),
                 cardNumber varchar(20),
                 cardHolderName varchar(100),
                 cardHolderDoc varchar(20),
                 cardcvv numeric(3) default 0,
+                cardparc numeric(2) default 1,
                 role varchar(20),
                 PRIMARY KEY (id)
             )
@@ -139,7 +141,7 @@ const criarTabelas = async () => {
                 parc INT default 0,
                 value NUMERIC(12,2) default 0,
                 discountPercentage NUMERIC(12,2) default 0,
-                paymentmethod varchar(50),
+                paymentmethod varchar(1),
                 cardExpire varchar(5),
                 cardNumber varchar(20),
                 cardHolderName varchar(100),

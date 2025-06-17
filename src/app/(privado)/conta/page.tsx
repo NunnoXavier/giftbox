@@ -1,4 +1,3 @@
-import { actionSalvarUsuario } from "@/actions/usuarios/actionSalvarUsuario"
 import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
 import DadosConta from "@/components/DadosConta/DadosConta"
 
@@ -14,7 +13,7 @@ const Conta = async () => {
     return (
         <div className="place-items-center">
             <h1 className="text-3xl text-texto font-bold">Perfil</h1>
-            <DadosConta fnSalvarDados={actionSalvarUsuario} usuario={usuario}/>
+            <DadosConta usuario={usuario}/>
         </div>
     )
 }

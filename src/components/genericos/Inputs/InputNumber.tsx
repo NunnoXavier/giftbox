@@ -21,7 +21,7 @@ const InputNumber = ({ onChange, className, ...rest }: InputNumberProps) => {
                 type="number"
                 onHandleChange={handleChange} 
                 {...rest}
-            />
+            />            
         </div>
     )
 }

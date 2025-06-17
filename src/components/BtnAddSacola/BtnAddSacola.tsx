@@ -1,6 +1,6 @@
 'use client'
 import { ShoppingBag } from "lucide-react"
-import { fetchAddItem } from "../../../Store/SacolaStore"
+import { fetchAddItem } from "../../Store/SacolaStore"
 import { Product, ProductCart } from "@/types/types"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 

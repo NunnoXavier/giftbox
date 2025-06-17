@@ -7,7 +7,7 @@ const ConfirmarCadastro = async () => {
     const enviarEmailConfirmacao = async () => {
         'use server'
 
-        const token = (await actionObterToken()).header.Cookie
+        const token = (await actionObterToken()).header.Cookie.replace('SIGIFTBOX_AUTH_TOKEN=', '')
         return await actionEnviarEmail('Boas Vindas', `                
             <p><strong>Bem vindo(a) a comunidade Si Giftbox!</strong></p>
             <p>Agora voc&ecirc; pode aproveitar toda a nossa plataforma e ofertas exclusivas!</p>

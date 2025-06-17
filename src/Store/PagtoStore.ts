@@ -22,7 +22,7 @@ export const fetchAddDadosPagto = async(dadosPagto:OrderPayment):Promise<OrderPa
     const storage = sessionStorage.getItem('pagto')
     const dadosAntigos = storage? JSON.parse(storage) : {}
     sessionStorage.setItem('pagto', JSON.stringify({ 
-        ...dadosAntigos, 
+        ...dadosAntigos,
         cardCvv: dadosPagto.cardCvv,
         cardExpire: dadosPagto.cardExpire,
         cardHolderDoc: dadosPagto.cardHolderDoc,

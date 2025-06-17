@@ -3,7 +3,7 @@
 import { ProductCart } from "@/types/types"
 import { ShoppingBag } from "lucide-react"
 import { useState } from "react"
-import { fetchAddItem } from "../../../Store/SacolaStore"
+import { fetchAddItem } from "../../Store/SacolaStore"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 const AdicionarSacola = ({itemSacola, className}:{itemSacola:ProductCart, className?:string}) => {

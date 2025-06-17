@@ -1,24 +1,32 @@
+import { useState } from "react"
 import InputBase, { InputBaseProps } from "./InputBase"
 
 type InputTextProps =  Omit<InputBaseProps, 'onHandleChange'> & {
-    onChange?: (value: string) => void
+    onChange?: (v: string) => void,
+    mask?: (v: string) => string
 }
 
-const InputText = ({ onChange, className, ...rest }: InputTextProps) => {
-    
-    const handleChange = (value: string) => {
-        onChange && onChange(value)
-        return value
+const InputText = ({ onChange, className, name, value, mask, ...rest }: InputTextProps) => {
+    const [rawValue, setRawValue] = useState(value)
+
+    const handleChange = (v: string) => {
+        setRawValue(v)
+        onChange && onChange(v)
+        const maskedValue = mask? mask(v) : v
+        return maskedValue
     }
     
     return (
         <div className={`${className} flex items-center justify-start relative border-2 border-borda rounded-md`}>
             <InputBase
-                className="w-full h-full"
+                name={`${name}Formatado`}
+                className="w-full h-full px-2 py-1"
                 type="text"
                 onHandleChange={handleChange}            
+                value={mask? mask(value || "") : value}
                 {...rest}
             />
+            <input type="hidden" name={name} id={name} value={rawValue} />
         </div>
     )
 }

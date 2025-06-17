@@ -1,6 +1,6 @@
 'use client'
 import { toCurrencyBr } from "@/services/utils"
-import { createQuerySacola } from "../../../Store/SacolaStore"
+import { createQuerySacola } from "../../Store/SacolaStore"
 import BtnPagamento from "./BtnPagamento"
 import { useEffect, useState } from "react"
 import { fetchPrecoProdutos } from "@/cachedFetchs/fetchsProdutos"

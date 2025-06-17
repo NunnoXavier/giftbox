@@ -1,33 +1,12 @@
 'use client'
 
+import { actionSalvarUsuario } from "@/actions/usuarios/actionSalvarUsuario"
 import { useEffect, useState } from "react"
 import { dateBrToISO } from "@/services/utils"
 import { User } from "@/types/types"
 import { Loader2, UserIcon, AtSignIcon, MapPin, CreditCard } from "lucide-react"
 
-type UserDTO = {
-    firstName: string
-    lastName: string
-    birthday: Date
-    phone: string
-    address: string
-    city: string
-    state: string
-    obs: string
-    cardNumber: string
-    cardHolderDoc: string
-    cardExpire: string
-    cardCvv: number
-    cardHolderName: string
-    postalCode: string
-}
-
-type DadosContaProps = {
-    usuario: User,
-    fnSalvarDados: (dados: any) => Promise<boolean>
-}
-
-const DadosConta = ({usuario, fnSalvarDados}:DadosContaProps) => {
+const DadosConta = ({usuario}: {usuario: User}) => {
     const [ loading, setLoading ] = useState(false)
 
     const [nome, setNome] = useState('')
@@ -103,7 +82,7 @@ const DadosConta = ({usuario, fnSalvarDados}:DadosContaProps) => {
                 postalCode: cep,                    
             }
 
-            const salvou = await fnSalvarDados(dadosUsuario)
+            const salvou = await actionSalvarUsuario(dadosUsuario)
             if (salvou) {
                 alert('Dados salvos com sucesso!')
             } else {
@@ -118,7 +97,8 @@ const DadosConta = ({usuario, fnSalvarDados}:DadosContaProps) => {
     }
 
     return (
-        <div className={`bg-white ${loading ? 'cursor-progress' : 'cursor-default'} 
+        <form onSubmit={salvar}
+        className={`bg-white ${loading ? 'cursor-progress' : 'cursor-default'} 
         p-8 max-w-4xl mx-auto rounded-lg shadow-md`}>
           {/* SEÇÃO: Dados Pessoais */}
           <section className="mb-10">
@@ -257,14 +237,14 @@ const DadosConta = ({usuario, fnSalvarDados}:DadosContaProps) => {
           </section>
       
           <div className="flex justify-center">
-            <button
+            <button type="submit"
               className="bg-texto2 hover:bg-borda2 text-white font-bold px-6 py-3 rounded-lg transition"
-              onClick={salvar}
+              
             >
               {loading ? <Loader2 className="animate-spin" /> : "Salvar"}
             </button>
           </div>
-        </div>
+        </form>
       )
       
 }

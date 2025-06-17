@@ -28,9 +28,9 @@ const InputBase = ({ className, name, value, type, onHandleChange, inputMode, pl
 
     return (
         <input
-            className={`${className}`}
-            name={name} id={name}             
+            className={`${className}`}            
             value={text}
+            name={name} id={name}
             onChange={(e) => handleChange(e.target.value)}
             type={type}
             inputMode={inputMode}

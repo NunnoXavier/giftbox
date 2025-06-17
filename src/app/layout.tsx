@@ -1,6 +1,6 @@
 import Rodape from "@/components/Rodape.tsx/Rodape";
 import "./globals.css"
-import QueryProviderStore from "../../Store/QueryProviderStore";
+import QueryProviderStore from "../Store/QueryProviderStore";
 
 import type { Metadata } from 'next'
  
