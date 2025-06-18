@@ -11,7 +11,7 @@ export interface User {
     id?:             number;
     firstName?:      string;
     lastName?:       string;
-    email:           string;
+    email?:           string;
     birthday?:       Date;
     phone?:          string;
     username?:       string;
@@ -28,7 +28,7 @@ export interface User {
     cardCvv?:        number;
     cardParc?:       number;
     paymentMethod?:  string;
-    role:           |'admin' | 'client';
+    role?:           |'admin' | 'client';
 }
 
 export interface Category {

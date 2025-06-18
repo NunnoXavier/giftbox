@@ -1,104 +1,31 @@
 'use client'
 
-import { actionSalvarUsuario } from "@/actions/usuarios/actionSalvarUsuario"
-import { useEffect, useState } from "react"
-import { dateBrToISO } from "@/services/utils"
+import { dateToISO } from "@/services/utils"
 import { User } from "@/types/types"
-import { Loader2, UserIcon, AtSignIcon, MapPin, CreditCard } from "lucide-react"
+import { UserIcon, AtSignIcon, MapPin, CreditCard } from "lucide-react"
+import InputText from "../genericos/Inputs/InputText"
+import InputDate from "../genericos/Inputs/InputDate"
+import InputFone from "../genericos/Inputs/InputFone"
+import { cartao, cpfCnpj, maskCep, validadeCartao } from "@/services/useMask"
+import InputNumber from "../genericos/Inputs/InputNumber"
+import Button from "../genericos/Buttons/Button"
+import useDadosConta from "./useDadosConta"
 
+/**
+ * DadosConta component renders a form for managing user account details.
+ * 
+ * @component
+ * @param {Object} props - Component properties
+ * @param {User} props.usuario - The user object containing account information
+ * @returns {React.ReactElement} A form with sections for personal data, account, delivery address, and payment details
+ */
 const DadosConta = ({usuario}: {usuario: User}) => {
-    const [ loading, setLoading ] = useState(false)
-
-    const [nome, setNome] = useState('')
-    const [sobrenome, setSobrenome] = useState('')
-    const [nascimento, setNascimento] = useState('')
-    const [fone, setFone] = useState('')
     
-    const [email, setEmail] = useState('')
-
-    const [cep, setCep] = useState('')
-    const [endereco, setEndereco] = useState('')
-    const [cidade, setCidade] = useState('')
-    const [uf, setUf] = useState('')
-    const [obs, setObs] = useState('')
-    
-    const [cartao, setCartao] = useState('')
-    const [nomeCartao, setNomeCartao] = useState('')
-    const [cpfCnpj, setCpfCnpj] = useState('')
-    const [vencimento, setVencimento] = useState('')
-    const [cvv, setCvv] = useState('')
-
-    useEffect(() => {
-        setNome(usuario.firstName || "")
-        setSobrenome(usuario.lastName || "")
-        setNascimento(usuario.birthday?.toString().slice(0,10) || "")
-        setFone(usuario.phone || "")
-        setEmail(usuario.email || "")
-        setCep(usuario.postalCode || "")
-        setEndereco(usuario.address || "")
-        setCidade(usuario.city || "")
-        setUf(usuario.state || "")
-        setObs(usuario.obs || "")
-        setCartao(usuario.cardNumber || "")
-        setNomeCartao(usuario.cardHolderName || "")
-        setCpfCnpj(usuario.cardHolderDoc || "")
-        setVencimento(usuario.cardExpire || "")
-        setCvv(usuario.cardCvv?.toString() || "")
-    }, [])
-
-    const buscarEndereco = async () => {
-        try {
-            setLoading(true)
-            const response = await fetch('http://localhost:3000/api/busca-cep?cep=' + cep)
-            const { data } = await response.json()
-            setEndereco(data.logradouro)
-            setCidade(data.localidade)
-            setUf(data.uf)
-            
-        } catch (error) {
-            return
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const salvar = async () => {        
-        try {            
-            setLoading(true)
-            const dadosUsuario = {
-                firstName: nome,
-                lastName: sobrenome,
-                birthday: new Date(dateBrToISO(nascimento)),
-                phone: fone,
-                address: endereco,
-                city: cidade,
-                state: uf,
-                obs: obs,
-                cardNumber: cartao,
-                cardHolderDoc: cpfCnpj,
-                cardExpire: vencimento,
-                cardCvv: Number(cvv),
-                cardHolderName: nomeCartao,
-                postalCode: cep,                    
-            }
-
-            const salvou = await actionSalvarUsuario(dadosUsuario)
-            if (salvou) {
-                alert('Dados salvos com sucesso!')
-            } else {
-                alert('Erro ao salvar os dados!')
-            }
-        } catch (error) {
-            console.log(error)
-            return
-        } finally {
-            setLoading(false)
-        }
-    }
+    const data = useDadosConta({usuario})
 
     return (
-        <form onSubmit={salvar}
-        className={`bg-white ${loading ? 'cursor-progress' : 'cursor-default'} 
+        <form onSubmit={data.salvar}
+        className={`bg-white ${data.loading ? 'cursor-progress' : 'cursor-default'} 
         p-8 max-w-4xl mx-auto rounded-lg shadow-md`}>
           {/* SEÇÃO: Dados Pessoais */}
           <section className="mb-10">
@@ -109,26 +36,30 @@ const DadosConta = ({usuario}: {usuario: User}) => {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="text-sm text-texto">Nome</label>
-                <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                <InputText 
+                  value={usuario.firstName}
+                  name="firstName"                 
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">Sobrenome</label>
-                <input type="text" value={sobrenome} onChange={(e) => setSobrenome(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                <InputText
+                  name="lastName"                
+                  value={usuario.lastName} 
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">Nascimento</label>
-                <input type="date" value={nascimento} onChange={(e) => setNascimento(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                <InputDate 
+                  name="birthday" 
+                  value={dateToISO(usuario.birthday)}
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">Telefone</label>
-                <input type="tel" value={fone} onChange={(e) => setFone(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                <InputFone 
+                  value={usuario.phone || ""}
+                  name="phone"
                 />
               </div>
             </div>
@@ -143,8 +74,10 @@ const DadosConta = ({usuario}: {usuario: User}) => {
             <div className="grid grid-cols-1 gap-6">
               <div>
                 <label className="text-sm text-texto">Email</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1 focus:outline-none focus:ring-2 focus:ring-borda2"
+                <InputText 
+                  type="email" 
+                  name="email"
+                  value={usuario.email}
                 />
               </div>
             </div>
@@ -159,38 +92,55 @@ const DadosConta = ({usuario}: {usuario: User}) => {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="text-sm text-texto">CEP</label>
-                <input type="text" value={cep} onChange={(e) => setCep(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText 
+                value={usuario.postalCode} 
+                 state={data.cep}
+                 setStateFn={data.setCep}
+                  name="postalCode"
+                  mask={maskCep}
                 />
-                <span
+                <button type="button"
                   className="text-texto-link text-xs cursor-pointer hover:underline mt-1 inline-block"
-                  onClick={() => buscarEndereco()}
+                  onClick={() => data.buscarEndereco()}
                 >
                   Buscar Endereço
-                </span>
+                </button>
               </div>
               <div>
                 <label className="text-sm text-texto">Endereço</label>
-                <input type="text" value={endereco} onChange={(e) => setEndereco(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText
+                  value={usuario.address}
+                  state={data.endereco}
+                  name="address"
+                  setStateFn={(value) => {
+                    console.log(value)
+                    data.setEndereco(value)
+                  }}
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">Cidade</label>
-                <input type="text" value={cidade} onChange={(e) => setCidade(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText
+                  state={data.cidade} 
+                  value={usuario.city}
+                  name="city"
+                  setStateFn={(value) => data.setCidade(value)}
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">UF</label>
-                <input type="text" value={uf} onChange={(e) => setUf(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText
+                  state={data.uf}
+                  value={usuario.state}
+                  name="state"
+                  setStateFn={data.setUf}
                 />
               </div>
               <div className="md:col-span-2">
                 <label className="text-sm text-texto">Complemento / Observações</label>
-                <input type="text" value={obs} onChange={(e) => setObs(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText 
+                  value={usuario.obs} 
+                  name="obs"
                 />
               </div>
             </div>
@@ -205,53 +155,58 @@ const DadosConta = ({usuario}: {usuario: User}) => {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="text-sm text-texto">Número do Cartão</label>
-                <input type="text" value={cartao} onChange={(e) => setCartao(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText                   
+                  value={usuario.cardNumber?.toString()} 
+                  name="cardNumber"
+                  mask={cartao}
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">Nome no Cartão</label>
-                <input type="text" value={nomeCartao} onChange={(e) => setNomeCartao(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText 
+                  value={usuario.cardHolderName}
+                  name="cardHolderName"
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">CPF/CNPJ</label>
-                <input type="text" value={cpfCnpj} onChange={(e) => setCpfCnpj(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText
+                  value={usuario.cardHolderDoc}
+                  name="cardHolderDoc"
+                  mask={cpfCnpj}
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">Vencimento</label>
-                <input type="text" value={vencimento} onChange={(e) => setVencimento(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputText 
+                  value={usuario.cardExpire}
+                  name="cardExpire"
+                  mask={validadeCartao}
                 />
               </div>
               <div>
                 <label className="text-sm text-texto">CVV</label>
-                <input type="text" value={cvv} onChange={(e) => setCvv(e.target.value)} 
-                  className="w-full border border-borda rounded-lg px-4 mt-1"
+                <InputNumber
+                  value={usuario.cardCvv?.toString() || ""}
+                  name="cardCvv"
+                  max={999}                  
                 />
               </div>
             </div>
           </section>
       
           <div className="flex justify-center">
-            <button type="submit"
-              className="bg-texto2 hover:bg-borda2 text-white font-bold px-6 py-3 rounded-lg transition"
-              
+            <Button 
+              type="submit"
+              sucess={data.sucess} error={data.error} loading={data.loading}
+              setError={data.setError} setSucess={data.setSucess}
             >
-              {loading ? <Loader2 className="animate-spin" /> : "Salvar"}
-            </button>
+              salvar 
+            </Button>
           </div>
         </form>
       )
       
 }
-
-/*
-                cardExpire varchar(5),
-                cardcvv numeric(3) default 0,
-*/
 
 export default DadosConta

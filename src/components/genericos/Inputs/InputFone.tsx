@@ -2,8 +2,10 @@
 'use client';
 
 import { useState } from "react";
+import InputBase, {InputBaseProps} from "./InputBase";
 
-const aplicarMascaraTelefone = (valor: string): string => {
+const aplicarMascaraTelefone = (valor?: string): string => {
+  if (!valor) return '';
   const numeros = valor.replace(/\D/g, '');
   if (numeros.length <= 2) return `(${numeros}`;
   if (numeros.length <= 7) return `(${numeros.slice(0, 2)}) ${numeros.slice(2)}`;
@@ -13,29 +15,37 @@ const aplicarMascaraTelefone = (valor: string): string => {
   return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7, 11)}`;
 };
 
-const InputFone = () => {
-  const [valorMascarado, setValorMascarado] = useState("");
-  const [valorLimpo, setValorLimpo] = useState("");
+type InputFoneProps = Omit<InputBaseProps, 'onHandleChange'> & {
+  onChange?: (value: string) => void;
+};
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const apenasNumeros = e.target.value.replace(/\D/g, '');
+const InputFone = ({value, name, className, onChange, ...rest}: InputFoneProps) => {
+  const [valorMascarado, setValorMascarado] = useState(aplicarMascaraTelefone(value));
+  const [valorLimpo, setValorLimpo] = useState(value);
+
+  const handleChange = (value: string) => {
+    const apenasNumeros = value.replace(/\D/g, '');
     const valorComMascara = aplicarMascaraTelefone(apenasNumeros);
+    onChange && onChange(apenasNumeros);
 
     setValorLimpo(apenasNumeros);
     setValorMascarado(valorComMascara);
+    return valorComMascara;
   };
 
   return (
-    <div>
-      <label htmlFor="telefone">Telefone:</label><br />
-      <input
+    <div className={`${className} flex items-center justify-start relative border-2 border-borda rounded-md`}>
+      <InputBase
         type="text"
         value={valorMascarado}
-        onChange={handleChange}
-        placeholder="(99) 99999-9999"
+        name=""
+        onHandleChange={handleChange}
+        placeHolder="(99) 99999-9999"
+        className="w-full h-full px-2 py-1"
+        {...rest}
       />
       {/* Campo real que será lido pelo FormData */}
-      <input type="hidden" name="telefone" value={valorLimpo} />
+      <input type="hidden" name={name} id={name} value={valorLimpo} />
     </div>
   );
 };

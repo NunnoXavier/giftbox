@@ -1,7 +1,5 @@
 import { fetchUser } from "@/uncachedFetchs/fetchUser"
 import AvaliarProdutos from "./AvaliarProdutos"
-import { User } from "@/types/types"
-import Image from "next/image"
 import PedidosEmAberto from "./PedidosEmAberto"
 import ProdutosRecomendados from "./ProdutosRecomentados"
 
@@ -14,7 +12,6 @@ const Dashboard = async () => {
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
-            {/* Título Principal */}
             <div>
                 <h1 className="text-3xl font-bold text-texto2">
                     {`${usuario.firstName} ${usuario.lastName}`}

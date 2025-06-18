@@ -7,7 +7,7 @@ const Sobre = () => {
           {/* Bloco 1 - Introdução com destaque */}
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-5xl font-extrabold text-texto2 mb-6">Muito além de uma caixa</h2>
+              <h2 className="text-5xl font-extrabold text-texto2 text-shadow-lg/5 mb-6">Muito além de uma caixa</h2>
               <p className="text-xl leading-relaxed">
                 A <strong>Si Giftbox</strong> nasceu do nosso desejo de criar experiências memoráveis. Cada caixa é uma declaração de carinho, preparada com afeto, cuidado e estilo.
               </p>
@@ -38,7 +38,7 @@ const Sobre = () => {
               />
             </div>
             <div className="space-y-6">
-              <h3 className="text-3xl font-bold text-texto2">Por que escolher a Si Giftbox?</h3>
+              <h3 className="text-3xl font-bold text-texto2 text-shadow-lg/5">Por que escolher a Si Giftbox?</h3>
               <ul className="space-y-4 text-lg text-texto">
                 <li>🎁 <strong>Design exclusivo</strong> – sofisticação em cada detalhe.</li>
                 <li>🧡 <strong>Curadoria afetiva</strong> – produtos escolhidos com intenção.</li>

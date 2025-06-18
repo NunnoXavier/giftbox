@@ -37,7 +37,12 @@ export const dateBrToISO = (date: string): string => {
     return `${ano}-${mes}-${dia}`
 }
 
-export const dateToISO = (date: Date|string): string => {
+/**
+ * Converts a date to ISO format string with year/month/day format
+ * @param {Date | string} [date] - The input date to convert
+ * @returns {string} The date in ISO format (YYYY/MM/DD) or an empty string if date is invalid
+ */
+export const dateToISO = (date?: Date|string): string => {
     if(!date) return ""
 
     const dt = typeof date === 'string'? new Date(date.slice(0,10)) : date
@@ -50,7 +55,7 @@ export const dateToISO = (date: Date|string): string => {
     const month = dtString.slice(5,7)
     const year = dtString.slice(0,4)
 
-    return `${year}/${month}/${day}`
+    return `${year}-${month}-${day}`
 }
 
 export const diferencaEntreDatas = (data1: Date|string, data2: Date|string): number => {

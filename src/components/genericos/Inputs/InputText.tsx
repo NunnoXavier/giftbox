@@ -3,15 +3,15 @@ import InputBase, { InputBaseProps } from "./InputBase"
 
 type InputTextProps =  Omit<InputBaseProps, 'onHandleChange'> & {
     onChange?: (v: string) => void,
-    mask?: (v: string) => string
+    mask?: (v: string) => string,
 }
 
-const InputText = ({ onChange, className, name, value, mask, ...rest }: InputTextProps) => {
+const InputText = ({ onChange, className, name, value, mask, state, ...rest }: InputTextProps) => {
     const [rawValue, setRawValue] = useState(value)
 
     const handleChange = (v: string) => {
         setRawValue(v)
-        onChange && onChange(v)
+        onChange && onChange(v)        
         const maskedValue = mask? mask(v) : v
         return maskedValue
     }
@@ -24,9 +24,10 @@ const InputText = ({ onChange, className, name, value, mask, ...rest }: InputTex
                 type="text"
                 onHandleChange={handleChange}            
                 value={mask? mask(value || "") : value}
+                state={state}
                 {...rest}
             />
-            <input type="hidden" name={name} id={name} value={rawValue} />
+            <input type="hidden" name={name} id={name} value={state || rawValue} />
         </div>
     )
 }

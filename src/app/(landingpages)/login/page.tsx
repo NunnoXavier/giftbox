@@ -15,11 +15,11 @@ const Login = () => {
           width={500}
           height={500}
         />
-        <h1 className="text-4xl font-extrabold text-texto2 mb-4">Bem-vindo à Si Giftbox</h1>
+        <h1 className="text-4xl font-extrabold text-texto2 mb-4 text-shadow-lg/5">Bem-vindo à Si Giftbox</h1>
         <p className="text-texto text-lg max-w-md mb-6">
           Presentes sofisticados para momentos especiais. Faça login para criar ou gerenciar suas giftboxes.
         </p>
-        <p className="italic text-purple-800 text-base max-w-md mb-6">
+        <p className="italic text-purple-800 text-base max-w-md mb-6 text-shadow-lg/5">
           “Cada presente é um gesto de amor — entregue com cuidado, recebido com emoção.”
         </p>
       </div>
