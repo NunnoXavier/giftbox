@@ -1,10 +1,7 @@
-import { fetchPedidos } from './fetchPedidos'
-import { AuthTokenPayload, Order, OrderProduct, Review } from '../types/types'
-import { cookies } from 'next/headers'
-import { jwtDecode } from 'jwt-decode'
+import {  Order, OrderProduct, Review } from '../types/types'
 import { actionObterToken } from '@/actions/usuarios/actionObterToken'
 
-type TProdutosAvaliar = {
+export type TProdutosAvaliar = {
     order: Order,
     orderProduct: OrderProduct,
     review: Review

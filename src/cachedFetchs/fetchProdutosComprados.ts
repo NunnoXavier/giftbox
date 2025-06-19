@@ -1,7 +1,7 @@
 import { fetchPedidos } from './fetchPedidos'
 import { Order } from '../types/types'
 
-export const fetchProdutosComprados = async (todos:boolean = false) => {
+export const fetchProdutosComprados = async (somenteProdutosRecebidos:boolean = false) => {
     const pedidos:Order[] = await fetchPedidos() || []
     if (!pedidos) {
         throw new Error('Não foi possível obter os pedidos')
@@ -10,7 +10,7 @@ export const fetchProdutosComprados = async (todos:boolean = false) => {
     const pedidosRecebidos = pedidos.filter((pedido) => (
         pedido.products &&
         pedido.products.length > 0 &&
-        !todos? pedido.status === 'received' : true
+        (somenteProdutosRecebidos? pedido.status === 'received' : true)
     ))
 
     const produtosRecebidos = pedidosRecebidos

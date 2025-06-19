@@ -3,6 +3,7 @@
 import { Order, OrderProduct, Review } from "@/types/types"
 import { actionAvaliarProduto } from "@/actions/produtos/actionAvaliarProduto"
 import { useEffect, useState } from "react"
+import Button from "@/components/genericos/Buttons/Button"
 
 type TProdutosAvaliar = {
     order: Order,
@@ -14,6 +15,8 @@ const BtnAvaliar = ( {item}: {item: TProdutosAvaliar}) => {
     const [ comment, setComment] = useState('')
     const [ stars, setStars] = useState(0)
     const [ isLoading, setIsLoading] = useState(false)
+    const [ error, setError] = useState(false)
+    const [ sucess, setSucess] = useState(false)
 
     useEffect(() => {
         setStars(item.review.rating)
@@ -33,10 +36,14 @@ const BtnAvaliar = ( {item}: {item: TProdutosAvaliar}) => {
             }
     
             const res = await actionAvaliarProduto(newReview)
-            console.log(res)
-            
+            if(!res){
+                setError(true)
+                return
+            }
+            setSucess(true)
         } catch (error) {
-            console.log(error)            
+            console.log(error)
+            setError(true)
         } finally {
             setIsLoading(false)
         }
@@ -63,20 +70,15 @@ const BtnAvaliar = ( {item}: {item: TProdutosAvaliar}) => {
                 onChange={ (e) => { setComment(e.target.value) } }
             />
             <div className="flex w-full justify-end">
-                <button 
-                    disabled={ isLoading}
-                    className={`bg-texto2 hover:bg-borda2 text-sm text-white px-4 py-1 rounded-xl`}
+                <Button 
+                    loading={isLoading}
+                    disabled={isLoading || stars === 0}
+                    error={error} sucess={sucess}
+                    setError={setError} setSucess={setSucess}
                     onClick={ handleClickEnviar }
                 >
-                    { isLoading?
-                        <div className="flex items-center gap-2">
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                            <span>Aguarde...</span>
-                        </div>
-                        :
-                        'Enviar Avaliação'
-                    }
-                </button>                
+                    Avaliar
+                </Button>                
             </div>
         </div>
     )

@@ -15,12 +15,13 @@ const Secao = ({ className, nomeSecao, secao }:SecaoProps) => {
     return (
         <div className={`${className}`}>
             <h3 className="text-texto text-center text-2xl font-bold my-3">{nomeSecao?.toLocaleUpperCase()}</h3>
-            <div className="flex overflow-scroll gap-2 scroll-auto snap-x py-4 px-4">
+            <div className="flex overflow-x-scroll gap-2 snap-x py-4 px-4">
                 {
                     secao?.map((produto)=> {
                         return(
                             <ProdutoSecao key={produto.id} 
                                 produto={produto}
+                                size="md"
                                 className="bg-white border border-borda text-texto"
                             />
                         )

@@ -1,3 +1,4 @@
+import BtnVoltar from "@/components/genericos/ BtnVoltar"
 import { Undo2 } from "lucide-react"
 
 const FalhaPagto = () => {
@@ -12,8 +13,10 @@ const FalhaPagto = () => {
             </div>
             <div className="w-md md:w-lg rounded-lg m-auto p-4">
                 <a href="/checkout" className="flex gap-2 justify-center items-center">
-                    <span>Voltar para checkout</span>
-                    <Undo2 className="text-texto-link" />
+                    
+                    <BtnVoltar>
+                        <Undo2/>                        
+                    </BtnVoltar>
                 </a>
 
             </div>

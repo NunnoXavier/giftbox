@@ -5,43 +5,26 @@ import Image from "next/image"
 import { toCurrencyBr } from "@/services/utils"
 import { fetchEstoqueProdutos, fetchPrecoProdutos } from "@/cachedFetchs/fetchsProdutos"
 
+const sizeClasses:{sm:string, md:string,lg:string} = {
+    sm: 'w-44 md:w-48 h-62 md:h-76', 
+    md: 'w-52 md:w-72 h-82 md:h-110', 
+    lg: 'w-56 md:w-80 h-92 md:h-140'
+}
+
 type ProdutoSecaoProps = {
     className?: string,
     produto?: Product,
+    size?: 'sm' | 'md' | 'lg'
 }
 
-const ProdutoSecao = async ({ className, produto }: ProdutoSecaoProps) => {
-
-        const dataPrecos = await fetchPrecoProdutos()
-        const dataEstoque = await fetchEstoqueProdutos()
-
-        
-        const Placeholder = () => {
-            return(
-                <div className={`${className} flex flex-col items-center w-48  md:w-96 shrink-0 snap-start justify-between py-4 text-center break-words border border-borda rounded-md animate-pulse`}>
-                <div className="">
-                    <div className="w-40 h-48 md:h-92 md:w-92 bg-background rounded-md"></div>
-                </div>
-            
-                <div className="bg-borda0 w-28 md:w-48 h-2 rounded-2xl"></div>
-                <div className="bg-borda0 w-24 h-4 rounded-2xl"></div>
-                <div className="bg-background w-32 h-6 rounded-2xl"></div>
-            </div>
-        )    
-    }
+const ProdutoSecao = async ({ className, produto, size='lg' }: ProdutoSecaoProps) => {
+    const dataPrecos = await fetchPrecoProdutos()
+    const dataEstoque = await fetchEstoqueProdutos()
     
-    const PlaceholderImage = () => {
-        return (
-            <div className="relative min-h-48 md:min-h-92 w-48 md:w-92 rounded-md">
-                <div className="absolute z-2 w-5 h-1 bg-background top-17 md:top-28 left-4/12 md:left-5/12 -translate-x-1/2 rounded-xs"></div>
-                <div className="absolute z-5 w-12 h-12 bg-white top-7/12 md:top-5/12 left-1/2 -translate-1/2 rounded-full"></div>
-                <div className="absolute z-6 w-10 h-10 bg-background top-7/12 md:top-5/12 left-1/2 -translate-1/2 rounded-full"></div>
-                <div className="absolute w-28 h-18 bg-background top-7/12 md:top-5/12 left-1/2 -translate-1/2 rounded-md"></div>
-            </div>            
-        )
-    }
+    const classSize = sizeClasses[size || 'lg']
+
     if(!produto){
-        return <Placeholder />
+        return
     }
     
     const estoque = dataEstoque?.find((estoque) => estoque.id === produto?.id)?.stock 
@@ -66,33 +49,27 @@ const ProdutoSecao = async ({ className, produto }: ProdutoSecaoProps) => {
 
     return (
         <div className={`${className} flex flex-col relative 
-            items-center w-48  md:w-96 shrink-0 snap-start justify-between p-4 
+            ${ classSize }
+            items-center shrink-0 snap-start justify-between p-4 
             text-center break-words rounded-md shadow-md`}>
             <FlagPromo perc={perc} visible={perc > 0} />
-            <a href={`/produto/${produto.id}`}>
-                <div className="min-h-48 md:min-h-92">                   
+            <a href={`/produto/${produto.id}`} className="relative w-full h-1/2">
                     {
-                        produto.thumbnail?
-                        (
-                            <Image
-                            className="w-48 md:w-96 rounded-t-md"
-                                src={  produto.thumbnail } 
-                                alt={`img: ${produto?.title}`}
-                                width={800} height={800}                   
-                            />
-                        ):
-                        (
-                            <PlaceholderImage />
-                        )
+                        <Image
+                        className="object-cover rounded-md"
+                            src={  produto.thumbnail || '/images/placeholder.jpeg'} 
+                            alt={`img: ${produto?.title}`}
+                            fill
+                        />
                     }
-                </div>
+                </a>
                 
-                <p className="text-sm font-bold md:text-lg">{produto?.title}</p>
+                <p className={`font-bold ${size === 'lg'? 'text-lg': 'text-md'}`}>{produto?.title}</p>
                 <div className={`${estoque > 0? 'block' : 'hidden'}`}>
                     <p className={`${promo < preco? '': 'text-transparent'} text-sm `} ><s>{toCurrencyBr(preco)}</s></p>
-                    <p className={`${promo < preco? 'text-texto-alerta': ''} text-lg`} >{toCurrencyBr(promo)}</p>
+                    <p className={`${promo < preco? 'text-texto-alerta': ''} 
+                    ${size === 'lg'?'text-lg': 'text-md'}`} >{toCurrencyBr(promo)}</p>
                 </div>
-            </a>
             <BtnAddSacola produto={produto} />
         </div>
     )

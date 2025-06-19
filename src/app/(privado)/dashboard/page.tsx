@@ -24,8 +24,6 @@ const Dashboard = async () => {
                 <PedidosEmAberto />
             </div>
             <ProdutosRecomendados />
-
-
         </div>
 
     )

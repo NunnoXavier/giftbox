@@ -11,7 +11,7 @@ const PedidosEmAberto = async () => {
 
     const statusFinalizados: OrderStatus[] = ["received","canceled","expired"]
 
-    const pedidosEmAberto = pedidos.filter(pedido => !statusFinalizados.includes(pedido.status!) ) 
+    const pedidosEmAberto = pedidos.filter(pedido => pedido.status && !statusFinalizados.includes(pedido.status) ) 
 
     if(pedidosEmAberto.length === 0){
         return
