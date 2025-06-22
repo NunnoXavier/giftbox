@@ -1,24 +1,14 @@
-import { Order } from "@/types/types"
-import { cookies } from "next/headers"
-import Pedido from "../../../components/Pedidos/Pedido"
+import Pedido from "@/app/(privado)/pedidos/components/Pedido"
+import { fetchPedidos } from "@/cachedFetchs/fetchPedidos"
 
 const Pedidos = async () => {    
-    const cookieStore = await cookies()
-    const cookieToken = cookieStore.get("SIGIFTBOX_AUTH_TOKEN")    
-    const res = await fetch(`http://localhost:3000/api/pedidos`, {
-        method: "GET",
-        headers: { Cookie:`SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}` },
-    })
-
-    const { data, error }:{ data:Order[], error:string } = await res.json()
+    const data = await fetchPedidos()
 
     if(!data){
-        console.log(error)
         return (
             <h1>Ocorreu um erro ao buscar os pedidos. Tente mais tarde!</h1>
         )
     }
-
 
     return (
         <div className="flex flex-col items-center">

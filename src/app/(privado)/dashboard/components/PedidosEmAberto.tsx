@@ -1,3 +1,4 @@
+import { actionGetTitleColorPedido } from "@/actions/pedidos/actionGetTitleColorPedido"
 import { fetchPedidos } from "@/cachedFetchs/fetchPedidos"
 import { toDateBr } from "@/services/utils"
 import { Order, OrderStatus } from "@/types/types"
@@ -17,21 +18,6 @@ const PedidosEmAberto = async () => {
         return
     }
 
-type TStatus = {
-    title: string,
-    color: string
-} 
-
-const statusPedido = (pedido: Order):TStatus =>{
-    return pedido.status === "pending"? { title: "Aguardando Pagamento", color: "text-yellow-500" }: 
-                        pedido.status === "canceled"? { title: "Pedido Cancelado", color: "text-texto-alerta" }:
-                        pedido.status === "expired"? { title: "Pedido Expirado", color: "text-texto-label" }:
-                        pedido.status === "paid"? { title: "Pedido em Preparação", color: "text-green-500" }:
-                        pedido.status === "sent"? { title: `Pedido Enviado em ${toDateBr(pedido.shipping?.date)}`, color: "text-texto-link" }:
-                        pedido.status === "received"? { title: `Pedido Recebido em ${toDateBr(pedido.shipping?.receivedAt)}`, color: "text-texto" }:
-                        { title: "Status desconhecido", color: "text-texto-alerta" }
-} 
-
     return (
         <section className="flex-1 bg-white shadow-md rounded-lg p-6 space-y-4">
             <h2 className="text-2xl font-semibold text-texto">Pedidos em Andamento</h2>
@@ -48,7 +34,7 @@ const statusPedido = (pedido: Order):TStatus =>{
                     </a>
                     <p className=" flex text-xs text-texto gap-2">
                         Status:
-                        <span className={`font-medium ${statusPedido(pedido).color}`}>{statusPedido(pedido).title}</span>
+                        <span className={`font-medium ${actionGetTitleColorPedido(pedido).color}`}>{actionGetTitleColorPedido(pedido).title}</span>
                     </p>
 
                     {

@@ -1,7 +1,7 @@
 import { fetchUser } from "@/uncachedFetchs/fetchUser"
-import AvaliarProdutos from "./AvaliarProdutos"
-import PedidosEmAberto from "./PedidosEmAberto"
-import ProdutosRecomendados from "./ProdutosRecomentados"
+import AvaliarProdutos from "./components/AvaliarProdutos"
+import PedidosEmAberto from "./components/PedidosEmAberto"
+import ProdutosRecomendados from "./components/ProdutosRecomentados"
 
 const Dashboard = async () => {
 

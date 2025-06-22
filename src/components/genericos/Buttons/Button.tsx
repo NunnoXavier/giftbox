@@ -1,7 +1,7 @@
 'use client'
 
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     children: ReactNode;
@@ -28,7 +28,8 @@ const Button = ({children, className, error, setError, sucess, setSucess, loadin
 
     return (
             <button
-              className={`min-w-30 h-10 rounded-lg text-white flex justify-center items-center 
+              className={`${className} 
+                min-w-30 h-10 rounded-full text-white flex justify-center items-center 
                 transition-all duration-700 ease-in-out
                 ${  error ? 'bg-red-600 hover:bg-red-600' 
                   :sucess ? 'bg-green-600 hover:bg-green-600' 

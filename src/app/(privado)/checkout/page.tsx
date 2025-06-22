@@ -1,6 +1,6 @@
 import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
-import Endereco from "./Endereco"
-import Pagamento from "@/app/(privado)/checkout/Pagamento"
+import Endereco from "./components/Endereco"
+import Pagamento from "@/app/(privado)/checkout/components/Pagamento"
 import TotalPedido from "@/components/Checkout/TotalPedidos/TotalPedido"
 import { fetchPrecoProdutos } from "@/cachedFetchs/fetchsProdutos"
 
