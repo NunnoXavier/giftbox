@@ -1,5 +1,5 @@
-import Secoes from "@/components/Secoes/Secoes"
-import Destaques from "@/components/Destaques/Destaques"
+import Secoes from "./components/Secoes"
+import Destaques from "./components/Destaques"
 
 export default async function Home() {
   return (

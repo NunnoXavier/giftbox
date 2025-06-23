@@ -1,7 +1,6 @@
 import Secao from "./Secao"
 import { fetchEstoqueProdutos, fetchPrecoProdutos, fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
 import { fetchSecoes } from "@/cachedFetchs/fetchsSecoes"
-import Banner from "../Banner/Banner"
 
 type SecoesProps = {
     className?: string,
@@ -25,15 +24,14 @@ const Secoes = async ({ className }: SecoesProps) => {
 
     return (
         <div className={`${className}`}>
-            <ul>
-                {
-                    listaSecoes?.map((nomeSecao, index) => {
-                        const secao = dataProdutos?.filter((produto) => produto.category?.description === nomeSecao)
-                        return (
-                            <Secao key={index} nomeSecao={nomeSecao} secao={secao}/>
-                        )
-                    })
-                }
+            <ul>{
+                listaSecoes?.map((nomeSecao, index) => {
+                    const secao = dataProdutos?.filter((produto) => produto.category?.description === nomeSecao)
+                    return (
+                        <Secao key={index} nomeSecao={nomeSecao} secao={secao}/>
+                    )
+                })
+            }
             </ul>
         </div>
     )

@@ -1,5 +1,5 @@
 import { actionProcurarProdutos } from "@/actions/produtos/actionProcurarPorTag"
-import ProdutoSecao from "@/components/Secoes/ProdutoSecao"
+import ProdutoSecao from "@/app/(publico)/(pricing)/components/ProdutoSecao/ProdutoSecao"
 import { normalizarTexto } from "@/services/utils"
 
 

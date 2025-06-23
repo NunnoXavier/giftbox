@@ -1,11 +1,14 @@
 import { Product } from "@/types/types"
 
+const umaHora = 60
+
 export const fetchProdutos = async () => {
     try {
         const res = await fetch(`http://localhost:3000/api/produtos`, {
             cache: "force-cache",
             next: {
-                tags: ['produtos']
+                tags: ['produtos'],
+                revalidate: umaHora,
             }
         })
     
