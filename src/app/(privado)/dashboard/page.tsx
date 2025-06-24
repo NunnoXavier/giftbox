@@ -1,11 +1,11 @@
-import { fetchUser } from "@/uncachedFetchs/fetchUser"
+import { fetchUsuario } from "@/serverCache/fetchUsuario"
 import AvaliarProdutos from "./components/AvaliarProdutos"
 import PedidosEmAberto from "./components/PedidosEmAberto"
 import ProdutosRecomendados from "./components/ProdutosRecomentados"
 
 const Dashboard = async () => {
 
-    const usuario = await fetchUser()
+    const usuario = await fetchUsuario()
     if (!usuario) {
         return <p>Erro ao buscar usuário</p>
     }

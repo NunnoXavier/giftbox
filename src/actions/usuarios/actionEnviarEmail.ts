@@ -1,7 +1,7 @@
 'use server'
 
-import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
-import { fetchUsuariosAdmin } from "@/cachedFetchs/fetchUsuariosAdmin"
+import { fetchUsuario } from "@/serverCache/fetchUsuario"
+import { fetchUsuariosAdmin } from "@/serverCache/fetchUsuariosAdmin"
 
 export const actionEnviarEmail = async (assunto: string, mensagem: string, email?: string) => {
     try {        

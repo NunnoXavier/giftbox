@@ -4,10 +4,7 @@ import { normalizarTexto } from "@/services/utils"
 
 
 const Produtos = async ({ params }:{ params: Promise<{ termo: string }> }) => {
-    const param = await params
-
-    const termo = param?.termo || ""
-
+    const termo = (await params).termo
     const texto = normalizarTexto(termo)
 
     if (!texto || texto.length < 2) {
@@ -19,10 +16,12 @@ const Produtos = async ({ params }:{ params: Promise<{ termo: string }> }) => {
     return (
         <div>
             <p className="my-4 text-xl">Buscando por: {texto}</p>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="flex gap-4">
                 {
                     produtosFiltrados.map((p) => (
-                        <ProdutoSecao key={p.id} produto={p} />
+                        <ProdutoSecao key={p.id} produto={p} 
+                        className="bg-gradient-to-tr from-40% from-white to-violet-200"
+                        />
                     ))
 
                 }

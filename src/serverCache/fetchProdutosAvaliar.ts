@@ -7,6 +7,8 @@ export type TProdutosAvaliar = {
     review: Review
 }
 
+const umaHora = 3600
+
 export const fetchProdutosAvaliar = async () => {
     const token = await actionObterToken()
 
@@ -15,7 +17,8 @@ export const fetchProdutosAvaliar = async () => {
         headers: token.header,
         cache: "force-cache",
         next: {
-            tags: [`avaliar-${token.idUser}`]
+            tags: [`avaliar-${token.idUser}`],
+            revalidate: umaHora * 24,
         }
     })
 

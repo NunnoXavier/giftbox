@@ -179,6 +179,7 @@ const criarTabelas = async () => {
                 email varchar(100),
                 subject varchar(100),
                 message text,
+                viewed boolean default false,
                 PRIMARY KEY (id)
             )
         `)  

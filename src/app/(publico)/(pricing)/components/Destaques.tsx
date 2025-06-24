@@ -1,4 +1,4 @@
-import { fetchPromocoes } from "@/cachedFetchs/fetchPromocoes"
+import { fetchPromocoes } from "@/serverCache/fetchPromocoes"
 import { dateToISO } from "@/services/utils"
 import Destaque from "./Destaque"
 

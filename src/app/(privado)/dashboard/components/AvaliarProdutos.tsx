@@ -1,4 +1,4 @@
-import { fetchProdutosAvaliar } from '@/cachedFetchs/fetchProdutosAvaliar'
+import { fetchProdutosAvaliar } from '@/serverCache/fetchProdutosAvaliar'
 import ItemAvaliar from './ItemAvaliar'
 
 const AvaliarProdutoss = async () => {

@@ -1,10 +1,10 @@
-import { getProdutosBasico } from "@/db/produtos";
+import { getProdutosBusca } from "@/db/produtos";
 import { NextResponse } from "next/server";
 
 
 export const GET = async () => {
     try {
-        const { data:produtos, error:errorProdutos } = await getProdutosBasico()
+        const { data:produtos, error:errorProdutos } = await getProdutosBusca()
         if(!produtos){
             return NextResponse.json({data:null, error:errorProdutos})            
         }

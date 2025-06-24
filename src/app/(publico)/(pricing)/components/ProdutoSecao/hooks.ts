@@ -1,4 +1,4 @@
-import { fetchEstoqueProdutos, fetchPrecoProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { fetchEstoqueProdutos, fetchPrecoProdutos } from "@/serverCache/fetchsProdutos"
 import { Product } from "@/types/types"
 
 export const classesBase = "flex flex-col relative items-center shrink-0 snap-start justify-between p-4 text-center break-words rounded-md shadow-md"

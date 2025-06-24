@@ -1,5 +1,5 @@
 import Pedido from "@/app/(privado)/pedidos/components/Pedido"
-import { fetchPedidos } from "@/cachedFetchs/fetchPedidos"
+import { fetchPedidos } from "@/serverCache/fetchPedidos"
 
 const Pedidos = async () => {    
     const data = await fetchPedidos()

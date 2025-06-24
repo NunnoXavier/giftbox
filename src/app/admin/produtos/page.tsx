@@ -1,4 +1,4 @@
-import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { fetchProdutosAdmin } from "@/serverCache/fetchsProdutos"
 import CadastrarImagens from "@/components/admin/CadastrarImagens/CadastrarImagens"
 import FormCadastrarProduto from "@/components/admin/CadastrarProduto/CadastrarProduto"
 import GridProdutos from "@/components/admin/GridProdutos/GridProdutos"
@@ -7,7 +7,7 @@ import { Suspense } from "react"
 import AtualizarProdutos from "./AtualizarProdutos"
 
 const Admin = async () => {
-    const produtos = await fetchProdutos()
+    const produtos = await fetchProdutosAdmin()
 
     if(!produtos){
         return <div className="w-full h-dvh flex flex-col items-center justify-center gap-5">

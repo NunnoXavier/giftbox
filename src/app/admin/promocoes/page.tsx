@@ -1,4 +1,4 @@
-import { fetchPromocoes } from "@/cachedFetchs/fetchPromocoes"
+import { fetchPromocoes } from "@/serverCache/fetchPromocoes"
 import ListaPromocoes from "./ListaPromocoes"
 import { PlusCircle } from "lucide-react"
 import Link from "next/link"

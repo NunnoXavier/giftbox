@@ -1,6 +1,6 @@
 'use client'
 
-import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { fetchProdutos } from "@/serverCache/fetchsProdutos"
 import InputCurrency from "@/components/genericos/Inputs/InputCurrency"
 import InputNumber from "@/components/genericos/Inputs/InputNumber"
 import { toCurrencyBr } from "@/services/utils"

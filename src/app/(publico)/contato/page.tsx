@@ -24,7 +24,7 @@ const Contato = () => {
         />
         <div className="mt-8 text-sm text-texto">
           <p>📧 contato@sigiftbox.com.br</p>
-          <p>📱 WhatsApp: (11) 91234-5678</p>
+          <p>📱 WhatsApp: (11) 98020-5438</p>
           <p>📍 São Paulo, SP</p>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
+import { fetchUsuario } from "@/serverCache/fetchUsuario"
 import DadosConta from "@/components/DadosConta/DadosConta"
 
 const Conta = async () => {

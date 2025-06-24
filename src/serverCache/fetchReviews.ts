@@ -2,6 +2,8 @@
 
 import { Review } from "@/types/types"
 
+const umaHora = 3600
+
 export const fetchReviews = async (idProduto?: number) => {
     try {
         const res = await fetch(`http://localhost:3000/api/produtos/reviews/${idProduto}`, {
@@ -9,7 +11,7 @@ export const fetchReviews = async (idProduto?: number) => {
             cache: "force-cache",
             next: {
                 tags: [`reviews-${idProduto}`],
-                revalidate: 60
+                revalidate: umaHora * 24
             }
         })
         

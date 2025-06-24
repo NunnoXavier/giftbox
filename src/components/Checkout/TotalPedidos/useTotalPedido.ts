@@ -1,6 +1,6 @@
 
-import { compararPrecos, createQuerySacola } from "@/Store/SacolaStore"
-import { createStorePedido, inserirPedido, updatePedido } from "@/Store/PedidoStore"
+import { compararPrecos, createQuerySacola } from "@/localCache/SacolaStore"
+import { createStorePedido, inserirPedido, updatePedido } from "@/localCache/PedidoStore"
 import { Order, OrderPayment, OrderProduct, User } from "@/types/types"
 import { useRouter } from "next/navigation"
 

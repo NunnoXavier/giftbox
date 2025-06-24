@@ -2,7 +2,7 @@
 
 import { Order } from "@/types/types"
 import { actionEnviarEmail } from "../usuarios/actionEnviarEmail"
-import { fetchUsuario } from "@/cachedFetchs/fetchUsuario"
+import { fetchUsuario } from "@/serverCache/fetchUsuario"
 
 export const actionCancelar = async (pedido: Order) => {
     try {

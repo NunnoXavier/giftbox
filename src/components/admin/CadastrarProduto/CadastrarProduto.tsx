@@ -1,8 +1,8 @@
 import { Category, Dimensions, Meta, Product } from '@/types/types'
 import { revalidateTag } from 'next/cache'
 import CamposProduto from './CamposProduto'
-import { fetchProdutos } from '@/cachedFetchs/fetchsProdutos'
-import { fetchSecoes } from '@/cachedFetchs/fetchsSecoes'
+import { fetchProdutos } from '@/serverCache/fetchsProdutos'
+import { fetchSecoes } from '@/serverCache/fetchsSecoes'
 
 const CadastrarProduto = async () => {
 

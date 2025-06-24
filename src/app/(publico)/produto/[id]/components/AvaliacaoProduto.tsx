@@ -1,6 +1,3 @@
-import { Star, StarHalf } from 'lucide-react'
-
-
 type AvaliacaoProdutoProps = {
     className?: string,
     rating?: number,

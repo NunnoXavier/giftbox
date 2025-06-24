@@ -1,5 +1,5 @@
 import { actionGetTitleColorPedido } from "@/actions/pedidos/actionGetTitleColorPedido"
-import { fetchPedidos } from "@/cachedFetchs/fetchPedidos"
+import { fetchPedidos } from "@/serverCache/fetchPedidos"
 import { toDateBr } from "@/services/utils"
 import { Order, OrderStatus } from "@/types/types"
 

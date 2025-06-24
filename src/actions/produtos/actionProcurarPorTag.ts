@@ -1,6 +1,6 @@
 'use server'
 
-import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { fetchProdutosBusca } from "@/serverCache/fetchsProdutos"
 import { Product } from "@/types/types"
 import Fuse, { FuseResult } from "fuse.js"
 
@@ -11,7 +11,7 @@ interface MyResult extends FuseResult<Product> {
 
 export const actionProcurarProdutos = async (texto:string) => {
     try {
-    const produtos = (await fetchProdutos())
+    const produtos = await fetchProdutosBusca()
 
     const fuse = new Fuse<Product>(produtos, {
         keys: [

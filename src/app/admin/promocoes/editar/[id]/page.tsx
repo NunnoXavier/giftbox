@@ -2,7 +2,7 @@ import { actionEditarPromocao } from "@/actions/admin/promocoes/actionEditarProm
 import { actionUploadImagem } from "@/actions/formActions/actionUploadImagem"
 import Form from "@/components/admin/promocoes/Form"
 import BtnVoltar from "@/components/genericos/ BtnVoltar"
-import { fetchPromocao } from "@/uncachedFetchs/fetchPromocao"
+import { fetchPromocao } from "@/serverCache/fetchPromocoes"
 import { Undo2 } from "lucide-react"
 import { revalidateTag } from "next/cache"
 import Image from "next/image"

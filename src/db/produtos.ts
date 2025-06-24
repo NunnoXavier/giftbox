@@ -76,6 +76,91 @@ export const getProdutos = async (props?: getProductProps ):Promise<Result> => {
         return {data: null, error: error.message}
     }
 }
+export const getProdutosBasico = async (props?: getProductProps ):Promise<Result> => {
+    try {
+        const sql = !props?.campo? `select 
+            id , title, idcategory, price, discountPercentage,
+            rating, stock, brand, sku, weight, width, height, depth, 
+            thumbnail
+        from products` : 
+        `select  
+            id , title, idcategory, price, discountPercentage,
+            rating, stock, brand, sku, weight, width, height, depth, 
+            thumbnail
+        from products where ${props?.campo} = '${props?.valor}'`
+        
+        const res = await query(sql)
+        const rows = res.rows
+    
+        const products:Product[] = rows.map((row):Product => {
+            return {
+                id: row.id,
+                brand: row.brand,
+                category: {
+                    id:  row.idcategory,
+                    description: "",
+                },
+                dimensions: {
+                    depth: row.depth,
+                    height: row.height,
+                    width: row.width,
+                },
+                discountPercentage: row.discountpercentage,
+                price: row.price,
+                rating: row.rating,
+                sku: row.sku,
+                stock: row.stock,
+                tags: row.tags || "",
+                title: row.title,
+                weight: row.weight,
+                thumbnail: row.thumbnail                   
+            }
+        })
+
+        
+        for(const produto of products) {
+            const category = await getCategorias({campo: "id", valor: produto.category?.id})
+            produto.category = {
+                id: category.data?.[0].id || 0,
+                description: category.data?.[0].description || ""
+            }            
+        }
+    
+        return { data: products, error: null }        
+    } catch (error:any) {
+        return {data: null, error: error.message}
+    }
+}
+export const getProdutosBusca = async (props?: getProductProps ):Promise<Result> => {
+    try {
+        const sql = !props?.campo? `select 
+            id , title, brand, sku, rating, thumbnail, tags, description
+        from products` : 
+        `select  
+            id , title, brand, sku, rating, thumbnail, tags, description
+        from products where ${props?.campo} = '${props?.valor}'`
+        
+        const res = await query(sql)
+        const rows = res.rows
+    
+        const products:Product[] = rows.map((row):Product => {
+            return {
+                id: row.id,
+                brand: row.brand,
+                description: row.description,
+                rating: row.rating,
+                sku: row.sku,
+                tags: row.tags || "",
+                title: row.title,
+                thumbnail: row.thumbnail                   
+            }
+        })
+    
+        return { data: products, error: null }        
+    } catch (error:any) {
+        return {data: null, error: error.message}
+    }
+}
 
 export const getCamposProdutos = async ( {campos, where}:{campos:string[], where?:getProductProps} ):Promise<{data:ProductDTO[]|null, error: |string|null}> => {
     try {

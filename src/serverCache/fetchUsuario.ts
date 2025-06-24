@@ -2,6 +2,8 @@ import { User } from "@/types/types"
 import { jwtDecode } from "jwt-decode"
 import { cookies } from "next/headers"
 
+const umDia = 60 * 60 * 24
+
 export const fetchUsuario = async () => {
     const cookieStore = await cookies()
     const cookieToken = cookieStore.get("SIGIFTBOX_AUTH_TOKEN")
@@ -14,7 +16,8 @@ export const fetchUsuario = async () => {
             Cookie: `SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}`
         },
         next: {
-            tags: [`usuario-${id}`]
+            tags: [`usuario-${id}`],
+            revalidate: umDia
         }
     })
 

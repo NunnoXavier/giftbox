@@ -1,6 +1,6 @@
 'use client'
 
-import { createQuerySacola } from "../../Store/SacolaStore"
+import { createQuerySacola } from "../../localCache/SacolaStore"
 
 const AlertaSacola = ({className}:{className?: string}) => {
     const { data } = createQuerySacola()

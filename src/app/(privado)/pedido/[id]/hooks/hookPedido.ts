@@ -4,11 +4,13 @@ import { actionAlterarEstoque } from "@/actions/produtos/actionAlterarEstoque"
 import { actionRevalidarEstoque } from "@/actions/produtos/actionRevalidarEstoque"
 import { actionRevalidarProdutos } from "@/actions/produtos/actionRevalidarProdutos"
 import { actionEnviarEmail } from "@/actions/usuarios/actionEnviarEmail"
+import { fetchPedido } from "@/serverCache/fetchPedidos"
 import { diferencaEntreDatas } from "@/services/utils"
 import { Order, OrderProduct } from "@/types/types"
 import { redirect } from "next/navigation"
 
-const hooks = (pedido: Order) => {
+export const hookPedido = async (id: string) => {
+    const pedido = (await fetchPedido(Number(id)))
     
     const handlePagar = async (): Promise<boolean|null> => {
         'use server'
@@ -45,11 +47,10 @@ const hooks = (pedido: Order) => {
     }    
 
     return {
-        handlePagar
+        handlePagar,
+        pedido
     }
 }
-
-export default hooks
 
 const atualizarEstoque = async (produtos?: OrderProduct[]) => {
     if(!produtos || produtos.length === 0){

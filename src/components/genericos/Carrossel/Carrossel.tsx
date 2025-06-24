@@ -3,7 +3,7 @@
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react"
 import { MouseEventHandler, useEffect, useRef, useState } from "react"
 
-const Carrossel = ({ children, steps=1 }: { children: React.ReactNode, steps: number }) => {
+const Carrossel = ({ children, steps=1 }: { children: React.ReactNode, steps?: number }) => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const [canScrollLeft, setCanScrollLeft] = useState(false)
     const [canScrollRight, setCanScrollRight] = useState(false)

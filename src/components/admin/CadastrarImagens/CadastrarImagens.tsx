@@ -1,4 +1,4 @@
-import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { fetchProdutos } from "@/serverCache/fetchsProdutos"
 import { ImageDTO } from "@/types/types"
 import { revalidateTag } from "next/cache"
 import DadosProduto from "./DadosProduto"

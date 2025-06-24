@@ -1,13 +1,13 @@
 'use client'
 import { ProductCart } from '@/types/types'
 import { PlusCircle, MinusCircle, Trash } from 'lucide-react'
-import { createQuerySacola, fetchAddQtdeItem, fetchRemoveItem, fetchSubQtdeItem } from '../../Store/SacolaStore'
+import { createQuerySacola, fetchAddQtdeItem, fetchRemoveItem, fetchSubQtdeItem } from '../../localCache/SacolaStore'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Image from 'next/image'
 import BtnEsvaziarSacola from './BtnEsvaziarSacola'
 import { toCurrencyBr } from '@/services/utils'
 import { useEffect, useState } from 'react'
-import { fetchPrecoProdutos } from '@/cachedFetchs/fetchsProdutos'
+import { fetchPrecoProdutos } from '@/serverCache/fetchsProdutos'
 
 type Precos = {
     id: number,

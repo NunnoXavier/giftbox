@@ -1,6 +1,6 @@
 import { actionProcurarProdutos } from "@/actions/produtos/actionProcurarPorTag"
-import { fetchProdutosComprados } from "@/cachedFetchs/fetchProdutosComprados"
-import { fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
+import { fetchProdutosComprados } from "@/serverCache/fetchProdutosComprados"
+import { fetchProdutos } from "@/serverCache/fetchsProdutos"
 import ProdutoSecao from "@/app/(publico)/(pricing)/components/ProdutoSecao/ProdutoSecao"
 import Carrossel from "@/components/genericos/Carrossel/Carrossel"
 

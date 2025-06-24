@@ -1,4 +1,4 @@
-import { insertMessage } from "@/db/mensagens"
+import { getMessages, insertMessage } from "@/db/mensagens"
 import { NextResponse } from "next/server"
 
 export const POST = async (req: Request) => {
@@ -14,4 +14,12 @@ export const POST = async (req: Request) => {
     }
     
     return NextResponse.json({ data: newMessage, error: null })
+}
+
+export const GET = async () => {
+    const { data, error } = await getMessages()
+    if(error) {
+        return NextResponse.json({ data: null, error: error })
+    }
+    return NextResponse.json({ data: data, error: null })
 }

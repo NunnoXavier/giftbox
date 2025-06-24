@@ -30,7 +30,8 @@ export const insertMessage = async (message: Message): Promise<{ data: Message|n
             name: row.name,
             email: row.email,
             subject: row.subject,
-            message: row.message
+            message: row.message,
+            viewed: row.viewed
         }))[0]
 
         return { data: newMessage, error: null }
@@ -39,3 +40,23 @@ export const insertMessage = async (message: Message): Promise<{ data: Message|n
     }
 }
 
+export const getMessages = async (): Promise<{ data: Message[]|null, error: string|null }> => {
+    try {
+        const sql = `
+            SELECT * FROM messages
+        `
+        const result = await query(sql)
+        const messages:Message[] = result.rows.map((row:any) => ({
+            id: row.id,
+            createdAt: row.createdat,
+            name: row.name,
+            email: row.email,
+            subject: row.subject,
+            message: row.message,  
+            viewed: row.viewed
+        }))
+        return { data: messages, error: null }
+    } catch (error:any) {
+        return { data: null, error: error.message }
+    }
+}

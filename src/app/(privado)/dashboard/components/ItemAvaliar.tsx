@@ -1,4 +1,4 @@
-import { TProdutosAvaliar } from "@/cachedFetchs/fetchProdutosAvaliar"
+import { TProdutosAvaliar } from "@/serverCache/fetchProdutosAvaliar"
 import BtnAvaliar from '@/components/BtnAvaliar/BtnAvaliar'
 import Image from "next/image"
 import Link from "next/link"

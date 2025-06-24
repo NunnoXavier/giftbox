@@ -1,7 +1,7 @@
 import { actionInserirProdutosPromocao } from "@/actions/admin/promocoes/actionInserirProdutosPromocao"
 import Produtos from "@/components/admin/promocoes/Produtos/Produtos"
 import { Product } from "@/types/types"
-import { fetchPromocao } from "@/uncachedFetchs/fetchPromocao"
+import { fetchPromocao } from "@/serverCache/fetchPromocoes"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 

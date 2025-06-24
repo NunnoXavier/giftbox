@@ -3,8 +3,8 @@
 import { Order, OrderStatus, User } from "@/types/types"
 
 import { useEffect, useState } from "react"
-import { fetchPedidosAdmin } from "@/cachedFetchs/fetchPedidosAdmin"
-import { fetchUsuariosAdmin } from "@/cachedFetchs/fetchUsuariosAdmin"
+import { fetchPedidosAdmin } from "@/serverCache/fetchPedidosAdmin"
+import { fetchUsuariosAdmin } from "@/serverCache/fetchUsuariosAdmin"
 import CardPedido from "./CardPedido"
 import SkeletonPedido from "./SkeletonPedido"
 import ModalEnviar from "./ModalEnviar"

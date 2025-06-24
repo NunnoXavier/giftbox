@@ -1,5 +1,7 @@
 'use server'
 
+const umaHora = 3600
+
 import { actionObterToken } from "@/actions/usuarios/actionObterToken"
 import { Order } from "@/types/types"
 
@@ -11,7 +13,8 @@ export const fetchPedidosAdmin = async () => {
         headers: token.header,
         cache: "force-cache",
         next: {            
-            tags: [`pedidos`]
+            tags: [`pedidos`],
+            revalidate: umaHora * 12,
         }
     })
 

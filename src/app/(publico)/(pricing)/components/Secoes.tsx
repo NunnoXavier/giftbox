@@ -1,6 +1,6 @@
 import Secao from "./Secao"
-import { fetchEstoqueProdutos, fetchPrecoProdutos, fetchProdutos } from "@/cachedFetchs/fetchsProdutos"
-import { fetchSecoes } from "@/cachedFetchs/fetchsSecoes"
+import { fetchEstoqueProdutos, fetchPrecoProdutos, fetchProdutos } from "@/serverCache/fetchsProdutos"
+import { fetchSecoes } from "@/serverCache/fetchsSecoes"
 
 type SecoesProps = {
     className?: string,

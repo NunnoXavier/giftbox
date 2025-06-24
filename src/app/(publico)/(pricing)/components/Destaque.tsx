@@ -10,7 +10,8 @@ const Destaque = ({promocao}: {promocao: Promocao}) => {
                 promocao.products?.map((product) => (
                     <div key={product.id}>
                         <ProdutoSecao produto={product}
-                            className="bg-gradient-to-tr from-40% from-violet-800 to-pink-600 text-white"
+                            className="bg-gradient-to-tr from-40% from-white to-violet-200
+                                border border-borda"
                         />
                     </div>
                 ))

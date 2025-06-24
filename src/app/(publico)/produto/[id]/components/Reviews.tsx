@@ -1,4 +1,4 @@
-import { fetchReviews } from "@/cachedFetchs/fetchReviews"
+import { fetchReviews } from "@/serverCache/fetchReviews"
 import { toDateBr } from "@/services/utils"
 import AvaliacaoProduto from "./AvaliacaoProduto"
 
