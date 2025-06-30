@@ -6,19 +6,19 @@ export const hookProduto = async (id:string) => {
     const estoques = await fetchEstoqueProdutos()
     const precos = await fetchPrecoProdutos()
 
-    const estoque = estoques.find((e) => e.id === Number(id))?.stock || 0
-    const valores = precos.find((e) => e.id === Number(id))
+    const estoque = estoques?.find((e) => e.id === Number(id))?.stock || 0
+    const valores = precos?.find((e) => e.id === Number(id))
 
-    const imagens = produto.images
+    const imagens = produto?.images || []
 
     const itemSacola:ProductCart = {
         id: 0,
-        title: produto.title || "",
-        idProduct: produto.id || 0,
+        title: produto?.title || "",
+        idProduct: produto?.id || 0,
         qtde: 1,
-        price: produto.price,
-        discountPercentage: produto.discountPercentage,
-        thumbnail: produto.thumbnail
+        price: produto?.price,
+        discountPercentage: produto?.discountPercentage,
+        thumbnail: produto?.thumbnail
     }
 
     const preco = valores?.price? valores.price : 0

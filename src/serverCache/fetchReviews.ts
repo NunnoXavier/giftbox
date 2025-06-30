@@ -18,13 +18,13 @@ export const fetchReviews = async (idProduto?: number) => {
         const { data, error }:{data: Review[], error:string} = await res.json()
         if(!data){
             console.log(error)
-            return []
+            return null
         }
 
         return data
 
     } catch (error:any) {
         console.log(error.message)
-        return []
+        return null
     }
 }

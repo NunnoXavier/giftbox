@@ -52,22 +52,22 @@ export const GET = async (request: NextRequest) => {
     
         const {data:users, error} = await getUsuarios({campo:'id', valor: id })
         if(!users){
-            return NextResponse.json({ data: null, error: 'DB: ' + error })            
+            return NextResponse.json({ data: null, error: 'DB: ' + error },{ status: 400 })            
         }
 
         const user:User = users[0]
         if(!user || user.id !== id){
-            return NextResponse.json({ data: null, error: 'usuário logado não confere com o usuario informado no pedido' })
+            return NextResponse.json({ data: null, error: 'usuário logado não confere com o usuario informado no pedido' },{ status: 400 })
         }
         
         const  {data:dataReviews, error:reviewsError} = await getJoinOrderReviews({ campo:'orders.iduser', valor: user.id })
         if(!dataReviews){
-            return NextResponse.json({ data: null, error: reviewsError })
+            return NextResponse.json({ data: null, error: reviewsError },{ status: 400 })
         }
 
         return NextResponse.json({ data: dataReviews, error: null })
 
     } catch (error:any) {
-        return NextResponse.json({ data: null, error: error.message })        
+        return NextResponse.json({ data: null, error: error.message },{ status: 400 })        
     }
 }

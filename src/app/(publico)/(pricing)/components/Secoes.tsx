@@ -15,10 +15,8 @@ const Secoes = async ({ className }: SecoesProps) => {
     
     const listaSecoes:string[] = dataCategorias.map((s) => s.description)
     const dataProdutos = await fetchProdutos()
-    const dataPrecos = await fetchPrecoProdutos()
-    const dataEstoque = await fetchEstoqueProdutos()
     
-    if(!dataProdutos || !dataPrecos || !dataEstoque){
+    if(!dataProdutos){
         return ( <>Erro ao carregar dados tente mais tarde</> )
     }
 

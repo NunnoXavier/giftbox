@@ -25,7 +25,7 @@ export const fetchProdutosAvaliar = async () => {
     const { data: itens, error }:{ data: TProdutosAvaliar[], error:string } = await res.json()
     if(!itens || itens.length === 0){
         console.log(error)
-        return []
+        return null
     }
 
     return itens.filter((item) => (

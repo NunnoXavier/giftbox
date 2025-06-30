@@ -18,7 +18,7 @@ const hooks = async (produto: Product) => {
     const classSize = (size:TSize ) => sizeClasses[size || 'lg']
     const titleSize = (size:TSize) => size === 'lg'? 'text-lg': 'text-md'
     
-    const estoque = dataEstoque.find((estoque) => estoque.id === produto?.id)?.stock 
+    const estoque = dataEstoque?.find((estoque) => estoque.id === produto?.id)?.stock 
     || produto.stock || 0
     
     const precos = dataPrecos?.find((preco) => preco.id === produto?.id)

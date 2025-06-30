@@ -24,7 +24,7 @@ export const GET = async () => {
         return NextResponse.json({ data: trace, error: null })
 
     }catch (error:any) {
-        return NextResponse.json({ data: null, error: error.message })
+        return NextResponse.json({ data: null, error: error.message },{ status: 400 })
     }
 
 }

@@ -4,7 +4,6 @@ import FormCadastrarProduto from "@/components/admin/CadastrarProduto/CadastrarP
 import GridProdutos from "@/components/admin/GridProdutos/GridProdutos"
 import { Loader2 } from "lucide-react"
 import { Suspense } from "react"
-import AtualizarProdutos from "./AtualizarProdutos"
 
 const Admin = async () => {
     const produtos = await fetchProdutosAdmin()
@@ -12,7 +11,6 @@ const Admin = async () => {
     if(!produtos){
         return <div className="w-full h-dvh flex flex-col items-center justify-center gap-5">
                 <h1>Erro ao carregar produtos</h1>
-                <AtualizarProdutos />
             </div>
     } 
     

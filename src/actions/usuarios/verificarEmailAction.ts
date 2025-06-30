@@ -1,6 +1,7 @@
 'use server'
 
 import { validarEmail } from "@/services/validarEmail"
+import { validarSenha } from "@/services/validarSenha"
 
 export const verificarEmailAction = async (email:string, senha:string):Promise<{  data:boolean|null , error:string|null }> => {
     try {
@@ -8,8 +9,10 @@ export const verificarEmailAction = async (email:string, senha:string):Promise<{
             return {data: null, error: 'Email inválido'}
         }
 
-        if(senha.length < 6){
-            return { data: null, error: 'A senha deve conter ao menos 6 caracteres, entre letras, números e símbolos!'}
+        const statusSenha = validarSenha(senha)
+        
+        if(!statusSenha.valido){
+            return { data: null, error: statusSenha.mensagem }
         }
 
         const res = await fetch(`http://localhost:3000/api/usuarios/verificar-email/${email}`)

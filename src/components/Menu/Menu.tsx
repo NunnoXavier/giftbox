@@ -1,31 +1,23 @@
 
 import { UserRound, Gift, LogIn, UserRoundPlus, LogOut, ShoppingBag } from 'lucide-react'
-import { headers, cookies } from 'next/headers'
+import { headers } from 'next/headers'
 import Link from 'next/link'
 import BuscarProduto from '../BuscarProduto/BuscarProduto'
 import MenuItem from './MenuItem'
 import Hamburger from './Hamburger'
 import AlertaSacola from './AlertaSacola'
 import Submenu from './Submenu'
-import { User } from '@/types/types'
 import { token as verificarToken } from './autenticar'
 import Image from 'next/image'
+import { fetchUsuario } from '@/serverCache/fetchUsuario'
  
 export default async function Menu({ className }: { className?: string }){
   const headerList = await headers()
   const host = headerList.get('x-forwarded-host')
-  const proto = headerList.get('x-forwarded-proto')
-  const cookieStory = await cookies()
-  const token = cookieStory.get("SIGIFTBOX_AUTH_TOKEN")
-  
+  const proto = headerList.get('x-forwarded-proto')     
   await verificarToken()
   
-  const res = await fetch('http://localhost:3000/api/usuarios', {
-    method: 'GET',
-    headers: { Cookie: `SIGIFTBOX_AUTH_TOKEN=${token?.value}` },
-  })
-  const { data:usuario }:{ data:User } = await res.json()
-
+  const usuario = await fetchUsuario()
 
   return (
     

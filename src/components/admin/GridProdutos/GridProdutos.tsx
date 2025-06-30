@@ -16,7 +16,7 @@ const GridProdutos = ({produtos}:{produtos:Product[]}) => {
 
         const params = new URLSearchParams(searchParams.toString())
         params.set('id',produto.id.toString())
-        router.push(`/admin?${params.toString()}`);
+        router.push(`/admin/produtos?${params.toString()}`);
         setLinhaSelecionada(e)
     }
 

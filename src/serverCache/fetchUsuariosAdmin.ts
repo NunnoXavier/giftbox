@@ -14,7 +14,8 @@ export const fetchUsuariosAdmin = async () => {
         const { role } = jwtDecode(cookieToken?.value!) as AuthTokenPayload
     
         if(role !== "admin"){
-            throw new Error("Você não tem permissão para acessar esta rota")
+            console.log("Você não tem permissão para acessar esta rota")
+            return null
         }
         
         const res = await fetch('http://localhost:3000/api/protegido/usuarios', {
@@ -30,11 +31,13 @@ export const fetchUsuariosAdmin = async () => {
     
         const { data:usuarios, error }:{data:User[], error:string} = await res.json()
         if(!usuarios){
-            throw new Error(error)        
+            console.log(error)        
+            return null
         }
         return usuarios
         
     } catch (error:any) {
-        throw new Error(error.message)
+        console.log(error.message)
+        return null
     }
 }

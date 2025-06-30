@@ -1,4 +1,3 @@
-import Produto from '@/components/Produto/Produto';
 import { JwtPayload } from 'jwt-decode'
 
 export interface AuthTokenPayload extends JwtPayload {

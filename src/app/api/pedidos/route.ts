@@ -17,44 +17,44 @@ export const PUT = async (request:NextRequest) => {
     
         const {data:users, error} = await getUsuarios({campo:'id', valor: id })
         if(!users){
-            return NextResponse.json({ data: null, error: 'DB: ' + error })
+            return NextResponse.json({ data: null, error: 'DB: ' + error }, { status: 400 })
             
         }
         
         const user:User = users[0]
         if(!user || user.id !== id){
-            return NextResponse.json({ data: null, error: 'usuário logado não confere com o usuario informado no pedido' })
+            return NextResponse.json({ data: null, error: 'usuário logado não confere com o usuario informado no pedido' },{ status: 400 })
         }
         
         const { data:idPedido, error:errorPedido } = await putPedido(body)    
         if(!idPedido){
-            return NextResponse.json({ data: null, error: 'DB: ' + errorPedido })
+            return NextResponse.json({ data: null, error: 'DB: ' + errorPedido },{ status: 400 })
         }    
         
         if(body.payment){
             const { data:idPagamento, error:errorPagamento } = await putPagtoPedido(idPedido, body.payment)    
             if(!idPagamento){
-                return NextResponse.json({ data: null, error: 'DB: ' + errorPagamento })
+                return NextResponse.json({ data: null, error: 'DB: ' + errorPagamento },{ status: 400 })
             }
         }
     
         if(body.shipping){
             const { data:idEntrega, error:errorEntrega } = await putEntregaPedido(idPedido, body.shipping)    
             if(!idEntrega){
-                return NextResponse.json({ data: null, error: 'DB: ' + errorEntrega })
+                return NextResponse.json({ data: null, error: 'DB: ' + errorEntrega },{ status: 400 })
             }
         }
     
         if(body.products){
             const { data:idProduto, error:errorProduto } = await putProdutoPedido(idPedido, body.products)    
             if(!idProduto){
-                return NextResponse.json({ data: null, error: 'DB: ' + errorProduto })
+                return NextResponse.json({ data: null, error: 'DB: ' + errorProduto },{ status: 400 })
             }
         }
         
         return NextResponse.json({ data: { ...body, id: idPedido}, error: null })
     } catch (error:any) {
-        return NextResponse.json({ data: null, error: error.message })        
+        return NextResponse.json({ data: null, error: error.message },{ status: 400 })        
     }   
 
 }
@@ -67,17 +67,17 @@ export const GET = async (request:NextRequest) => {
         const { id }:AuthTokenPayload = jwtDecode(rawCookie)
     
         if(!id || id === 0){
-            return NextResponse.json({ data: null, error: 'usuário não logado' })
+            return NextResponse.json({ data: null, error: 'usuário não logado' },{ status: 400 })
         }
        
         const { data:pedidos, error:errorPedido } = await getPedidos({campo:"iduser", valor: id})    
         if(!pedidos){
-            return NextResponse.json({ data: null, error: 'DB: ' + errorPedido })
+            return NextResponse.json({ data: null, error: 'DB: ' + errorPedido },{ status: 400 })
         }
         
         return NextResponse.json({ data:pedidos , error: null })
     } catch (error:any) {
-        return NextResponse.json({ data:null , error: error.message })
+        return NextResponse.json({ data:null , error: error.message },{ status: 400 })
         
     }
 }

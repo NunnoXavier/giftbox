@@ -8,18 +8,18 @@ export const GET = async (request: NextRequest) => {
         const authToken = request.cookies.get('SIGIFTBOX_AUTH_TOKEN')
         
         if(!authToken){
-            return NextResponse.json({ data: null, error: "token não informado" })
+            return NextResponse.json({ data: null, error: "token não informado" },{ status: 400 })
         }
         
         const { id } = jwtDecode(authToken.value) as AuthTokenPayload
         if(!id || isNaN(id)){
-            return NextResponse.json({ data: null, error: 'id inválido'})
+            return NextResponse.json({ data: null, error: 'id inválido'},{ status: 400 })
         }
 
         const { data, error } = await getUsuarios({campo:"id", valor:id})
     
         if(!data){
-            return NextResponse.json({ data: null, error: error})
+            return NextResponse.json({ data: null, error: error},{ status: 400 })
         }
     
     
@@ -28,7 +28,7 @@ export const GET = async (request: NextRequest) => {
     
         return NextResponse.json({data: usuario, error: null})        
     } catch (error:any) {
-        return NextResponse.json({data: null, error: error.message})        
+        return NextResponse.json({data: null, error: error.message},{ status: 400 })        
     }    
 }
 

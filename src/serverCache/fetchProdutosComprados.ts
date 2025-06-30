@@ -4,7 +4,8 @@ import { Order } from '../types/types'
 export const fetchProdutosComprados = async (somenteProdutosRecebidos:boolean = false) => {
     const pedidos:Order[] = await fetchPedidos() || []
     if (!pedidos) {
-        throw new Error('Não foi possível obter os pedidos')
+        console.log('Não foi possível obter os pedidos')
+        return null
     }
 
     const pedidosRecebidos = pedidos.filter((pedido) => (

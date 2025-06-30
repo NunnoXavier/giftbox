@@ -10,7 +10,8 @@ export const fetchSecoes = async () => {
     
     const { data:categorias, error:errorCategorias }:{data:Category[], error:string} = await res.json()
     if(errorCategorias){
-        throw new Error(errorCategorias)        
+        console.log(errorCategorias)        
+        return null
     }
 
     return categorias    

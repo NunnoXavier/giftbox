@@ -15,10 +15,10 @@ export const GET = async () => {
         const { data:dataPromocoes, error:errorPromocoes } = await getPromocoesVigentes()
 
         if(!dataProdutos){
-            return NextResponse.json({data:null, error:errorProdutos})            
+            return NextResponse.json({data:null, error:errorProdutos},{ status: 400 })            
         }
         if(!dataPromocoes){
-            return NextResponse.json({data:null, error:errorPromocoes})            
+            return NextResponse.json({data:null, error:errorPromocoes},{ status: 400 })            
         }
 
         const precos = dataProdutos.map((produto) => ({
@@ -52,7 +52,7 @@ export const GET = async () => {
         return NextResponse.json({ data:precos, error: null })
     } catch (error:any) {
         console.error(error.message)
-        return NextResponse.json({ data:null, error: error.message })
+        return NextResponse.json({ data:null, error: error.message },{ status: 400 })
     }
 }
 

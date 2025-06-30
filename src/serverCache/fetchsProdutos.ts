@@ -8,19 +8,21 @@ export const fetchProdutosAdmin = async () => {
             cache: "force-cache",
             next: {
                 tags: ['produtos-admin'],
-                revalidate: umaHora,
+                revalidate: umaHora * 24,
             }
         })
     
         const { data, error }:{data: Product[], error:string} = await res.json()
         if(!data){
-            throw new Error(error)
+            console.log(error)
+            return null
         } 
             
         return data
         
     } catch (error:any) {
-        throw new Error(error.message)        
+        console.log(error.message)  
+        return null      
     }
 }
 
@@ -30,19 +32,21 @@ export const fetchProdutos = async () => {
             cache: "force-cache",
             next: {
                 tags: ['produtos'],
-                revalidate: umaHora,
+                revalidate: umaHora * 24,
             }
         })
     
         const { data, error }:{data: Product[], error:string} = await res.json()
         if(!data){
-            throw new Error(error)
+            console.log(error)
+            return null
         } 
             
         return data
         
     } catch (error:any) {
-        throw new Error(error.message)        
+        console.log(error.message) 
+        return null       
     }
 }
 
@@ -52,19 +56,20 @@ export const fetchProdutosBusca = async () => {
             cache: "force-cache",
             next: {
                 tags: ['produtos-busca'],
-                revalidate: umaHora,
+                revalidate: umaHora * 24,
             }
         })
     
         const { data, error }:{data: Product[], error:string} = await res.json()
         if(!data){
-            throw new Error(error)
+            console.log(error)
+            return null
         } 
             
         return data
         
     } catch (error:any) {
-        throw new Error(error.message)        
+        console.log(error.message)        
     }
 }
 
@@ -74,23 +79,25 @@ export const fetchProduto = async (id:number) => {
             cache: "force-cache",
             next: {
                 tags: [`produto-${id.toString()}`],
-                revalidate: 60,
+                revalidate: umaHora * 24,
             }
         })
     
         const { data, error }:{data: Product[], error:string} = await res.json()
         if(!data){
-            throw new Error(error)
+            console.log(error)
+            return null
         }   
         
         if(data.length === 0){
-            throw new Error('Produto não encontrado')
+            console.log('Produto não encontrado')
+            return null
         }
             
         return data[0]
         
     } catch (error:any) {
-        throw new Error(error.message)        
+        console.log(error.message)        
     }
 }
 
@@ -105,13 +112,14 @@ export const fetchPrecoProdutos = async () => {
         })
         const { data, error }:{data: {id:number, price:number, discountPercentage: number}[], error:string} = await res.json()
         if(!data){
-            throw new Error(error)
+            console.log(error)
+            return null
         } 
     
         return data
         
     } catch (error:any) {
-        throw new Error(error.message)        
+        console.log(error.message)        
     }
 }
 
@@ -127,13 +135,15 @@ export const fetchEstoqueProdutos = async () => {
         
         const { data, error }:{data: {id:number, stock:number}[], error:string} = await res.json()
         if(!data){
-            throw new Error(error)
+            console.log(error)
+            return null
         } 
 
         return data
         
     } catch (error:any) {
-        throw new Error(error.message)        
+        console.log(error.message) 
+        return null   
     }
 }
 

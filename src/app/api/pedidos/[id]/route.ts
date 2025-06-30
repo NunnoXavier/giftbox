@@ -13,19 +13,19 @@ export const GET = async (request: NextRequest,{ params }: {params: Promise<{ id
        
         const { data:pedidos, error:errorPedido } = await getPedidos({campo:"id", valor: idPedido})    
         if(!pedidos){
-            return NextResponse.json({ data: null, error: 'DB: ' + errorPedido })
+            return NextResponse.json({ data: null, error: 'DB: ' + errorPedido },{ status: 400 })
         }
         
         const pedido:Order = pedidos[0]
 
         if(pedido.idUser !== id){
             console.log( pedido.idUser , id)
-            return NextResponse.json({ data: null, error: 'Usuario logado não tem permissão para acessar este pedido' })        
+            return NextResponse.json({ data: null, error: 'Usuario logado não tem permissão para acessar este pedido' },{ status: 400 })        
         }
         
         return NextResponse.json({ data:pedido , error: null })        
     } catch (error:any) {
-        return NextResponse.json({ data: null, error: 'Rota: ' + error.message })        
+        return NextResponse.json({ data: null, error: 'Rota: ' + error.message },{ status: 400 })        
     }
 }
 

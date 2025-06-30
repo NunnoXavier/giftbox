@@ -11,18 +11,18 @@ export const GET = async (request:NextRequest) => {
         const { role }:AuthTokenPayload = jwtDecode(rawCookie)
             
         if(role !== "admin"){
-            return NextResponse.json({ data: null, error: "Você não tem permissão para acessar esta rota" })
+            return NextResponse.json({ data: null, error: "Você não tem permissão para acessar esta rota" },{ status: 400 })
         }
 
         const { data:pedidos, error:errorPedido } = await getPedidos()    
         
         if(!pedidos){
-            return NextResponse.json({ data: null, error: 'DB: ' + errorPedido })
+            return NextResponse.json({ data: null, error: 'DB: ' + errorPedido },{ status: 400 })
         }
         
         return NextResponse.json({ data:pedidos , error: null })
     } catch (error:any) {
-        return NextResponse.json({ data:null , error: error.message })
+        return NextResponse.json({ data:null , error: error.message },{ status: 400 })
         
     }
 }

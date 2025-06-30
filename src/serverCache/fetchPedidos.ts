@@ -21,7 +21,8 @@ export const fetchPedidos = async () => {
     const { data, error }:{ data:Order[], error:string } = await res.json()
 
     if(!data){
-        throw new Error(error)        
+        console.log(error)   
+        return null     
     }
 
     return data
@@ -42,7 +43,8 @@ export const fetchPedido = async (id:number) => {
     const { data, error }:{ data:Order, error:string } = await res.json()
 
     if(!data){
-        throw new Error(error)        
+        console.log(error)      
+        return null  
     }
 
     return data

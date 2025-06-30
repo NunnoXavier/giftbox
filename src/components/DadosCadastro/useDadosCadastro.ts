@@ -2,6 +2,7 @@
 
 import { actionCadastrarUsuario } from "@/actions/usuarios/actionCadastrarUsuario"
 import { setCookieToken } from "@/hooks/setCookieToken"
+import { validarSenha } from "@/services/validarSenha"
 import { User } from "@/types/types"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
@@ -24,6 +25,8 @@ const useFormDadosCadastro = () => {
             const nome = formData.get('nome') as string
             const sobrenome = formData.get('sobrenome') as string
             const nascimento = formData.get('nascimento') as string
+
+            const senhaValida = validarSenha()
 
             const user: User = {
                 email: email as string,

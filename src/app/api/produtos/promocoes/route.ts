@@ -9,13 +9,13 @@ export const GET = async () => {
         const { data, error } = await getPromocoes()
     
         if(!data) {
-            return NextResponse.json({ data: null, error: error })
+            return NextResponse.json({ data: null, error: error },{ status: 400 })
         }
     
         return NextResponse.json({ data: data, error: null })
         
     } catch (error:any) {
-        return NextResponse.json({ data: null, error: error.message })
+        return NextResponse.json({ data: null, error: error.message },{ status: 400 })
         
     }
 }

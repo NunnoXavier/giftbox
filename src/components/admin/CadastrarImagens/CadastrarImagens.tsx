@@ -1,4 +1,4 @@
-import { fetchProdutos } from "@/serverCache/fetchsProdutos"
+import { fetchProdutosAdmin } from "@/serverCache/fetchsProdutos"
 import { ImageDTO } from "@/types/types"
 import { revalidateTag } from "next/cache"
 import DadosProduto from "./DadosProduto"
@@ -6,7 +6,7 @@ import { actionUploadImagem } from "@/actions/formActions/actionUploadImagem"
 
 const CadastrarImagens = async () => {
 
-    const produtos = await fetchProdutos()
+    const produtos = await fetchProdutosAdmin()
 
     const salvarUrl = async(data: FormData) => {
         'use server'

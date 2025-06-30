@@ -13,6 +13,8 @@ export const actionProcurarProdutos = async (texto:string) => {
     try {
     const produtos = await fetchProdutosBusca()
 
+    if(!produtos) return null
+
     const fuse = new Fuse<Product>(produtos, {
         keys: [
             { name: 'title', weight: 0.6 },

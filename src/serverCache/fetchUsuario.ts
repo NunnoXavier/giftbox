@@ -1,22 +1,17 @@
+import { actionObterToken } from "@/actions/usuarios/actionObterToken"
 import { User } from "@/types/types"
 import { jwtDecode } from "jwt-decode"
-import { cookies } from "next/headers"
 
 const umDia = 60 * 60 * 24
 
 export const fetchUsuario = async () => {
-    const cookieStore = await cookies()
-    const cookieToken = cookieStore.get("SIGIFTBOX_AUTH_TOKEN")
+    const token = await actionObterToken()
 
-    const { id } = jwtDecode(cookieToken?.value!) as { id: number }
-    
     const res = await fetch('http://localhost:3000/api/usuarios', {
         cache: 'force-cache',
-        headers: {
-            Cookie: `SIGIFTBOX_AUTH_TOKEN=${cookieToken?.value}`
-        },
+        headers: token.header,
         next: {
-            tags: [`usuario-${id}`],
+            tags: [`usuario-${token.idUser}`],
             revalidate: umDia
         }
     })
@@ -24,7 +19,7 @@ export const fetchUsuario = async () => {
     const { data:usuario, error }:{data:User, error:string} = await res.json()
     if(!usuario){
         console.log(error)
-        return null
+        return
     }
     return usuario
 }

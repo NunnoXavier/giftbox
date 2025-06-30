@@ -16,6 +16,14 @@ const Checkout = async () => {
             </div>
         )
     }
+    
+    if(!precos){
+        return (
+            <div className="flex not-md:flex-col justify-center gap-4">
+                <h1 className="text-xl">Estamos com problemas no nosso servidor. Por favor, tente mais tarde.</h1>
+            </div>
+        )
+    }
 
     return (
         <div className="flex not-md:flex-col justify-center gap-4">

@@ -4,12 +4,16 @@ import AvaliacaoProduto from "./AvaliacaoProduto"
 
 const Reviews = async ({ idProduto }: { idProduto?: number }) => {
     const reviews = await fetchReviews(idProduto)
+
+    if(!reviews){
+        return 
+    }
    
     return (
         <div>
             <div className="bg-white p-4 rounded-lg shadow-md">
                 {
-                    reviews.map((review) => (
+                    reviews?.map((review) => (
                         <div key={review.id} className="flex flex-col border-b border-gray-300 py-8">                           
                             <div>
                                 <span className="text-texto font-semibold">

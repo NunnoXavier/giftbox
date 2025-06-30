@@ -7,12 +7,12 @@ export const GET = async (request: Request, { params }: { params:Promise<{ idPro
         const { data:reviews, error } = await getReviews({ campo: "idProduct", valor: idProduto })
 
         if(!reviews){
-            return NextResponse.json({ data: null, error: error })
+            return NextResponse.json({ data: null, error: error },{ status: 400 })
         }
         
         return NextResponse.json({ data: reviews, error: null })
     } catch (error:any) {
-        return NextResponse.json({ data: null, error: error.message })
+        return NextResponse.json({ data: null, error: error.message },{ status: 400 })
         
     }
 

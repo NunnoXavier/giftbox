@@ -27,6 +27,10 @@ export const fetchPromocao = async (id:number) => {
 
     const res = await fetch(`http://localhost:3000/api/produtos/promocoes/${id.toString()}`, {
         method: 'GET',
+        next: {
+            tags: [`promocoes${id.toString()}`],
+            revalidate: umaHora * 12
+        }
     })
 
     const { data: promo, error: errorPromo }:{ data: Promocao, error: string } = await res.json()

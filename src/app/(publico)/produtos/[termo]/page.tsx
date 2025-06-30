@@ -18,7 +18,7 @@ const Produtos = async ({ params }:{ params: Promise<{ termo: string }> }) => {
             <p className="my-4 text-xl">Buscando por: {texto}</p>
             <div className="flex gap-4">
                 {
-                    produtosFiltrados.map((p) => (
+                    produtosFiltrados?.map((p) => (
                         <ProdutoSecao key={p.id} produto={p} 
                         className="bg-gradient-to-tr from-40% from-white to-violet-200"
                         />

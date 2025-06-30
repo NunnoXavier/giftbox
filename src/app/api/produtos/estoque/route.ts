@@ -8,13 +8,13 @@ export const GET = async () => {
         const { data:dataProdutos, error:errorProdutos } = await getCamposProdutos({ campos: ['id','stock'] })
         
         if(!dataProdutos){
-            return NextResponse.json({data:null, error:errorProdutos})            
+            return NextResponse.json({data:null, error:errorProdutos},{ status: 400 })            
         }
         
         return NextResponse.json({ data:dataProdutos, error: null })
     } catch (error:any) {
         console.error(error.message)
-        return NextResponse.json({ data:null, error: error.message })
+        return NextResponse.json({ data:null, error: error.message },{ status: 400 })
     }
 }
 
